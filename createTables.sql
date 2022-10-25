@@ -120,7 +120,7 @@ create table if not exists Shipment
         constraint shipment_fk_3 references City,
     shipping_id     int             not null
         constraint shipment_fk_4 references Shipping,
-    log_time        timestamp -        not null,
+    log_time        timestamp      not null,
     total_time      int
 );
 
