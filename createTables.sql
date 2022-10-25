@@ -66,6 +66,7 @@ create table if not exists  Delivery_Retrieval
         constraint  delivery_fk references Courier,
     type            varchar(50)     not null,
     date            date
+
 );
 
 
@@ -122,5 +123,4 @@ create table if not exists Shipment
     log_time        timestamp -        not null,
     total_time      int
 );
-
 
