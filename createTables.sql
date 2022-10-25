@@ -100,7 +100,7 @@ create table if not exists  Delivery
     delivery_id     int         not null    primary key,
     courier_id      int         not null
         constraint  delivery_fk references Courier,
-    date            date
+    time            date
 );
 
 create table if not exists  Retrieval
@@ -108,5 +108,5 @@ create table if not exists  Retrieval
     retrieval_id    int         not null    primary key,
     courier_id      int         not null
         constraint  retrieval_fk references Courier,
-    date            date        not null
+    time            date        not null
 );
