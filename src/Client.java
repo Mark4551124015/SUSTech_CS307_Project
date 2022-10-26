@@ -1,6 +1,7 @@
 import java.io.*;
 public class Client {
-    static int MAXRECORD = 100000;
+    static int MAXRECORD = 10000;
+    static int cnt = 0;
     public static void main(String[] args) throws FileNotFoundException {
         File file = new File("test.log");
 //        PrintStream ps = new PrintStream(file);
@@ -32,18 +33,20 @@ public class Client {
         }
         String line = "";
             DataManipulation dm = new DataFactory().createDataManipulation("database");
-            int cnt = 0;
+            cnt = 0;
             line = br.readLine();
             dm.getConnection();
             long startTime=System.currentTimeMillis();
             while ((line = br.readLine()) != null && cnt <= MAXRECORD) {
                 ++cnt;
                 dm.addFullRecords(line);
+//                System.out.println(cnt);
             }
             long endTime=System.currentTimeMillis();
-            System.out.println("Inserted data cnt: " + ++cnt +", costs: "+(endTime-startTime)/1000+"s");
+            System.out.println("Inserted data cnt: " + MAXRECORD +", costs: "+(endTime-startTime)/1000+"s");
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println(e);
+            System.out.println(cnt);
         }
     }
     public static void insertRecord(String str) {

@@ -48,11 +48,11 @@ public class DatabaseManipulation implements DataManipulation {
 
                     String[] Info = str.split(",",-1);
                     //Check if exist already
-                    if (getObjID(type, Info[0]) > 0) {
-                        break;
-                    }
+//                    if (getObjID(type, Info[0]) > 0) {
+//                        break;
+//                    }
                     //Insertion
-                    sql = "insert into city (name) values (?)";
+                    sql = "insert into city (name) values (?) on conflict do nothing";
 //                    getConnection();
 
                     PreparedStatement preparedStatement = con.prepareStatement(sql);
@@ -65,11 +65,11 @@ public class DatabaseManipulation implements DataManipulation {
 
                     String[] Info = str.split(",",-1);
                     //Check if exist already
-                    if (getObjID(type, Info[0]) > 0) {
-                        break;
-                    }
+//                    if (getObjID(type, Info[0]) > 0) {
+//                        break;
+//                    }
                     //Insertion
-                    sql = "insert into portcity (name) values (?)";
+                    sql = "insert into portcity (name) values (?)  on conflict do nothing";
 //                    getConnection();
                     PreparedStatement preparedStatement = con.prepareStatement(sql);
                     preparedStatement.setString(1, Info[0]);
@@ -81,11 +81,11 @@ public class DatabaseManipulation implements DataManipulation {
 
                     String[] Info = str.split(",",-1);
                     //Check if exist already
-                    if (getObjID(type, Info[0]) > 0) {
-                        break;
-                    }
-                    sql = "insert into company (name)" +
-                            "values (?)";
+//                    if (getObjID(type, Info[0]) > 0) {
+//                        break;
+//                    }
+                    sql = "insert into company (name) " +
+                            "values (?)  on conflict do nothing";
 //                    getConnection();
                     PreparedStatement preparedStatement = con.prepareStatement(sql);
                     preparedStatement.setString(1, Info[0]);
@@ -97,11 +97,11 @@ public class DatabaseManipulation implements DataManipulation {
 
                     String[] Info = str.split(",");
                     //Check if exist already
-                    if (getObjID(type, Info[0]) > 0) {
-                        break;
-                    }
-                    sql = "insert into itemtype (item_type)" +
-                            "values (?)";
+//                    if (getObjID(type, Info[0]) > 0) {
+//                        break;
+//                    }
+                    sql = "insert into itemtype (item_type) " +
+                            "values (?) on  conflict do nothing";
 //                    getConnection();
                     PreparedStatement preparedStatement = con.prepareStatement(sql);
                     preparedStatement.setString(1, Info[0]);
@@ -113,10 +113,10 @@ public class DatabaseManipulation implements DataManipulation {
 
                     String[] Info = str.split(",");
                     //Check if exist already
-                    if (getObjID(type, Info[0]) > 0) {
-                        break;
-                    }
-                    sql = "insert into container (code, type) values (?,?)";
+//                    if (getObjID(type, Info[0]) > 0) {
+//                        break;
+//                    }
+                    sql = "insert into container (code, type) values (?,?)  on conflict do nothing";
 
 //                    getConnection();
                     PreparedStatement preparedStatement = con.prepareStatement(sql);
@@ -129,22 +129,20 @@ public class DatabaseManipulation implements DataManipulation {
             } //2
             case courier -> {
 
-                    sql = "insert into courier (name, gender, birthday, phone_number, company_id, city_id)" +
-                            "values (?,?,?,?,?,?)";
+                    sql = "insert into courier (name, gender, birthday, phone_number, company, city)" +
+                            "values (?,?,?,?,?,?) on conflict do nothing";
                     String[] Info = str.split(",");
 
-                    if (getObjID(Records.company, Info[4]) < 0) {
+//                    if (getObjID(Records.company, Info[4]) < 0) {
                         addOneRecord(Records.company, Info[4]);
-                    }
-                    int company_id = getObjID(Records.company, Info[4]);
+//                    }
 
-                    if (getObjID(Records.city, Info[5]) < 0) {
+//                    if (getObjID(Records.city, Info[5]) < 0) {
                         addOneRecord(Records.city, Info[5]);
-                    }
-                    int city_id = getObjID(Records.city, Info[5]);
-                    if (getObjID(type, Info[0]) > 0) {
-                        break;
-                    }
+//                    }
+//                    if (getObjID(type, Info[0]) > 0) {
+//                        break;
+//                    }
 //                    getConnection();
                     PreparedStatement preparedStatement = con.prepareStatement(sql);
                     //Insertion
@@ -153,30 +151,29 @@ public class DatabaseManipulation implements DataManipulation {
                     preparedStatement.setString(2, Info[1]);
                     preparedStatement.setDate(3, Date.valueOf(Info[2]));
                     preparedStatement.setString(4, Info[3]);
-                    preparedStatement.setInt(5, company_id);
-                    preparedStatement.setInt(6, city_id);
+                    preparedStatement.setString(5, Info[4]);
+                    preparedStatement.setString(6, Info[5]);
 //                    System.out.println(preparedStatement.toString());
                     result = preparedStatement.executeUpdate();
 
             } //6
             case ship -> {
 
-                    sql = "insert into ship (name, company_id)" +
-                            "values (?,?)";
+                    sql = "insert into ship (name, company)" +
+                            "values (?,?) on conflict do nothing";
                     String[] Info = str.split(",");
-                    if (getObjID(type, Info[0]) > 0) {
-                        break;
-                    }
-                    if (getObjID(Records.company, Info[1]) < 0) {
+//                    if (getObjID(type, Info[0]) > 0) {
+//                        break;
+//                    }
+//                    if (getObjID(Records.company, Info[1]) < 0) {
                         addOneRecord(Records.company, Info[1]);
-                    }
-                    int company_id = getObjID(Records.company, Info[1]);
+//                    }
 //                    getConnection();
 
                     PreparedStatement preparedStatement = con.prepareStatement(sql);
                     //Insertion
                     preparedStatement.setString(1, Info[0]);
-                    preparedStatement.setInt(2, company_id);
+                    preparedStatement.setString(2, Info[1]);
 //                    System.out.println(preparedStatement.toString());
                     result = preparedStatement.executeUpdate();
 
@@ -184,19 +181,17 @@ public class DatabaseManipulation implements DataManipulation {
             case tax -> {
 
                     String[] Info = str.split(",",-1);
-                    int city_id = getObjID(Records.portCity, Info[0]);
-                    int item_id = getObjID(Records.itemType, Info[1]);
 
                     //Check if exist already
-                    if (taxDetailExist(city_id,item_id)) {
+                    if (taxDetailExist(Info[0],Info[1])) {
                         break;
                     }
                     //Insertion
-                    sql = "insert into tax (port_city_id, item_type_id, last_update) values (?,?,?)";
+                    sql = "insert into tax (port_city, item_type, last_update) values (?,?,?) on conflict do nothing";
 //                    getConnection();
                     PreparedStatement preparedStatement = con.prepareStatement(sql);
-                    preparedStatement.setInt(1, city_id);
-                    preparedStatement.setInt(2, item_id);
+                    preparedStatement.setString(1, Info[0]);
+                    preparedStatement.setString(2, Info[1]);
                     preparedStatement.setDate(3, Date.valueOf(Info[2]));
 //                    System.out.println(preparedStatement.toString());
                     preparedStatement.executeUpdate();
@@ -207,18 +202,17 @@ public class DatabaseManipulation implements DataManipulation {
             case delivery_retrieval -> {
                 //form courierName + type + date
 
-                    sql = "insert into delivery_retrieval (courier_id, type, date)" +
-                            "values (?,?,?)";
+                    sql = "insert into delivery_retrieval (courier, type, date)" +
+                            "values (?,?,?) on conflict do nothing";
                     String[] Info = str.split(",",-1);
-                    int courier_id = getObjID(Records.courier,Info[0]);
 
-                    if (getObjID(Records.delivery_retrieval, str) > 0) {
-                        break;
-                    }
+//                    if (getObjID(Records.delivery_retrieval, str) > 0) {
+//                        break;
+//                    }
 //                    getConnection();
                     PreparedStatement preparedStatement = con.prepareStatement(sql);
                     //Insertion
-                    preparedStatement.setInt(1, courier_id);
+                    preparedStatement.setString(1, Info[0]);
                     preparedStatement.setString(2, Info[1]);
                     preparedStatement.setDate(3, Date.valueOf(Info[2]));
 
@@ -228,22 +222,21 @@ public class DatabaseManipulation implements DataManipulation {
             }
             case import_export_detail -> {
 
-                    sql = "insert into import_export_detail (type, port_city_id, tax, date)" +
-                            "values (?,?,?,?)";
+                    sql = "insert into import_export_detail (type, port_city, tax, date)" +
+                            "values (?,?,?,?) on conflict do nothing";
                     String[] Info = str.split(",",-1);
 
-                    if (getObjID(Records.portCity,Info[1]) < 0) {
+//                    if (getObjID(Records.portCity,Info[1]) < 0) {
                         addOneRecord(Records.portCity, Info[1]);
-                    }
-                    int port_city_id = getObjID(Records.portCity,Info[1]);
-                    if (getObjID(Records.import_export_detail,str) > 0) {
-                        break;
-                    }
+//                    }
+//                    if (getObjID(Records.import_export_detail,str) > 0) {
+//                        break;
+//                    }
 //                    getConnection();
                     PreparedStatement preparedStatement = con.prepareStatement(sql);
                     //Insertion
                     preparedStatement.setString(1, Info[0]);
-                    preparedStatement.setInt(2, port_city_id);
+                    preparedStatement.setString(2, Info[1]);
                     preparedStatement.setFloat(3, Float.parseFloat(Info[2]));
                     preparedStatement.setDate(4, Date.valueOf(Info[3]));
 
@@ -295,8 +288,8 @@ public class DatabaseManipulation implements DataManipulation {
 
         try {
 
-            String sql = "insert into shipping (retrieval_id, export_id, ship_id, container_id, import_id, delivery_id)" +
-                    " values (?,?,?,?,?,?)";
+            String sql = "insert into shipping (retrieval_id, export_id, ship, container, import_id, delivery_id)" +
+                    " values (?,?,?,?,?,?) on conflict do nothing";
             //retrieval stuff
             int retrieval_id = -1;
             int export_id = -1;
@@ -307,7 +300,7 @@ public class DatabaseManipulation implements DataManipulation {
             if (RetrievalStartTime!="") {
                 //retrieval courier
                 tmp = RetrievalCourier;
-                if (getObjID(Records.courier, tmp) < 0) {
+//                if (getObjID(Records.courier, tmp) < 0) {
                     Date birthday = CalBirth(RetrievalStartTime, Integer.parseInt(RetrievalCourierAge));
                     tmp = RetrievalCourier + "," +
                             RetrievalCourierGender + "," +
@@ -316,15 +309,15 @@ public class DatabaseManipulation implements DataManipulation {
                             CompanyName + "," +
                             RetrievalCity;
                     addOneRecord(Records.courier, tmp);
-                }
+//                }
 
                 //retrieval
                 tmp = RetrievalCourier +
                         ",Retrieval," +
                         RetrievalStartTime;
-                if (getObjID(Records.delivery_retrieval, tmp) < 0) {
+//                if (getObjID(Records.delivery_retrieval, tmp) < 0) {
                     addOneRecord(Records.delivery_retrieval, tmp);
-                }
+//                }
                 retrieval_id = getObjID(Records.delivery_retrieval, tmp);
             }
             //export
@@ -333,33 +326,29 @@ public class DatabaseManipulation implements DataManipulation {
                         ItemExportCity + "," +
                         ItemExportTax + "," +
                         ItemExportTime;
-                if (getObjID(Records.import_export_detail, tmp) < 0) {
+//                if (getObjID(Records.import_export_detail, tmp) < 0) {
                     addOneRecord(Records.import_export_detail, tmp);
-                }
+//                }
                 export_id = getObjID(Records.import_export_detail, tmp);
             }
             //ship
             if (ShipName != "") {
                 tmp = ShipName;
-                if (getObjID(Records.ship, tmp) < 0) {
+//                if (getObjID(Records.ship, tmp) < 0) {
                     tmp = ShipName + "," +
                             CompanyName;
                     addOneRecord(Records.ship, tmp);
-                }
-                tmp = ShipName;
-                ship_id = getObjID(Records.ship, tmp);
+//                }
             }
 
             //container
             if (ContainerCode!="") {
                 tmp = ContainerCode;
-                if (getObjID(Records.container, tmp) < 0) {
+//                if (getObjID(Records.container, tmp) < 0) {
                     tmp = ContainerCode + "," +
                             ContainerType;
                     addOneRecord(Records.container, tmp);
-                }
-                tmp = ContainerCode;
-                container_id = getObjID(Records.container, tmp);
+//                }
             }
 
             //import
@@ -368,16 +357,16 @@ public class DatabaseManipulation implements DataManipulation {
                         ItemImportCity + "," +
                         ItemImportTax + "," +
                         ItemImportTime;
-                if (getObjID(Records.import_export_detail, tmp) < 0) {
+//                if (getObjID(Records.import_export_detail, tmp) < 0) {
                     addOneRecord(Records.import_export_detail, tmp);
-                }
+//                }
                 import_id = getObjID(Records.import_export_detail, tmp);
             }
 
             if (DeliveryCourier!="") {
                 //delivery courier
                 tmp = DeliveryCourier;
-                if (getObjID(Records.courier, tmp) < 0) {
+//                if (getObjID(Records.courier, tmp) < 0) {
 
                     Date birthday = CalBirth(DeliveryFinishTime, Float.parseFloat(DeliveryCourierAge));
 
@@ -388,15 +377,15 @@ public class DatabaseManipulation implements DataManipulation {
                             CompanyName + "," +
                             DeliveryCity;
                     addOneRecord(Records.courier, tmp);
-                }
+//                }
 
                 //delivery
                 tmp = DeliveryCourier +
                         ",Delivery," +
                         DeliveryFinishTime;
-                if (getObjID(Records.delivery_retrieval, tmp) < 0) {
+//                if (getObjID(Records.delivery_retrieval, tmp) < 0) {
                     addOneRecord(Records.delivery_retrieval, tmp);
-                }
+//                }
                 delivery_id = getObjID(Records.delivery_retrieval, tmp);
             }
 
@@ -415,15 +404,15 @@ public class DatabaseManipulation implements DataManipulation {
             } else {
                 preparedStatement.setNull(2,Types.INTEGER);
             }
-            if (ship_id>0) {
-                preparedStatement.setInt(3, ship_id);
+            if (ShipName!="") {
+                preparedStatement.setString(3, ShipName);
             } else {
-                preparedStatement.setNull(3,Types.INTEGER);
+                preparedStatement.setString(3,null);
             }
-            if (container_id>0) {
-                preparedStatement.setInt(4, container_id);
+            if (ContainerCode!="") {
+                preparedStatement.setString(4, ContainerCode);
             } else {
-                preparedStatement.setNull(4,Types.INTEGER);
+                preparedStatement.setString(4,null);
             }
             if (import_id>0) {
                 preparedStatement.setInt(5, import_id);
@@ -443,10 +432,9 @@ public class DatabaseManipulation implements DataManipulation {
             int shipping_id = getObjID(Records.shipping, str);
             //Item Type
             tmp = ItemType;
-            if (getObjID(Records.itemType, tmp) < 0) {
+//            if (getObjID(Records.itemType, tmp) < 0) {
                 addOneRecord(Records.itemType, tmp);
-            }
-            int item_type_id = getObjID(Records.itemType, tmp);
+//            }
 
             //update Tax
 
@@ -457,13 +445,12 @@ public class DatabaseManipulation implements DataManipulation {
             if (ItemExportTime!="") {
                 //export detail
                 double exportTaxRate = Float.parseFloat(ItemPrice) / Float.parseFloat(ItemExportTax);
-                int exportCity_id = getObjID(Records.portCity, ItemExportCity);
                 Date exportTime = Date.valueOf(ItemExportTime);
-                if (!taxDetailExist(exportCity_id, item_type_id)) {
+                if (!taxDetailExist(ItemExportCity, ItemType)) {
                     tmp = ItemExportCity + "," + ItemType + "," + "1000-01-01";
                     addOneRecord(Records.tax, tmp);
                 }
-                if (exportTime.after(getLastUpdate(Records.tax, exportCity_id+","+item_type_id))) {
+                if (exportTime.after(getLastUpdate(Records.tax, ItemExportCity+","+ItemType))) {
                     //update TaxRate
                 }
                 // TODO: 2022/10/26 update Tax Rate
@@ -473,13 +460,12 @@ public class DatabaseManipulation implements DataManipulation {
             //import detail
             if (ItemImportTime!="") {
                 double importTaxRate = Float.parseFloat(ItemPrice)/Float.parseFloat(ItemImportTax);
-                int importCity_id = getObjID(Records.portCity,ItemImportCity);
                 Date importTime = Date.valueOf(ItemImportTime);
-                if (!taxDetailExist(importCity_id, item_type_id)) {
+                if (!taxDetailExist(ItemImportCity, ItemType)) {
                     tmp = ItemImportCity +","+ItemType+","+"1000-01-01";
                     addOneRecord(Records.tax,tmp);
                 }
-                if (importTime.after(getLastUpdate(Records.tax, importCity_id+","+item_type_id))) {
+                if (importTime.after(getLastUpdate(Records.tax, ItemImportCity+","+ItemType))) {
                     //update TaxRate
                 }
 
@@ -487,26 +473,24 @@ public class DatabaseManipulation implements DataManipulation {
 
 
 
-            sql = "insert into shipment (item_name, item_price, item_type_id, from_city_id, to_city_id,shipping_id,log_time)" +
-                    "values (?,?,?,?,?,?,?)";
+            sql = "insert into shipment (item_name, item_price, item_type, from_city, to_city,shipping_id,log_time)" +
+                    "values (?,?,?,?,?,?,?) on conflict do nothing";
 //            getConnection();
             PreparedStatement pS = con.prepareStatement(sql);
-            int from_city_id = getObjID(Records.city, RetrievalCity);
-            int to_city_id = getObjID(Records.city, DeliveryCity);
 
             Timestamp log_time = Timestamp.valueOf(LogTime);
             //Insertion
             pS.setString(1, ItemName);
             pS.setInt(2, Integer.parseInt(ItemPrice));
-            pS.setInt(3, item_type_id);
-            pS.setInt(4, from_city_id);
-            pS.setInt(5, to_city_id);
+            pS.setString(3, ItemType);
+            pS.setString(4, RetrievalCity);
+            pS.setString(5, DeliveryCity);
             pS.setInt(6, shipping_id);
             pS.setTimestamp((int)7, log_time);
 //            System.out.println(pS.toString());
             result = pS.executeUpdate();
         } catch (SQLException e) {
-            e.printStackTrace();
+           System.err.println(e);
         } finally {
 //            closeConnection();
         }
@@ -613,12 +597,11 @@ public class DatabaseManipulation implements DataManipulation {
             }
             case delivery_retrieval -> {
 
-                    String sql ="select dr_id from delivery_retrieval where courier_id = ? and type = ? and date = ?";
-                    int courier_id = getObjID(Records.courier, Info[0]);
+                    String sql ="select dr_id from delivery_retrieval where courier = ? and type = ? and date = ?";
                     //Check if exist already
 //                    getConnection();
                     PreparedStatement preparedStatement = con.prepareStatement(sql);
-                    preparedStatement.setInt(1, courier_id);
+                    preparedStatement.setString(1, Info[0]);
                     preparedStatement.setString(2, Info[1]);
                     preparedStatement.setDate(3, Date.valueOf(Info[2]));
                     resultSet = preparedStatement.executeQuery();
@@ -629,13 +612,12 @@ public class DatabaseManipulation implements DataManipulation {
 
             }
             case import_export_detail -> {
-                   String sql ="select port_id from import_export_detail where type = ? and port_city_id = ? and tax = ? and date = ?";
-                    int port_city_id = getObjID(Records.portCity, Info[1]);
+                   String sql ="select port_id from import_export_detail where type = ? and port_city = ? and tax = ? and date = ?";
                     //Check if exist already
 //                    getConnection();
                     PreparedStatement preparedStatement = con.prepareStatement(sql);
                     preparedStatement.setString(1, Info[0]);
-                    preparedStatement.setInt(2, port_city_id);
+                    preparedStatement.setString(2,  Info[1]);
                     preparedStatement.setFloat(3, Float.parseFloat(Info[2]));
                     preparedStatement.setDate(4, Date.valueOf(Info[3]));
                     resultSet = preparedStatement.executeQuery();
@@ -683,7 +665,7 @@ public class DatabaseManipulation implements DataManipulation {
                     if (RetrievalStartTime!="") {
                         //retrieval courier
                         tmp = RetrievalCourier;
-                        if (getObjID(Records.courier, tmp) < 0) {
+//                        if (getObjID(Records.courier, tmp) < 0) {
                             Date birthday = CalBirth(RetrievalStartTime, Integer.parseInt(RetrievalCourierAge));
                             tmp = RetrievalCourier + "," +
                                     RetrievalCourierGender + "," +
@@ -692,15 +674,15 @@ public class DatabaseManipulation implements DataManipulation {
                                     CompanyName + "," +
                                     RetrievalCity;
                             addOneRecord(Records.courier, tmp);
-                        }
+//                        }
 
                         //retrieval
                         tmp = RetrievalCourier +
                                 ",Retrieval," +
                                 RetrievalStartTime;
-                        if (getObjID(Records.delivery_retrieval, tmp) < 0) {
+//                        if (getObjID(Records.delivery_retrieval, tmp) < 0) {
                             addOneRecord(Records.delivery_retrieval, tmp);
-                        }
+//                        }
                         retrieval_id = getObjID(Records.delivery_retrieval, tmp);
                     }
 
@@ -743,12 +725,12 @@ public class DatabaseManipulation implements DataManipulation {
         switch (type) {
             case tax -> {
 
-                    String sql ="select last_update from tax where port_city_id = ? and item_type_id = ?";
+                    String sql ="select last_update from tax where port_city = ? and item_type = ?";
                     //Check if exist already
 //                    getConnection();
                     PreparedStatement preparedStatement = con.prepareStatement(sql);
-                    preparedStatement.setInt(1, Integer.parseInt(Info[0]));
-                    preparedStatement.setInt(2, Integer.parseInt(Info[1]));
+                    preparedStatement.setString(1, Info[0]);
+                    preparedStatement.setString(2, Info[1]);
                     resultSet = preparedStatement.executeQuery();
                     if (resultSet.next()) {
                         return resultSet.getDate("last_update");
@@ -757,15 +739,15 @@ public class DatabaseManipulation implements DataManipulation {
         }
         return null;
     }
-    boolean taxDetailExist(int port_city_id, int item_type_id) throws SQLException {
+    boolean taxDetailExist(String port_city, String item_type) throws SQLException {
 
-            String sql ="select * from tax where port_city_id = ?" +
-                    "and item_type_id = ?";
+            String sql ="select * from tax where port_city = ?" +
+                    "and item_type = ?";
             //Check if exist already
 //                getConnection();
             PreparedStatement preparedStatement = con.prepareStatement(sql);
-            preparedStatement.setInt(1, port_city_id);
-            preparedStatement.setInt(2, item_type_id);
+            preparedStatement.setString(1, port_city);
+            preparedStatement.setString(2, item_type);
             resultSet = preparedStatement.executeQuery();
             return resultSet.next();
 
