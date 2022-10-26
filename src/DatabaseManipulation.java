@@ -337,12 +337,14 @@ public class DatabaseManipulation implements DataManipulation {
         try {
 
             String sql = "insert into shipping (retrieval_id, export_id, ship_id, container_id, import_id, delivery_id)" +
-                    "values (?,?,?,?,?,?)";
+                    " values (?,?,?,?,?,?)";
             //retrieval stuff
             int retrieval_id = -1;
             int export_id = -1;
             int ship_id = -1;
-            int container_id=-1;
+            int container_id= -1;
+            int import_id = -1;
+            int delivery_id = -1;
             if (RetrievalStartTime!="") {
                 //retrieval courier
                 tmp = RetrievalCourier;
@@ -377,7 +379,6 @@ public class DatabaseManipulation implements DataManipulation {
                 }
                 export_id = getObjID(Records.import_export_detail, tmp);
             }
-            System.out.println("here");
             //ship
             if (ShipName != "") {
                 tmp = ShipName;
@@ -391,7 +392,7 @@ public class DatabaseManipulation implements DataManipulation {
             }
 
             //container
-            if () {
+            if (ContainerCode!="") {
                 tmp = ContainerCode;
                 if (getObjID(Records.container, tmp) < 0) {
                     tmp = ContainerCode + "," +
@@ -401,57 +402,86 @@ public class DatabaseManipulation implements DataManipulation {
                 tmp = ContainerCode;
                 container_id = getObjID(Records.container, tmp);
             }
+
             //import
-            tmp = "Import," +
-                    ItemImportCity + "," +
-                    ItemImportTax + "," +
-                    ItemImportTime;
-            if (getObjID(Records.import_export_detail, tmp) < 0) {
-                addOneRecord(Records.import_export_detail, tmp);
-            }
-            int import_id = getObjID(Records.import_export_detail, tmp);
-
-            //delivery courier
-            tmp = DeliveryCourier;
-            if (getObjID(Records.courier, tmp) < 0) {
-
-                Date birthday = CalBirth(DeliveryFinishTime, Float.parseFloat(DeliveryCourierAge));
-
-                tmp = DeliveryCourier + "," +
-                        DeliveryCourierGender + "," +
-                        birthday + "," +
-                        DeliveryCourierPhoneNumber + "," +
-                        CompanyName + "," +
-                        DeliveryCity;
-                addOneRecord(Records.courier, tmp);
+            if (ItemImportTime!="") {
+                tmp = "Import," +
+                        ItemImportCity + "," +
+                        ItemImportTax + "," +
+                        ItemImportTime;
+                if (getObjID(Records.import_export_detail, tmp) < 0) {
+                    addOneRecord(Records.import_export_detail, tmp);
+                }
+                import_id = getObjID(Records.import_export_detail, tmp);
             }
 
-            //delivery
-            tmp = DeliveryCourier +
-                    ",Delivery," +
-                    DeliveryFinishTime;
-            if (getObjID(Records.delivery_retrieval, tmp) < 0) {
-                addOneRecord(Records.delivery_retrieval, tmp);
+            if (DeliveryCourier!="") {
+                //delivery courier
+                tmp = DeliveryCourier;
+                if (getObjID(Records.courier, tmp) < 0) {
+
+                    Date birthday = CalBirth(DeliveryFinishTime, Float.parseFloat(DeliveryCourierAge));
+
+                    tmp = DeliveryCourier + "," +
+                            DeliveryCourierGender + "," +
+                            birthday + "," +
+                            DeliveryCourierPhoneNumber + "," +
+                            CompanyName + "," +
+                            DeliveryCity;
+                    addOneRecord(Records.courier, tmp);
+                }
+
+                //delivery
+                tmp = DeliveryCourier +
+                        ",Delivery," +
+                        DeliveryFinishTime;
+                if (getObjID(Records.delivery_retrieval, tmp) < 0) {
+                    addOneRecord(Records.delivery_retrieval, tmp);
+                }
+                delivery_id = getObjID(Records.delivery_retrieval, tmp);
             }
-            int delivery_id = getObjID(Records.delivery_retrieval, tmp);
+
+
             //Insertion
             getConnection();
             PreparedStatement preparedStatement = con.prepareStatement(sql);
 
             if (retrieval_id>0) {
                 preparedStatement.setInt(1, retrieval_id);
+            } else {
+                preparedStatement.setNull(1,Types.INTEGER);
+            }
+            if (export_id>0) {
+                preparedStatement.setInt(2, export_id);
+            } else {
+                preparedStatement.setNull(2,Types.INTEGER);
+            }
+            if (ship_id>0) {
+                preparedStatement.setInt(3, ship_id);
+            } else {
+                preparedStatement.setNull(3,Types.INTEGER);
+            }
+            if (container_id>0) {
+                preparedStatement.setInt(4, container_id);
+            } else {
+                preparedStatement.setNull(4,Types.INTEGER);
+            }
+            if (import_id>0) {
+                preparedStatement.setInt(5, import_id);
+            } else {
+                preparedStatement.setNull(5,Types.INTEGER);
+            }
+            if (delivery_id>0) {
+                preparedStatement.setInt(6, delivery_id);
+            } else {
+                preparedStatement.setNull(6,Types.INTEGER);
             }
 
-            preparedStatement.setInt(2, export_id);
-            preparedStatement.setInt(3, ship_id);
-            preparedStatement.setInt(4, container_id);
-            preparedStatement.setInt(5, import_id);
-            preparedStatement.setInt(6, delivery_id);
             System.out.println(preparedStatement.toString());
+
             result = preparedStatement.executeUpdate();
 
             int shipping_id = getObjID(Records.shipping, str);
-
             //Item Type
             tmp = ItemType;
             if (getObjID(Records.itemType, tmp) < 0) {
@@ -460,32 +490,49 @@ public class DatabaseManipulation implements DataManipulation {
             int item_type_id = getObjID(Records.itemType, tmp);
 
             //update Tax
-            double exportTaxRate = Float.parseFloat(ItemPrice)/Float.parseFloat(ItemExportTax);
-            double importTaxRate = Float.parseFloat(ItemPrice)/Float.parseFloat(ItemImportTax);
-            //import
-            int importCity_id = getObjID(Records.portCity,ItemImportCity);
-            int exportCity_id = getObjID(Records.portCity,ItemExportCity);
+
+
+
             //time
-            Date importTime = Date.valueOf(ItemImportTime);
-            Date exportTime = Date.valueOf(ItemExportTime);
-            //export detail
-            if (!taxDetailExist(exportCity_id, item_type_id)) {
-                tmp = ItemExportCity +","+ItemType+","+"1000-01-01";
-                addOneRecord(Records.tax,tmp);
+
+            if (ItemExportTime!="") {
+                //export detail
+                double exportTaxRate = Float.parseFloat(ItemPrice) / Float.parseFloat(ItemExportTax);
+                int exportCity_id = getObjID(Records.portCity, ItemExportCity);
+                Date exportTime = Date.valueOf(ItemExportTime);
+                if (!taxDetailExist(exportCity_id, item_type_id)) {
+                    tmp = ItemExportCity + "," + ItemType + "," + "1000-01-01";
+                    addOneRecord(Records.tax, tmp);
+                }
+                if (exportTime.after(getLastUpdate(Records.tax, exportCity_id+","+item_type_id))) {
+                    //update TaxRate
+                }
+                // TODO: 2022/10/26 update Tax Rate
+
+
             }
             //import detail
-            if (!taxDetailExist(importCity_id, item_type_id)) {
-                tmp = ItemImportCity +","+ItemType+","+"1000-01-01";
-                addOneRecord(Records.tax,tmp);
+            if (ItemImportTime!="") {
+                double importTaxRate = Float.parseFloat(ItemPrice)/Float.parseFloat(ItemImportTax);
+                int importCity_id = getObjID(Records.portCity,ItemImportCity);
+                Date importTime = Date.valueOf(ItemImportTime);
+                if (!taxDetailExist(importCity_id, item_type_id)) {
+                    tmp = ItemImportCity +","+ItemType+","+"1000-01-01";
+                    addOneRecord(Records.tax,tmp);
+                }
+                if (importTime.after(getLastUpdate(Records.tax, importCity_id+","+item_type_id))) {
+                    //update TaxRate
+                }
+
             }
 
-            // TODO: 2022/10/26 update Tax Rate
-            if (importTime.after(getLastUpdate(Records.tax, importCity_id+","+item_type_id))) {
-                //update TaxRate
-            }
-            if (exportTime.after(getLastUpdate(Records.tax, exportCity_id+","+item_type_id))) {
-                //update TaxRate
-            }
+
+
+
+
+
+
+
 
             sql = "insert into shipment (item_name, item_price, item_type_id, from_city_id, to_city_id,shipping_id,log_time)" +
                     "values (?,?,?,?,?,?,?)";
@@ -716,59 +763,53 @@ public class DatabaseManipulation implements DataManipulation {
                 String LogTime = Info[25];
                 try {
                     String sql =
-                            "select shipping_id from shipping where" +
-                                    " retrieval_id = ? and" +
-                                    " export_id = ? and" +
-                                    " ship_id = ? and" +
-                                    " container_id = ? and" +
-                                    " import_id = ? and" +
-                                    " delivery_id = ?";
-                    //retrieval
-                    tmp = RetrievalCourier +
-                            ",Retrieval," +
-                            RetrievalStartTime;
-                    int retrieval_id = getObjID(Records.delivery_retrieval, tmp);
-                    //export
-                    tmp = "Export," +
-                            ItemExportCity + "," +
-                            ItemExportTax + "," +
-                            ItemExportTime;
-                    int export_id = getObjID(Records.import_export_detail, tmp);
-                    //ship
-                    tmp = ShipName;
-                    int ship_id = getObjID(Records.ship, tmp);
-                    //container
-                    tmp = ContainerCode;
-                    int container_id = getObjID(Records.container, tmp);
-                    //import
-                    tmp = "Import," +
-                            ItemImportCity + "," +
-                            ItemImportTax + "," +
-                            ItemImportTime;
-                    int import_id = getObjID(Records.import_export_detail, tmp);
+                            "select shipping_id from shipping where retrieval_id = ?";
+
+                    //retrieval stuff
+                    int retrieval_id = -1;
+                    if (RetrievalStartTime!="") {
+                        //retrieval courier
+                        tmp = RetrievalCourier;
+                        if (getObjID(Records.courier, tmp) < 0) {
+                            Date birthday = CalBirth(RetrievalStartTime, Integer.parseInt(RetrievalCourierAge));
+                            tmp = RetrievalCourier + "," +
+                                    RetrievalCourierGender + "," +
+                                    birthday.toString() + "," +
+                                    RetrievalCourierPhoneNumber + "," +
+                                    CompanyName + "," +
+                                    RetrievalCity;
+                            addOneRecord(Records.courier, tmp);
+                        }
+
+                        //retrieval
+                        tmp = RetrievalCourier +
+                                ",Retrieval," +
+                                RetrievalStartTime;
+                        if (getObjID(Records.delivery_retrieval, tmp) < 0) {
+                            addOneRecord(Records.delivery_retrieval, tmp);
+                        }
+                        retrieval_id = getObjID(Records.delivery_retrieval, tmp);
+                    }
 
 
-                    //delivery
-                    tmp = DeliveryCourier +
-                            ",Delivery," +
-                            DeliveryFinishTime;
-                    int delivery_id = getObjID(Records.delivery_retrieval, tmp);
 
-                    getConnection();
-
-                    PreparedStatement preparedStatement = con.prepareStatement(sql);
                     //Insertion
-                    preparedStatement.setInt(1, retrieval_id);
-                    preparedStatement.setInt(2, export_id);
-                    preparedStatement.setInt(3, ship_id);
-                    preparedStatement.setInt(4, container_id);
-                    preparedStatement.setInt(5, import_id);
-                    preparedStatement.setInt(6, delivery_id);
+                    getConnection();
+                    PreparedStatement preparedStatement = con.prepareStatement(sql);
+
+                    if (retrieval_id>0) {
+                        preparedStatement.setInt(1, retrieval_id);
+                    }
                     resultSet = preparedStatement.executeQuery();
+
                     if (resultSet.next()) {
                         int id = resultSet.getInt("shipping_id");
                         return id;
                     }
+
+
+
+
                 } catch (SQLException e) {
                     e.printStackTrace();
                 } finally {
@@ -840,21 +881,6 @@ public class DatabaseManipulation implements DataManipulation {
             }
             return false;
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 //    @Override
 //    public String allContinentNames() {
