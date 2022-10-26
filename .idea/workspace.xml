@@ -2,21 +2,16 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="67017f78-f3b7-4982-80ba-831f6bb5044b" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/postgresql_42_2_5.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/data/shipment_records.csv" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/lib/postgresql-42.2.5.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Client.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/DataFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/DataManipulation.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/DatabaseManipulation.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/FileManipulation.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/Records.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/580740c3-d4e8-49a9-9559-cf9a5e9f97a2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/580740c3-d4e8-49a9-9559-cf9a5e9f97a2.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/580740c3-d4e8-49a9-9559-cf9a5e9f97a2/storage_v2/_src_/database/sustc.gHyLBg/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/580740c3-d4e8-49a9-9559-cf9a5e9f97a2/storage_v2/_src_/database/sustc.gHyLBg/schema/public.abK9xQ.meta" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/libraries/postgresql_42_2_5.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/postgresql_42_2_5.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SUSTech_CS307_Project.iml" beforeDir="false" afterPath="$PROJECT_DIR$/SUSTech_CS307_Project.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/createTables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/createTables.sql" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DatabaseManipulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DatabaseManipulation.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Records.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Records.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,7 +47,7 @@
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
     &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/Users/mark455/WORKSPACE/SUSTech_CS307_Project/src&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/Users/mark455/WORKSPACE/SUSTech_CS307_Project&quot;,
     &quot;project.structure.last.edited&quot;: &quot;Libraries&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.15&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
@@ -78,7 +73,14 @@
       <recent name="$PROJECT_DIR$/data" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Database Script.createTables.sql">
+    <configuration name="Client" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="Client" />
+      <module name="SUSTech_CS307_Project" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="createTables.sql" type="DatabaseScript" editBeforeRun="true" nameIsGenerated="true">
       <script-file value="$PROJECT_DIR$/createTables.sql" />
       <script-mode>FILE</script-mode>

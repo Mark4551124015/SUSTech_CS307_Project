@@ -1,12 +1,10 @@
 import java.io.*;
-import java.util.ArrayList;
-
 public class Client {
 
     public static void main(String[] args) {
         try {
             DataManipulation dm = new DataFactory().createDataManipulation("database");
-            dm.addOneCompany("2;唯品会");
+            dm.addOneRecord(Records.container, "testing;dry");
 
 //            System.out.println(dm.allContinentNames());
 //            System.out.println(dm.continentsWithCountryCount());
@@ -76,7 +74,7 @@ public class Client {
         String LogTime = Info[25];
         // Order to insert records
         // city -> port city -> company -> courier -> ship -> container ->
-        // retrieval and delivery -> import export detail -> ship detail ->
+        // retrieval and delivery -> import export detail -> tax detail ->
         // shipping -> shipment
 
 

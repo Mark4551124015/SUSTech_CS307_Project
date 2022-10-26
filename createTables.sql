@@ -1,16 +1,29 @@
 create table if not exists  Company
 (
-    company_id      int             not null
+    company_id      SERIAL          not null
         primary key,
     name            varchar(50)     not null
         constraint company_uq unique
 );
 
+create table if not exists City
+(
+    city_id         SERIAL         not null
+        constraint city_pk primary key,
+    name            varchar(50) not null
+);
+
+create table if not exists PortCity
+(
+    port_city_id    SERIAL         not null
+        constraint port_city_pk primary key,
+    name            varchar(50) not null
+);
 
 
 create table if not exists Courier
 (
-    courier_id      int             not null primary key,
+    courier_id      SERIAL             not null primary key,
     name            varchar(50)     unique not null
         constraint courier_uq_1 unique,
     gender          varchar(1)      not null,
@@ -18,13 +31,15 @@ create table if not exists Courier
     phone_number    varchar(50)     not null
         constraint courier_uq_2 unique,
     company_id      int             not null
-        constraint courier_fk references Company
+        constraint courier_fk_1 references Company,
+    city_id         int             not null
+        constraint courier_fk_2 references city
 );
 
 
 create table if not exists Ship
 (
-    ship_id         int             not null
+    ship_id         SERIAL             not null
         constraint ship_pk primary key,
     name            varchar(50)     not null
         constraint ship_uq unique,
@@ -35,32 +50,19 @@ create table if not exists Ship
 
 create table if not exists Container
 (
-    container_id    int         not null
+    container_id    SERIAL         not null
         constraint Container_pk primary key,
     code            varchar(50) not null
         constraint container_uq unique,
     type            varchar(50) not null
 );
 
-create table if not exists City
-(
-    city_id         int         not null
-        constraint city_pk primary key,
-    name            varchar(50) not null
-);
-
-create table if not exists PortCity
-(
-    port_city_id    int         not null
-        constraint port_city_pk primary key,
-    name            varchar(50) not null
-);
 
 
 
 create table if not exists  Delivery_Retrieval
 (
-    DR_id           int         not null
+    DR_id           SERIAL         not null
         constraint dr_pk primary key,
     courier_id      int         not null
         constraint  delivery_fk references Courier,
@@ -68,22 +70,31 @@ create table if not exists  Delivery_Retrieval
     date            date
 
 );
-
-
-create table if not exists  Ship_Detail
+create table if not exists  ItemType
 (
-    ship_id         int         not null
-        constraint  ship_detail_fk_1 references Ship,
-    container_id    int         not null
-        constraint  ship_detail_fk_2 references Container,
-    constraint ship_detail_pk primary key (ship_id, container_id)
+    Item_type_id         SERIAL         not null
+        constraint  item_type_pk primary key,
+    item_type    varchar(50)         not null
+    constraint item_type_uq unique
+);
+
+
+create table if not exists  Tax
+(
+    port_city_id      int         not null
+        constraint  tax_fk_1 references portcity,
+    item_type    int         not null
+        constraint tax_fk_2 references ItemType,
+    tax         int         not null,
+    last_update date        default ('1000-01-01') not null,
+    constraint ship_detail_pk primary key (port_city_id, item_type)
 );
 
 create table import_export_detail
 (
-    port_id         int         not null        primary key,
+    port_id         SERIAL         not null        primary key,
     type            varchar(50) not null,
-    city_id         int         not null
+    port_city_id         int         not null
         constraint import_export_detail_fk references PortCity,
     tax             int         default(0)      not null,
     date            date        not null
@@ -91,7 +102,7 @@ create table import_export_detail
 
 create table if not exists Shipping
 (
-    shipping_id     int   not null    primary key,
+    shipping_id     SERIAL   not null    primary key,
     retrieval_id    int
         constraint shipment_fk_1 references Delivery_Retrieval,
     export_id       int
@@ -108,19 +119,19 @@ create table if not exists Shipping
 
 create table if not exists Shipment
 (
-    shipment_id     int             not null
+    shipment_id     SERIAL             not null
         constraint shipment_pk primary key,
     item_name       varchar(50)     not null
         constraint shipment_uq unique,
     item_price      int             not null,
-    item_type       varchar(50)     not null,
+    item_type_id    int     not null
+        constraint shipment_fk_1 references ItemType,
     from_city_id    int             not null
         constraint shipment_fk_2 references City,
     to_city_id      int             not null
         constraint shipment_fk_3 references City,
     shipping_id     int             not null
         constraint shipment_fk_4 references Shipping,
-    log_time        timestamp      not null,
-    total_time      int
+    log_time        timestamp      not null
 );
 
