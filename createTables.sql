@@ -128,3 +128,4 @@ create table if not exists Shipment
         constraint shipment_fk_4 references Shipping,
     log_time        timestamp      not null
 );
+
