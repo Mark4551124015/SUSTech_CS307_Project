@@ -1,0 +1,11 @@
+Hardware:
+	CPU: AMD Ryzen 5800X 8
+	RAM: 32GB DDR4 3600Mhz
+	Disk: SSD HikVision C2000Pro 1024GB
+
+Software:
+	Operating System:	Windows 11
+	File System: NTFS
+	DBMS: PostgreSQL ver42.5.0[stable]
+	Programing Language: Java 18.0
+	Compliler: JavaC 18.0
