@@ -1,11 +1,12 @@
 import java.io.*;
 public class Client {
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException {
+        File file = new File("test.log");
+//        PrintStream ps = new PrintStream(file);
+//        System.setOut(ps);
         try {
-            DataManipulation dm = new DataFactory().createDataManipulation("database");
-            dm.addOneRecord(Records.container, "testing;dry");
-
+            insertFromFile("data/shipment_records.csv");
 //            System.out.println(dm.allContinentNames());
 //            System.out.println(dm.continentsWithCountryCount());
 //            System.out.println(dm.FullInformationOfMoviesRuntime(65, 75));
@@ -33,50 +34,19 @@ public class Client {
         String line = "";
 
         try {
+            DataManipulation dm = new DataFactory().createDataManipulation("database");
             int cnt = 0;
+            line = br.readLine();
             while ((line = br.readLine()) != null) {
-                System.out.println(line);
-
+                System.out.println("正在插入第：" + ++cnt +" 条数据");
+                dm.addFullRecords(line);
             }
-            System.out.println("正在插入第：" + cnt +" 条数据");
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
     public static void insertRecord(String str) {
-        String[] Info = str.split(",");
-        //get Information
-        String ItemName = Info[0];
-        String ItemType = Info[1];
-        String ItemPrice = Info[2];
-        String RetrievalCity = Info[3];
-        String RetrievalStartTime = Info[4];
-        String RetrievalCourier = Info[5];
-        String RetrievalCourierGender = Info[6];
-        String RetrievalCourierPhoneNumber = Info[7];
-        String RetrievalCourierAge = Info[8];
-        String DeliveryFinishTime = Info[9];
-        String DeliveryCity = Info[10];
-        String DeliveryCourier = Info[11];
-        String DeliveryCourierGender = Info[12];
-        String DeliveryCourierPhoneNumber = Info[13];
-        String DeliveryCourierAge = Info[14];
-        String ItemExportCity = Info[15];
-        String ItemExportTax = Info[16];
-        String ItemExportTime = Info[17];
-        String ItemImportCity = Info[18];
-        String ItemImportTax = Info[19];
-        String ItemImportTime = Info[20];
-        String ContainerCode = Info[21];
-        String ContainerType = Info[22];
-        String ShipName = Info[23];
-        String CompanyName = Info[24];
-        String LogTime = Info[25];
-        // Order to insert records
-        // city -> port city -> company -> courier -> ship -> container ->
-        // retrieval and delivery -> import export detail -> tax detail ->
-        // shipping -> shipment
-
 
     }
 

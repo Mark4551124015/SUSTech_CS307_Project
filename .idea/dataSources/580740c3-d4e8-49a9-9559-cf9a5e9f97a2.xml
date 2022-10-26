@@ -3,7 +3,7 @@
   <database-model serializer="dbm" dbms="POSTGRES" family-id="POSTGRES" format-version="4.43">
     <root id="1">
       <DateStyle>mdy</DateStyle>
-      <IntrospectionStateNumber>8896</IntrospectionStateNumber>
+      <IntrospectionStateNumber>8996</IntrospectionStateNumber>
       <ServerVersion>14.5</ServerVersion>
       <StartupTime>1666518220</StartupTime>
       <TimeZones>true ACDT
@@ -817,19 +817,19 @@ false Zulu
 13655||10|C|G
 13655||-9223372036854775808|U|G
 13655||10|U|G</Grants>
-      <IntrospectionStateNumber>8896</IntrospectionStateNumber>
+      <IntrospectionStateNumber>8996</IntrospectionStateNumber>
       <ObjectId>16677</ObjectId>
-      <Relations>sequence|table|18753|18754|1
-sequence|table|18762|18763|1
-sequence|table|18769|18770|1
-sequence|table|18776|18777|1
-sequence|table|18797|18798|1
-sequence|table|18811|18812|1
-sequence|table|18820|18821|1
-sequence|table|18832|18833|1
-sequence|table|18856|18857|1
-sequence|table|18869|18870|1
-sequence|table|18906|18907|1
+      <Relations>sequence|table|19154|19155|1
+sequence|table|19163|19164|1
+sequence|table|19170|19171|1
+sequence|table|19177|19178|1
+sequence|table|19198|19199|1
+sequence|table|19212|19213|1
+sequence|table|19221|19222|1
+sequence|table|19233|19234|1
+sequence|table|19258|19259|1
+sequence|table|19271|19272|1
+sequence|table|19308|19309|1
 </Relations>
       <OwnerName>mark455</OwnerName>
     </database>
@@ -4262,146 +4262,146 @@ sequence|table|18906|18907|1
     <schema id="267" parent="6" name="public">
       <Comment>standard public schema</Comment>
       <Current>1</Current>
-      <IntrospectionStateNumber>8896</IntrospectionStateNumber>
+      <IntrospectionStateNumber>8996</IntrospectionStateNumber>
       <ObjectId>2200</ObjectId>
       <StateNumber>526</StateNumber>
       <OwnerName>postgres</OwnerName>
     </schema>
     <sequence id="268" parent="267" name="city_city_id_seq">
       <DataType>integer|0s</DataType>
-      <ObjectId>18762</ObjectId>
-      <StateNumber>8873</StateNumber>
+      <ObjectId>19163</ObjectId>
+      <StateNumber>8985</StateNumber>
       <OwnerName>mark455</OwnerName>
     </sequence>
     <sequence id="269" parent="267" name="company_company_id_seq">
       <DataType>integer|0s</DataType>
-      <ObjectId>18753</ObjectId>
-      <StateNumber>8872</StateNumber>
+      <ObjectId>19154</ObjectId>
+      <StateNumber>8984</StateNumber>
       <OwnerName>mark455</OwnerName>
     </sequence>
     <sequence id="270" parent="267" name="container_container_id_seq">
       <DataType>integer|0s</DataType>
-      <ObjectId>18811</ObjectId>
-      <StateNumber>8877</StateNumber>
+      <ObjectId>19212</ObjectId>
+      <StateNumber>8989</StateNumber>
       <OwnerName>mark455</OwnerName>
     </sequence>
     <sequence id="271" parent="267" name="courier_courier_id_seq">
       <DataType>integer|0s</DataType>
-      <ObjectId>18776</ObjectId>
-      <StateNumber>8875</StateNumber>
+      <ObjectId>19177</ObjectId>
+      <StateNumber>8987</StateNumber>
       <OwnerName>mark455</OwnerName>
     </sequence>
     <sequence id="272" parent="267" name="delivery_retrieval_dr_id_seq">
       <DataType>integer|0s</DataType>
-      <ObjectId>18820</ObjectId>
-      <StateNumber>8878</StateNumber>
+      <ObjectId>19221</ObjectId>
+      <StateNumber>8990</StateNumber>
       <OwnerName>mark455</OwnerName>
     </sequence>
     <sequence id="273" parent="267" name="import_export_detail_port_id_seq">
       <DataType>integer|0s</DataType>
-      <ObjectId>18856</ObjectId>
-      <StateNumber>8881</StateNumber>
+      <ObjectId>19258</ObjectId>
+      <StateNumber>8993</StateNumber>
       <OwnerName>mark455</OwnerName>
     </sequence>
     <sequence id="274" parent="267" name="itemtype_item_type_id_seq">
       <DataType>integer|0s</DataType>
-      <ObjectId>18832</ObjectId>
-      <StateNumber>8879</StateNumber>
+      <ObjectId>19233</ObjectId>
+      <StateNumber>8991</StateNumber>
       <OwnerName>mark455</OwnerName>
     </sequence>
     <sequence id="275" parent="267" name="portcity_port_city_id_seq">
       <DataType>integer|0s</DataType>
-      <ObjectId>18769</ObjectId>
-      <StateNumber>8874</StateNumber>
+      <ObjectId>19170</ObjectId>
+      <StateNumber>8986</StateNumber>
       <OwnerName>mark455</OwnerName>
     </sequence>
     <sequence id="276" parent="267" name="ship_ship_id_seq">
       <DataType>integer|0s</DataType>
-      <ObjectId>18797</ObjectId>
-      <StateNumber>8876</StateNumber>
+      <ObjectId>19198</ObjectId>
+      <StateNumber>8988</StateNumber>
       <OwnerName>mark455</OwnerName>
     </sequence>
     <sequence id="277" parent="267" name="shipment_shipment_id_seq">
       <DataType>integer|0s</DataType>
-      <ObjectId>18906</ObjectId>
-      <StateNumber>8883</StateNumber>
+      <ObjectId>19308</ObjectId>
+      <StateNumber>8995</StateNumber>
       <OwnerName>mark455</OwnerName>
     </sequence>
     <sequence id="278" parent="267" name="shipping_shipping_id_seq">
       <DataType>integer|0s</DataType>
-      <ObjectId>18869</ObjectId>
-      <StateNumber>8882</StateNumber>
+      <ObjectId>19271</ObjectId>
+      <StateNumber>8994</StateNumber>
       <OwnerName>mark455</OwnerName>
     </sequence>
     <table id="279" parent="267" name="city">
-      <ObjectId>18763</ObjectId>
-      <StateNumber>8875</StateNumber>
+      <ObjectId>19164</ObjectId>
+      <StateNumber>8987</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>mark455</OwnerName>
     </table>
     <table id="280" parent="267" name="company">
-      <ObjectId>18754</ObjectId>
-      <StateNumber>8875</StateNumber>
+      <ObjectId>19155</ObjectId>
+      <StateNumber>8987</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>mark455</OwnerName>
     </table>
     <table id="281" parent="267" name="container">
-      <ObjectId>18812</ObjectId>
-      <StateNumber>8882</StateNumber>
+      <ObjectId>19213</ObjectId>
+      <StateNumber>8994</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>mark455</OwnerName>
     </table>
     <table id="282" parent="267" name="courier">
-      <ObjectId>18777</ObjectId>
-      <StateNumber>8875</StateNumber>
+      <ObjectId>19178</ObjectId>
+      <StateNumber>8987</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>mark455</OwnerName>
     </table>
     <table id="283" parent="267" name="delivery_retrieval">
-      <ObjectId>18821</ObjectId>
-      <StateNumber>8878</StateNumber>
+      <ObjectId>19222</ObjectId>
+      <StateNumber>8990</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>mark455</OwnerName>
     </table>
     <table id="284" parent="267" name="import_export_detail">
-      <ObjectId>18857</ObjectId>
-      <StateNumber>8881</StateNumber>
+      <ObjectId>19259</ObjectId>
+      <StateNumber>8993</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>mark455</OwnerName>
     </table>
     <table id="285" parent="267" name="itemtype">
-      <ObjectId>18833</ObjectId>
-      <StateNumber>8880</StateNumber>
+      <ObjectId>19234</ObjectId>
+      <StateNumber>8992</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>mark455</OwnerName>
     </table>
     <table id="286" parent="267" name="portcity">
-      <ObjectId>18770</ObjectId>
-      <StateNumber>8880</StateNumber>
+      <ObjectId>19171</ObjectId>
+      <StateNumber>8992</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>mark455</OwnerName>
     </table>
     <table id="287" parent="267" name="ship">
-      <ObjectId>18798</ObjectId>
-      <StateNumber>8876</StateNumber>
+      <ObjectId>19199</ObjectId>
+      <StateNumber>8988</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>mark455</OwnerName>
     </table>
     <table id="288" parent="267" name="shipment">
-      <ObjectId>18907</ObjectId>
-      <StateNumber>8883</StateNumber>
+      <ObjectId>19309</ObjectId>
+      <StateNumber>8995</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>mark455</OwnerName>
     </table>
     <table id="289" parent="267" name="shipping">
-      <ObjectId>18870</ObjectId>
-      <StateNumber>8882</StateNumber>
+      <ObjectId>19272</ObjectId>
+      <StateNumber>8994</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>mark455</OwnerName>
     </table>
     <table id="290" parent="267" name="tax">
-      <ObjectId>18936</ObjectId>
-      <StateNumber>8895</StateNumber>
+      <ObjectId>19242</ObjectId>
+      <StateNumber>8992</StateNumber>
       <AccessMethodId>2</AccessMethodId>
       <OwnerName>mark455</OwnerName>
     </table>
@@ -4410,58 +4410,58 @@ sequence|table|18906|18907|1
       <DefaultExpression>nextval(&apos;city_city_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>8873</StateNumber>
+      <StateNumber>8985</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="292" parent="279" name="name">
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>8873</StateNumber>
+      <StateNumber>8985</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <index id="293" parent="279" name="city_pk">
       <ColNames>city_id</ColNames>
-      <ObjectId>18767</ObjectId>
+      <ObjectId>19168</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>8873</StateNumber>
+      <StateNumber>8985</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
     <key id="294" parent="279" name="city_pk">
-      <ObjectId>18768</ObjectId>
+      <ObjectId>19169</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>8873</StateNumber>
-      <UnderlyingIndexId>18767</UnderlyingIndexId>
+      <StateNumber>8985</StateNumber>
+      <UnderlyingIndexId>19168</UnderlyingIndexId>
     </key>
     <column id="295" parent="280" name="company_id">
       <DataType>integer|0s</DataType>
       <DefaultExpression>nextval(&apos;company_company_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>8872</StateNumber>
+      <StateNumber>8984</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="296" parent="280" name="name">
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>8872</StateNumber>
+      <StateNumber>8984</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <index id="297" parent="280" name="company_pkey">
       <ColNames>company_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>18758</ObjectId>
+      <ObjectId>19159</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>8872</StateNumber>
+      <StateNumber>8984</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
     <index id="298" parent="280" name="company_uq">
       <ColNames>name</ColNames>
-      <ObjectId>18760</ObjectId>
-      <StateNumber>8872</StateNumber>
+      <ObjectId>19161</ObjectId>
+      <StateNumber>8984</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
       <CollationNames>default</CollationNames>
@@ -4470,50 +4470,50 @@ sequence|table|18906|18907|1
     </index>
     <key id="299" parent="280" name="company_pkey">
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>18759</ObjectId>
+      <ObjectId>19160</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>8872</StateNumber>
-      <UnderlyingIndexId>18758</UnderlyingIndexId>
+      <StateNumber>8984</StateNumber>
+      <UnderlyingIndexId>19159</UnderlyingIndexId>
     </key>
     <key id="300" parent="280" name="company_uq">
-      <ObjectId>18761</ObjectId>
-      <StateNumber>8872</StateNumber>
-      <UnderlyingIndexId>18760</UnderlyingIndexId>
+      <ObjectId>19162</ObjectId>
+      <StateNumber>8984</StateNumber>
+      <UnderlyingIndexId>19161</UnderlyingIndexId>
     </key>
     <column id="301" parent="281" name="container_id">
       <DataType>integer|0s</DataType>
       <DefaultExpression>nextval(&apos;container_container_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>8877</StateNumber>
+      <StateNumber>8989</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="302" parent="281" name="code">
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>8877</StateNumber>
+      <StateNumber>8989</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="303" parent="281" name="type">
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
-      <StateNumber>8877</StateNumber>
+      <StateNumber>8989</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <index id="304" parent="281" name="container_pk">
       <ColNames>container_id</ColNames>
-      <ObjectId>18816</ObjectId>
+      <ObjectId>19217</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>8877</StateNumber>
+      <StateNumber>8989</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
     <index id="305" parent="281" name="container_uq">
       <ColNames>code</ColNames>
-      <ObjectId>18818</ObjectId>
-      <StateNumber>8877</StateNumber>
+      <ObjectId>19219</ObjectId>
+      <StateNumber>8989</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
       <CollationNames>default</CollationNames>
@@ -4521,99 +4521,99 @@ sequence|table|18906|18907|1
       <CollationParentNames>pg_catalog</CollationParentNames>
     </index>
     <key id="306" parent="281" name="container_pk">
-      <ObjectId>18817</ObjectId>
+      <ObjectId>19218</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>8877</StateNumber>
-      <UnderlyingIndexId>18816</UnderlyingIndexId>
+      <StateNumber>8989</StateNumber>
+      <UnderlyingIndexId>19217</UnderlyingIndexId>
     </key>
     <key id="307" parent="281" name="container_uq">
-      <ObjectId>18819</ObjectId>
-      <StateNumber>8877</StateNumber>
-      <UnderlyingIndexId>18818</UnderlyingIndexId>
+      <ObjectId>19220</ObjectId>
+      <StateNumber>8989</StateNumber>
+      <UnderlyingIndexId>19219</UnderlyingIndexId>
     </key>
     <column id="308" parent="282" name="courier_id">
       <DataType>integer|0s</DataType>
       <DefaultExpression>nextval(&apos;courier_courier_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>8875</StateNumber>
+      <StateNumber>8987</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="309" parent="282" name="name">
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>8875</StateNumber>
+      <StateNumber>8987</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="310" parent="282" name="gender">
       <DataType>varchar(1)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
-      <StateNumber>8875</StateNumber>
+      <StateNumber>8987</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="311" parent="282" name="birthday">
       <DataType>date|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
-      <StateNumber>8875</StateNumber>
+      <StateNumber>8987</StateNumber>
       <TypeId>1082</TypeId>
     </column>
     <column id="312" parent="282" name="phone_number">
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
-      <StateNumber>8875</StateNumber>
+      <StateNumber>8987</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="313" parent="282" name="company_id">
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <Position>6</Position>
-      <StateNumber>8875</StateNumber>
+      <StateNumber>8987</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="314" parent="282" name="city_id">
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <Position>7</Position>
-      <StateNumber>8875</StateNumber>
+      <StateNumber>8987</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <foreign-key id="315" parent="282" name="courier_fk_1">
       <ColNames>company_id</ColNames>
-      <ObjectId>18787</ObjectId>
+      <ObjectId>19188</ObjectId>
       <RefColNames>company_id</RefColNames>
       <RefColPositions>1</RefColPositions>
-      <StateNumber>8875</StateNumber>
-      <RefTableId>18754</RefTableId>
+      <StateNumber>8987</StateNumber>
+      <RefTableId>19155</RefTableId>
       <RefTableName>company</RefTableName>
       <RefTableKind>table</RefTableKind>
     </foreign-key>
     <foreign-key id="316" parent="282" name="courier_fk_2">
       <ColNames>city_id</ColNames>
-      <ObjectId>18792</ObjectId>
+      <ObjectId>19193</ObjectId>
       <RefColNames>city_id</RefColNames>
       <RefColPositions>1</RefColPositions>
-      <StateNumber>8875</StateNumber>
-      <RefTableId>18763</RefTableId>
+      <StateNumber>8987</StateNumber>
+      <RefTableId>19164</RefTableId>
       <RefTableName>city</RefTableName>
       <RefTableKind>table</RefTableKind>
     </foreign-key>
     <index id="317" parent="282" name="courier_pkey">
       <ColNames>courier_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>18781</ObjectId>
+      <ObjectId>19182</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>8875</StateNumber>
+      <StateNumber>8987</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
     <index id="318" parent="282" name="courier_uq_1">
       <ColNames>name</ColNames>
-      <ObjectId>18783</ObjectId>
-      <StateNumber>8875</StateNumber>
+      <ObjectId>19184</ObjectId>
+      <StateNumber>8987</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
       <CollationNames>default</CollationNames>
@@ -4622,8 +4622,8 @@ sequence|table|18906|18907|1
     </index>
     <index id="319" parent="282" name="courier_uq_2">
       <ColNames>phone_number</ColNames>
-      <ObjectId>18785</ObjectId>
-      <StateNumber>8875</StateNumber>
+      <ObjectId>19186</ObjectId>
+      <StateNumber>8987</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
       <CollationNames>default</CollationNames>
@@ -4632,163 +4632,163 @@ sequence|table|18906|18907|1
     </index>
     <key id="320" parent="282" name="courier_pkey">
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>18782</ObjectId>
+      <ObjectId>19183</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>8875</StateNumber>
-      <UnderlyingIndexId>18781</UnderlyingIndexId>
+      <StateNumber>8987</StateNumber>
+      <UnderlyingIndexId>19182</UnderlyingIndexId>
     </key>
     <key id="321" parent="282" name="courier_uq_1">
-      <ObjectId>18784</ObjectId>
-      <StateNumber>8875</StateNumber>
-      <UnderlyingIndexId>18783</UnderlyingIndexId>
+      <ObjectId>19185</ObjectId>
+      <StateNumber>8987</StateNumber>
+      <UnderlyingIndexId>19184</UnderlyingIndexId>
     </key>
     <key id="322" parent="282" name="courier_uq_2">
-      <ObjectId>18786</ObjectId>
-      <StateNumber>8875</StateNumber>
-      <UnderlyingIndexId>18785</UnderlyingIndexId>
+      <ObjectId>19187</ObjectId>
+      <StateNumber>8987</StateNumber>
+      <UnderlyingIndexId>19186</UnderlyingIndexId>
     </key>
     <column id="323" parent="283" name="dr_id">
       <DataType>integer|0s</DataType>
       <DefaultExpression>nextval(&apos;delivery_retrieval_dr_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>8878</StateNumber>
+      <StateNumber>8990</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="324" parent="283" name="courier_id">
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>8878</StateNumber>
+      <StateNumber>8990</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="325" parent="283" name="type">
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
-      <StateNumber>8878</StateNumber>
+      <StateNumber>8990</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="326" parent="283" name="date">
       <DataType>date|0s</DataType>
       <Position>4</Position>
-      <StateNumber>8878</StateNumber>
+      <StateNumber>8990</StateNumber>
       <TypeId>1082</TypeId>
     </column>
     <foreign-key id="327" parent="283" name="delivery_fk">
       <ColNames>courier_id</ColNames>
-      <ObjectId>18827</ObjectId>
+      <ObjectId>19228</ObjectId>
       <RefColNames>courier_id</RefColNames>
       <RefColPositions>1</RefColPositions>
-      <StateNumber>8878</StateNumber>
-      <RefTableId>18777</RefTableId>
+      <StateNumber>8990</StateNumber>
+      <RefTableId>19178</RefTableId>
       <RefTableName>courier</RefTableName>
       <RefTableKind>table</RefTableKind>
     </foreign-key>
     <index id="328" parent="283" name="dr_pk">
       <ColNames>dr_id</ColNames>
-      <ObjectId>18825</ObjectId>
+      <ObjectId>19226</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>8878</StateNumber>
+      <StateNumber>8990</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
     <key id="329" parent="283" name="dr_pk">
-      <ObjectId>18826</ObjectId>
+      <ObjectId>19227</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>8878</StateNumber>
-      <UnderlyingIndexId>18825</UnderlyingIndexId>
+      <StateNumber>8990</StateNumber>
+      <UnderlyingIndexId>19226</UnderlyingIndexId>
     </key>
     <column id="330" parent="284" name="port_id">
       <DataType>integer|0s</DataType>
       <DefaultExpression>nextval(&apos;import_export_detail_port_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>8881</StateNumber>
+      <StateNumber>8993</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="331" parent="284" name="type">
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>8881</StateNumber>
+      <StateNumber>8993</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="332" parent="284" name="port_city_id">
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
-      <StateNumber>8881</StateNumber>
+      <StateNumber>8993</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="333" parent="284" name="tax">
-      <DataType>integer|0s</DataType>
+      <DataType>double precision|0s</DataType>
       <DefaultExpression>0</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>4</Position>
-      <StateNumber>8881</StateNumber>
-      <TypeId>23</TypeId>
+      <StateNumber>8993</StateNumber>
+      <TypeId>701</TypeId>
     </column>
     <column id="334" parent="284" name="date">
       <DataType>date|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
-      <StateNumber>8881</StateNumber>
+      <StateNumber>8993</StateNumber>
       <TypeId>1082</TypeId>
     </column>
     <foreign-key id="335" parent="284" name="import_export_detail_fk">
       <ColNames>port_city_id</ColNames>
-      <ObjectId>18864</ObjectId>
+      <ObjectId>19266</ObjectId>
       <RefColNames>port_city_id</RefColNames>
       <RefColPositions>1</RefColPositions>
-      <StateNumber>8881</StateNumber>
-      <RefTableId>18770</RefTableId>
+      <StateNumber>8993</StateNumber>
+      <RefTableId>19171</RefTableId>
       <RefTableName>portcity</RefTableName>
       <RefTableKind>table</RefTableKind>
     </foreign-key>
     <index id="336" parent="284" name="import_export_detail_pkey">
       <ColNames>port_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>18862</ObjectId>
+      <ObjectId>19264</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>8881</StateNumber>
+      <StateNumber>8993</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
     <key id="337" parent="284" name="import_export_detail_pkey">
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>18863</ObjectId>
+      <ObjectId>19265</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>8881</StateNumber>
-      <UnderlyingIndexId>18862</UnderlyingIndexId>
+      <StateNumber>8993</StateNumber>
+      <UnderlyingIndexId>19264</UnderlyingIndexId>
     </key>
     <column id="338" parent="285" name="item_type_id">
       <DataType>integer|0s</DataType>
       <DefaultExpression>nextval(&apos;itemtype_item_type_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>8879</StateNumber>
+      <StateNumber>8991</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="339" parent="285" name="item_type">
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>8879</StateNumber>
+      <StateNumber>8991</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <index id="340" parent="285" name="item_type_pk">
       <ColNames>item_type_id</ColNames>
-      <ObjectId>18837</ObjectId>
+      <ObjectId>19238</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>8879</StateNumber>
+      <StateNumber>8991</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
     <index id="341" parent="285" name="item_type_uq">
       <ColNames>item_type</ColNames>
-      <ObjectId>18839</ObjectId>
-      <StateNumber>8879</StateNumber>
+      <ObjectId>19240</ObjectId>
+      <StateNumber>8991</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
       <CollationNames>default</CollationNames>
@@ -4796,89 +4796,89 @@ sequence|table|18906|18907|1
       <CollationParentNames>pg_catalog</CollationParentNames>
     </index>
     <key id="342" parent="285" name="item_type_pk">
-      <ObjectId>18838</ObjectId>
+      <ObjectId>19239</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>8879</StateNumber>
-      <UnderlyingIndexId>18837</UnderlyingIndexId>
+      <StateNumber>8991</StateNumber>
+      <UnderlyingIndexId>19238</UnderlyingIndexId>
     </key>
     <key id="343" parent="285" name="item_type_uq">
-      <ObjectId>18840</ObjectId>
-      <StateNumber>8879</StateNumber>
-      <UnderlyingIndexId>18839</UnderlyingIndexId>
+      <ObjectId>19241</ObjectId>
+      <StateNumber>8991</StateNumber>
+      <UnderlyingIndexId>19240</UnderlyingIndexId>
     </key>
     <column id="344" parent="286" name="port_city_id">
       <DataType>integer|0s</DataType>
       <DefaultExpression>nextval(&apos;portcity_port_city_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>8874</StateNumber>
+      <StateNumber>8986</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="345" parent="286" name="name">
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>8874</StateNumber>
+      <StateNumber>8986</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <index id="346" parent="286" name="port_city_pk">
       <ColNames>port_city_id</ColNames>
-      <ObjectId>18774</ObjectId>
+      <ObjectId>19175</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>8874</StateNumber>
+      <StateNumber>8986</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
     <key id="347" parent="286" name="port_city_pk">
-      <ObjectId>18775</ObjectId>
+      <ObjectId>19176</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>8874</StateNumber>
-      <UnderlyingIndexId>18774</UnderlyingIndexId>
+      <StateNumber>8986</StateNumber>
+      <UnderlyingIndexId>19175</UnderlyingIndexId>
     </key>
     <column id="348" parent="287" name="ship_id">
       <DataType>integer|0s</DataType>
       <DefaultExpression>nextval(&apos;ship_ship_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>8876</StateNumber>
+      <StateNumber>8988</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="349" parent="287" name="name">
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>8876</StateNumber>
+      <StateNumber>8988</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="350" parent="287" name="company_id">
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
-      <StateNumber>8876</StateNumber>
+      <StateNumber>8988</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <foreign-key id="351" parent="287" name="ship_fk">
       <ColNames>company_id</ColNames>
-      <ObjectId>18806</ObjectId>
+      <ObjectId>19207</ObjectId>
       <RefColNames>company_id</RefColNames>
       <RefColPositions>1</RefColPositions>
-      <StateNumber>8876</StateNumber>
-      <RefTableId>18754</RefTableId>
+      <StateNumber>8988</StateNumber>
+      <RefTableId>19155</RefTableId>
       <RefTableName>company</RefTableName>
       <RefTableKind>table</RefTableKind>
     </foreign-key>
     <index id="352" parent="287" name="ship_pk">
       <ColNames>ship_id</ColNames>
-      <ObjectId>18802</ObjectId>
+      <ObjectId>19203</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>8876</StateNumber>
+      <StateNumber>8988</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
     <index id="353" parent="287" name="ship_uq">
       <ColNames>name</ColNames>
-      <ObjectId>18804</ObjectId>
-      <StateNumber>8876</StateNumber>
+      <ObjectId>19205</ObjectId>
+      <StateNumber>8988</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
       <CollationNames>default</CollationNames>
@@ -4886,125 +4886,125 @@ sequence|table|18906|18907|1
       <CollationParentNames>pg_catalog</CollationParentNames>
     </index>
     <key id="354" parent="287" name="ship_pk">
-      <ObjectId>18803</ObjectId>
+      <ObjectId>19204</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>8876</StateNumber>
-      <UnderlyingIndexId>18802</UnderlyingIndexId>
+      <StateNumber>8988</StateNumber>
+      <UnderlyingIndexId>19203</UnderlyingIndexId>
     </key>
     <key id="355" parent="287" name="ship_uq">
-      <ObjectId>18805</ObjectId>
-      <StateNumber>8876</StateNumber>
-      <UnderlyingIndexId>18804</UnderlyingIndexId>
+      <ObjectId>19206</ObjectId>
+      <StateNumber>8988</StateNumber>
+      <UnderlyingIndexId>19205</UnderlyingIndexId>
     </key>
     <column id="356" parent="288" name="shipment_id">
       <DataType>integer|0s</DataType>
       <DefaultExpression>nextval(&apos;shipment_shipment_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>8883</StateNumber>
+      <StateNumber>8995</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="357" parent="288" name="item_name">
       <DataType>varchar(50)|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>8883</StateNumber>
+      <StateNumber>8995</StateNumber>
       <TypeId>1043</TypeId>
     </column>
     <column id="358" parent="288" name="item_price">
-      <DataType>integer|0s</DataType>
+      <DataType>double precision|0s</DataType>
       <NotNull>1</NotNull>
       <Position>3</Position>
-      <StateNumber>8883</StateNumber>
-      <TypeId>23</TypeId>
+      <StateNumber>8995</StateNumber>
+      <TypeId>701</TypeId>
     </column>
     <column id="359" parent="288" name="item_type_id">
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <Position>4</Position>
-      <StateNumber>8883</StateNumber>
+      <StateNumber>8995</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="360" parent="288" name="from_city_id">
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <Position>5</Position>
-      <StateNumber>8883</StateNumber>
+      <StateNumber>8995</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="361" parent="288" name="to_city_id">
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <Position>6</Position>
-      <StateNumber>8883</StateNumber>
+      <StateNumber>8995</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="362" parent="288" name="shipping_id">
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <Position>7</Position>
-      <StateNumber>8883</StateNumber>
+      <StateNumber>8995</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="363" parent="288" name="log_time">
       <DataType>timestamp|0s</DataType>
       <NotNull>1</NotNull>
       <Position>8</Position>
-      <StateNumber>8883</StateNumber>
+      <StateNumber>8995</StateNumber>
       <TypeId>1114</TypeId>
     </column>
     <foreign-key id="364" parent="288" name="shipment_fk_1">
       <ColNames>item_type_id</ColNames>
-      <ObjectId>18915</ObjectId>
+      <ObjectId>19317</ObjectId>
       <RefColNames>item_type_id</RefColNames>
       <RefColPositions>1</RefColPositions>
-      <StateNumber>8883</StateNumber>
-      <RefTableId>18833</RefTableId>
+      <StateNumber>8995</StateNumber>
+      <RefTableId>19234</RefTableId>
       <RefTableName>itemtype</RefTableName>
       <RefTableKind>table</RefTableKind>
     </foreign-key>
     <foreign-key id="365" parent="288" name="shipment_fk_2">
       <ColNames>from_city_id</ColNames>
-      <ObjectId>18920</ObjectId>
+      <ObjectId>19322</ObjectId>
       <RefColNames>city_id</RefColNames>
       <RefColPositions>1</RefColPositions>
-      <StateNumber>8883</StateNumber>
-      <RefTableId>18763</RefTableId>
+      <StateNumber>8995</StateNumber>
+      <RefTableId>19164</RefTableId>
       <RefTableName>city</RefTableName>
       <RefTableKind>table</RefTableKind>
     </foreign-key>
     <foreign-key id="366" parent="288" name="shipment_fk_3">
       <ColNames>to_city_id</ColNames>
-      <ObjectId>18925</ObjectId>
+      <ObjectId>19327</ObjectId>
       <RefColNames>city_id</RefColNames>
       <RefColPositions>1</RefColPositions>
-      <StateNumber>8883</StateNumber>
-      <RefTableId>18763</RefTableId>
+      <StateNumber>8995</StateNumber>
+      <RefTableId>19164</RefTableId>
       <RefTableName>city</RefTableName>
       <RefTableKind>table</RefTableKind>
     </foreign-key>
     <foreign-key id="367" parent="288" name="shipment_fk_4">
       <ColNames>shipping_id</ColNames>
-      <ObjectId>18930</ObjectId>
+      <ObjectId>19332</ObjectId>
       <RefColNames>shipping_id</RefColNames>
       <RefColPositions>1</RefColPositions>
-      <StateNumber>8883</StateNumber>
-      <RefTableId>18870</RefTableId>
+      <StateNumber>8995</StateNumber>
+      <RefTableId>19272</RefTableId>
       <RefTableName>shipping</RefTableName>
       <RefTableKind>table</RefTableKind>
     </foreign-key>
     <index id="368" parent="288" name="shipment_pk">
       <ColNames>shipment_id</ColNames>
-      <ObjectId>18911</ObjectId>
+      <ObjectId>19313</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>8883</StateNumber>
+      <StateNumber>8995</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
     <index id="369" parent="288" name="shipment_uq">
       <ColNames>item_name</ColNames>
-      <ObjectId>18913</ObjectId>
-      <StateNumber>8883</StateNumber>
+      <ObjectId>19315</ObjectId>
+      <StateNumber>8995</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
       <CollationNames>default</CollationNames>
@@ -5012,199 +5012,204 @@ sequence|table|18906|18907|1
       <CollationParentNames>pg_catalog</CollationParentNames>
     </index>
     <key id="370" parent="288" name="shipment_pk">
-      <ObjectId>18912</ObjectId>
+      <ObjectId>19314</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>8883</StateNumber>
-      <UnderlyingIndexId>18911</UnderlyingIndexId>
+      <StateNumber>8995</StateNumber>
+      <UnderlyingIndexId>19313</UnderlyingIndexId>
     </key>
     <key id="371" parent="288" name="shipment_uq">
-      <ObjectId>18914</ObjectId>
-      <StateNumber>8883</StateNumber>
-      <UnderlyingIndexId>18913</UnderlyingIndexId>
+      <ObjectId>19316</ObjectId>
+      <StateNumber>8995</StateNumber>
+      <UnderlyingIndexId>19315</UnderlyingIndexId>
     </key>
     <column id="372" parent="289" name="shipping_id">
       <DataType>integer|0s</DataType>
       <DefaultExpression>nextval(&apos;shipping_shipping_id_seq&apos;::regclass)</DefaultExpression>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>8882</StateNumber>
+      <StateNumber>8994</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="373" parent="289" name="retrieval_id">
       <DataType>integer|0s</DataType>
       <Position>2</Position>
-      <StateNumber>8882</StateNumber>
+      <StateNumber>8994</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="374" parent="289" name="export_id">
       <DataType>integer|0s</DataType>
       <Position>3</Position>
-      <StateNumber>8882</StateNumber>
+      <StateNumber>8994</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="375" parent="289" name="ship_id">
       <DataType>integer|0s</DataType>
       <Position>4</Position>
-      <StateNumber>8882</StateNumber>
+      <StateNumber>8994</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="376" parent="289" name="container_id">
       <DataType>integer|0s</DataType>
       <Position>5</Position>
-      <StateNumber>8882</StateNumber>
+      <StateNumber>8994</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="377" parent="289" name="import_id">
       <DataType>integer|0s</DataType>
       <Position>6</Position>
-      <StateNumber>8882</StateNumber>
+      <StateNumber>8994</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <column id="378" parent="289" name="delivery_id">
       <DataType>integer|0s</DataType>
       <Position>7</Position>
-      <StateNumber>8882</StateNumber>
+      <StateNumber>8994</StateNumber>
       <TypeId>23</TypeId>
     </column>
     <foreign-key id="379" parent="289" name="shipment_fk_1">
       <ColNames>retrieval_id</ColNames>
-      <ObjectId>18876</ObjectId>
+      <ObjectId>19278</ObjectId>
       <RefColNames>dr_id</RefColNames>
       <RefColPositions>1</RefColPositions>
-      <StateNumber>8882</StateNumber>
-      <RefTableId>18821</RefTableId>
+      <StateNumber>8994</StateNumber>
+      <RefTableId>19222</RefTableId>
       <RefTableName>delivery_retrieval</RefTableName>
       <RefTableKind>table</RefTableKind>
     </foreign-key>
     <foreign-key id="380" parent="289" name="shipment_fk_2">
       <ColNames>export_id</ColNames>
-      <ObjectId>18881</ObjectId>
+      <ObjectId>19283</ObjectId>
       <RefColNames>port_id</RefColNames>
       <RefColPositions>1</RefColPositions>
-      <StateNumber>8882</StateNumber>
-      <RefTableId>18857</RefTableId>
+      <StateNumber>8994</StateNumber>
+      <RefTableId>19259</RefTableId>
       <RefTableName>import_export_detail</RefTableName>
       <RefTableKind>table</RefTableKind>
     </foreign-key>
     <foreign-key id="381" parent="289" name="shipment_fk_3">
       <ColNames>ship_id</ColNames>
-      <ObjectId>18886</ObjectId>
+      <ObjectId>19288</ObjectId>
       <RefColNames>ship_id</RefColNames>
       <RefColPositions>1</RefColPositions>
-      <StateNumber>8882</StateNumber>
-      <RefTableId>18798</RefTableId>
+      <StateNumber>8994</StateNumber>
+      <RefTableId>19199</RefTableId>
       <RefTableName>ship</RefTableName>
       <RefTableKind>table</RefTableKind>
     </foreign-key>
     <foreign-key id="382" parent="289" name="shipment_fk_4">
       <ColNames>container_id</ColNames>
-      <ObjectId>18891</ObjectId>
+      <ObjectId>19293</ObjectId>
       <RefColNames>container_id</RefColNames>
       <RefColPositions>1</RefColPositions>
-      <StateNumber>8882</StateNumber>
-      <RefTableId>18812</RefTableId>
+      <StateNumber>8994</StateNumber>
+      <RefTableId>19213</RefTableId>
       <RefTableName>container</RefTableName>
       <RefTableKind>table</RefTableKind>
     </foreign-key>
     <foreign-key id="383" parent="289" name="shipment_fk_5">
       <ColNames>import_id</ColNames>
-      <ObjectId>18896</ObjectId>
+      <ObjectId>19298</ObjectId>
       <RefColNames>port_id</RefColNames>
       <RefColPositions>1</RefColPositions>
-      <StateNumber>8882</StateNumber>
-      <RefTableId>18857</RefTableId>
+      <StateNumber>8994</StateNumber>
+      <RefTableId>19259</RefTableId>
       <RefTableName>import_export_detail</RefTableName>
       <RefTableKind>table</RefTableKind>
     </foreign-key>
     <foreign-key id="384" parent="289" name="shipment_fk_6">
       <ColNames>delivery_id</ColNames>
-      <ObjectId>18901</ObjectId>
+      <ObjectId>19303</ObjectId>
       <RefColNames>dr_id</RefColNames>
       <RefColPositions>1</RefColPositions>
-      <StateNumber>8882</StateNumber>
-      <RefTableId>18821</RefTableId>
+      <StateNumber>8994</StateNumber>
+      <RefTableId>19222</RefTableId>
       <RefTableName>delivery_retrieval</RefTableName>
       <RefTableKind>table</RefTableKind>
     </foreign-key>
     <index id="385" parent="289" name="shipping_pkey">
       <ColNames>shipping_id</ColNames>
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>18874</ObjectId>
+      <ObjectId>19276</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>8882</StateNumber>
+      <StateNumber>8994</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
     <key id="386" parent="289" name="shipping_pkey">
       <NameSurrogate>1</NameSurrogate>
-      <ObjectId>18875</ObjectId>
+      <ObjectId>19277</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>8882</StateNumber>
-      <UnderlyingIndexId>18874</UnderlyingIndexId>
+      <StateNumber>8994</StateNumber>
+      <UnderlyingIndexId>19276</UnderlyingIndexId>
     </key>
     <column id="387" parent="290" name="port_city_id">
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <Position>1</Position>
-      <StateNumber>8895</StateNumber>
+      <StateNumber>8992</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="388" parent="290" name="item_type">
+    <column id="388" parent="290" name="item_type_id">
       <DataType>integer|0s</DataType>
       <NotNull>1</NotNull>
       <Position>2</Position>
-      <StateNumber>8895</StateNumber>
+      <StateNumber>8992</StateNumber>
       <TypeId>23</TypeId>
     </column>
-    <column id="389" parent="290" name="tax">
-      <DataType>integer|0s</DataType>
-      <NotNull>1</NotNull>
+    <column id="389" parent="290" name="export_tax">
+      <DataType>double precision|0s</DataType>
       <Position>3</Position>
-      <StateNumber>8895</StateNumber>
-      <TypeId>23</TypeId>
+      <StateNumber>8992</StateNumber>
+      <TypeId>701</TypeId>
     </column>
-    <column id="390" parent="290" name="last_update">
+    <column id="390" parent="290" name="import_tax">
+      <DataType>double precision|0s</DataType>
+      <Position>4</Position>
+      <StateNumber>8992</StateNumber>
+      <TypeId>701</TypeId>
+    </column>
+    <column id="391" parent="290" name="last_update">
       <DataType>date|0s</DataType>
       <DefaultExpression>&apos;1000-01-01&apos;::date</DefaultExpression>
       <NotNull>1</NotNull>
-      <Position>4</Position>
-      <StateNumber>8895</StateNumber>
+      <Position>5</Position>
+      <StateNumber>8992</StateNumber>
       <TypeId>1082</TypeId>
     </column>
-    <foreign-key id="391" parent="290" name="tax_fk_1">
+    <foreign-key id="392" parent="290" name="tax_fk_1">
       <ColNames>port_city_id</ColNames>
-      <ObjectId>18942</ObjectId>
+      <ObjectId>19248</ObjectId>
       <RefColNames>port_city_id</RefColNames>
       <RefColPositions>1</RefColPositions>
-      <StateNumber>8895</StateNumber>
-      <RefTableId>18770</RefTableId>
+      <StateNumber>8992</StateNumber>
+      <RefTableId>19171</RefTableId>
       <RefTableName>portcity</RefTableName>
       <RefTableKind>table</RefTableKind>
     </foreign-key>
-    <foreign-key id="392" parent="290" name="tax_fk_2">
-      <ColNames>item_type</ColNames>
-      <ObjectId>18947</ObjectId>
+    <foreign-key id="393" parent="290" name="tax_fk_2">
+      <ColNames>item_type_id</ColNames>
+      <ObjectId>19253</ObjectId>
       <RefColNames>item_type_id</RefColNames>
       <RefColPositions>1</RefColPositions>
-      <StateNumber>8895</StateNumber>
-      <RefTableId>18833</RefTableId>
+      <StateNumber>8992</StateNumber>
+      <RefTableId>19234</RefTableId>
       <RefTableName>itemtype</RefTableName>
       <RefTableKind>table</RefTableKind>
     </foreign-key>
-    <index id="393" parent="290" name="ship_detail_pk">
+    <index id="394" parent="290" name="ship_detail_pk">
       <ColNames>port_city_id
-item_type</ColNames>
-      <ObjectId>18940</ObjectId>
+item_type_id</ColNames>
+      <ObjectId>19246</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>8895</StateNumber>
+      <StateNumber>8992</StateNumber>
       <Unique>1</Unique>
       <AccessMethodId>403</AccessMethodId>
     </index>
-    <key id="394" parent="290" name="ship_detail_pk">
-      <ObjectId>18941</ObjectId>
+    <key id="395" parent="290" name="ship_detail_pk">
+      <ObjectId>19247</ObjectId>
       <Primary>1</Primary>
-      <StateNumber>8895</StateNumber>
-      <UnderlyingIndexId>18940</UnderlyingIndexId>
+      <StateNumber>8992</StateNumber>
+      <UnderlyingIndexId>19246</UnderlyingIndexId>
     </key>
   </database-model>
 </dataSource>

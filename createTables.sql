@@ -57,9 +57,6 @@ create table if not exists Container
     type            varchar(50) not null
 );
 
-
-
-
 create table if not exists  Delivery_Retrieval
 (
     DR_id           SERIAL         not null
@@ -70,6 +67,7 @@ create table if not exists  Delivery_Retrieval
     date            date
 
 );
+
 create table if not exists  ItemType
 (
     Item_type_id         SERIAL         not null
@@ -78,16 +76,16 @@ create table if not exists  ItemType
     constraint item_type_uq unique
 );
 
-
 create table if not exists  Tax
 (
-    port_city_id      int         not null
+    port_city_id    int         not null
         constraint  tax_fk_1 references portcity,
-    item_type    int         not null
+    item_type_id       int         not null
         constraint tax_fk_2 references ItemType,
-    tax         int         not null,
-    last_update date        default ('1000-01-01') not null,
-    constraint ship_detail_pk primary key (port_city_id, item_type)
+    export_tax      float,
+    import_tax      float,
+    last_update     date        default ('1000-01-01') not null,
+    constraint ship_detail_pk primary key (port_city_id, item_type_id)
 );
 
 create table import_export_detail
@@ -96,7 +94,7 @@ create table import_export_detail
     type            varchar(50) not null,
     port_city_id         int         not null
         constraint import_export_detail_fk references PortCity,
-    tax             int         default(0)      not null,
+    tax             float         default(0)      not null,
     date            date        not null
 );
 
@@ -123,7 +121,7 @@ create table if not exists Shipment
         constraint shipment_pk primary key,
     item_name       varchar(50)     not null
         constraint shipment_uq unique,
-    item_price      int             not null,
+    item_price      float             not null,
     item_type_id    int     not null
         constraint shipment_fk_1 references ItemType,
     from_city_id    int             not null

@@ -5,6 +5,6 @@ public interface DataManipulation {
 //    public String FullInformationOfMoviesRuntime(int min, int max);
 //    public String findMovieById(int id);
 
-    public int addOneCompany(String str);
     public int addOneRecord(Records type, String str);
+    public int addFullRecords(String str);
 }

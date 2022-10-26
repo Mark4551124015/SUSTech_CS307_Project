@@ -2,16 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="67017f78-f3b7-4982-80ba-831f6bb5044b" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources.local.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test.log" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/580740c3-d4e8-49a9-9559-cf9a5e9f97a2.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/580740c3-d4e8-49a9-9559-cf9a5e9f97a2.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/580740c3-d4e8-49a9-9559-cf9a5e9f97a2/storage_v2/_src_/database/sustc.gHyLBg/schema/public.abK9xQ.meta" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/580740c3-d4e8-49a9-9559-cf9a5e9f97a2/storage_v2/_src_/database/sustc.gHyLBg/schema/public.abK9xQ.meta" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/Project_Default.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/postgresql_42_2_5.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/postgresql_42_2_5.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/createTables.sql" beforeDir="false" afterPath="$PROJECT_DIR$/createTables.sql" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/Client.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Client.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/DataManipulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DataManipulation.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/DatabaseManipulation.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/DatabaseManipulation.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/Records.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Records.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -73,7 +71,7 @@
       <recent name="$PROJECT_DIR$/data" />
     </key>
   </component>
-  <component name="RunManager" selected="Database Script.createTables.sql">
+  <component name="RunManager">
     <configuration name="Client" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="Client" />
       <module name="SUSTech_CS307_Project" />
@@ -81,12 +79,11 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="createTables.sql" type="DatabaseScript" editBeforeRun="true" nameIsGenerated="true">
-      <script-file value="$PROJECT_DIR$/createTables.sql" />
-      <script-mode>FILE</script-mode>
-      <data-source id="580740c3-d4e8-49a9-9559-cf9a5e9f97a2" namespace="database/&quot;sustc&quot;/schema/&quot;public&quot;" />
-      <method v="2" />
-    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.Client" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -105,6 +102,9 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="UnknownFeatures">
+    <option featureType="com.intellij.fileTypeFactory" implementationName="*.log" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
