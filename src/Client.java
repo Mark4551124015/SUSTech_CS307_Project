@@ -38,8 +38,10 @@ public class Client {
             int cnt = 0;
             line = br.readLine();
             while ((line = br.readLine()) != null) {
-                System.out.println("正在插入第：" + ++cnt +" 条数据");
+                long startTime=System.currentTimeMillis();
                 dm.addFullRecords(line);
+                long endTime=System.currentTimeMillis();
+                System.out.println("Inserted data in line: " + ++cnt +", costs: "+(endTime-startTime)+"ms");
             }
 
         } catch (IOException e) {
@@ -51,27 +53,3 @@ public class Client {
     }
 
 }
-
-class login_info {
-    private String host = "localhost";
-    private String dbname = "cs307";
-    private String user = "mark455";
-    private String pwd = "314159";
-    private String port = "5432";
-    login_info(String host, String dbname, String username, String password, String port) {
-        this.host = host;
-        this.dbname = dbname;
-        this.user = username;
-        this.pwd = password;
-        this.port = port;
-    }
-    public static String secret (String value, char secret) {
-        byte[] bt=value.getBytes();
-        for(int i=0;i < bt.length; i++)  {
-            bt[i]=(byte)(bt[i]^(int)secret);
-        }
-        String newResult=new String(bt,0,bt.length);
-        return newResult;
-    }
-}
-

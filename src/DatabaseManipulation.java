@@ -6,7 +6,7 @@ public class DatabaseManipulation implements DataManipulation {
     private ResultSet resultSet;
     private String host = "localhost";
     private String dbname = "sustc";
-    private String user = "mark455";
+    private String user = "postgres";
     private String pwd = "314159";
     private String port = "5432";
     private void getConnection() {
@@ -57,7 +57,7 @@ public class DatabaseManipulation implements DataManipulation {
 
                     PreparedStatement preparedStatement = con.prepareStatement(sql);
                     preparedStatement.setString(1, Info[0]);
-                    System.out.println(preparedStatement.toString());
+//                    System.out.println(preparedStatement.toString());
                     preparedStatement.executeUpdate();
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -77,7 +77,7 @@ public class DatabaseManipulation implements DataManipulation {
                     getConnection();
                     PreparedStatement preparedStatement = con.prepareStatement(sql);
                     preparedStatement.setString(1, Info[0]);
-                    System.out.println(preparedStatement.toString());
+//                    System.out.println(preparedStatement.toString());
                     preparedStatement.executeUpdate();
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -97,7 +97,7 @@ public class DatabaseManipulation implements DataManipulation {
                     getConnection();
                     PreparedStatement preparedStatement = con.prepareStatement(sql);
                     preparedStatement.setString(1, Info[0]);
-                    System.out.println(preparedStatement.toString());
+//                    System.out.println(preparedStatement.toString());
                     result = preparedStatement.executeUpdate();
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -117,7 +117,7 @@ public class DatabaseManipulation implements DataManipulation {
                     getConnection();
                     PreparedStatement preparedStatement = con.prepareStatement(sql);
                     preparedStatement.setString(1, Info[0]);
-                    System.out.println(preparedStatement.toString());
+//                    System.out.println(preparedStatement.toString());
                     result = preparedStatement.executeUpdate();
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -139,7 +139,7 @@ public class DatabaseManipulation implements DataManipulation {
                     //Insertion
                     preparedStatement.setString(1, Info[0]);
                     preparedStatement.setString(2, Info[1]);
-                    System.out.println(preparedStatement.toString());
+//                    System.out.println(preparedStatement.toString());
                     result = preparedStatement.executeUpdate();
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -175,7 +175,7 @@ public class DatabaseManipulation implements DataManipulation {
                     preparedStatement.setString(4, Info[3]);
                     preparedStatement.setInt(5, company_id);
                     preparedStatement.setInt(6, city_id);
-                    System.out.println(preparedStatement.toString());
+//                    System.out.println(preparedStatement.toString());
                     result = preparedStatement.executeUpdate();
 
                 } catch (SQLException e) {
@@ -202,7 +202,7 @@ public class DatabaseManipulation implements DataManipulation {
                     //Insertion
                     preparedStatement.setString(1, Info[0]);
                     preparedStatement.setInt(2, company_id);
-                    System.out.println(preparedStatement.toString());
+//                    System.out.println(preparedStatement.toString());
                     result = preparedStatement.executeUpdate();
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -227,7 +227,7 @@ public class DatabaseManipulation implements DataManipulation {
                     preparedStatement.setInt(1, city_id);
                     preparedStatement.setInt(2, item_id);
                     preparedStatement.setDate(3, Date.valueOf(Info[2]));
-                    System.out.println(preparedStatement.toString());
+//                    System.out.println(preparedStatement.toString());
                     preparedStatement.executeUpdate();
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -255,7 +255,7 @@ public class DatabaseManipulation implements DataManipulation {
                     preparedStatement.setString(2, Info[1]);
                     preparedStatement.setDate(3, Date.valueOf(Info[2]));
 
-                    System.out.println(preparedStatement.toString());
+//                    System.out.println(preparedStatement.toString());
                     result = preparedStatement.executeUpdate();
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -284,7 +284,7 @@ public class DatabaseManipulation implements DataManipulation {
                     preparedStatement.setFloat(3, Float.parseFloat(Info[2]));
                     preparedStatement.setDate(4, Date.valueOf(Info[3]));
 
-                    System.out.println(preparedStatement.toString());
+//                    System.out.println(preparedStatement.toString());
                     result = preparedStatement.executeUpdate();
                 } catch (SQLException e) {
                     e.printStackTrace();
@@ -477,7 +477,7 @@ public class DatabaseManipulation implements DataManipulation {
                 preparedStatement.setNull(6,Types.INTEGER);
             }
 
-            System.out.println(preparedStatement.toString());
+//            System.out.println(preparedStatement.toString());
 
             result = preparedStatement.executeUpdate();
 
@@ -528,12 +528,6 @@ public class DatabaseManipulation implements DataManipulation {
 
 
 
-
-
-
-
-
-
             sql = "insert into shipment (item_name, item_price, item_type_id, from_city_id, to_city_id,shipping_id,log_time)" +
                     "values (?,?,?,?,?,?,?)";
             getConnection();
@@ -549,8 +543,8 @@ public class DatabaseManipulation implements DataManipulation {
             pS.setInt(4, from_city_id);
             pS.setInt(5, to_city_id);
             pS.setInt(6, shipping_id);
-            pS.setTimestamp(7, log_time);
-            System.out.println(pS.toString());
+            pS.setTimestamp((int)7, log_time);
+//            System.out.println(pS.toString());
             result = pS.executeUpdate();
         } catch (SQLException e) {
             e.printStackTrace();
