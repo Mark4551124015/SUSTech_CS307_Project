@@ -48,28 +48,7 @@ create table if not exists Container
         constraint Container_pk primary key,
     type            varchar(50) not null
 );
-create table if not exists  Delivery_Retrieval
-(
-    DR_id           SERIAL         not null,
-    item_name       varchar(50)     not null,
-    type            varchar(50)     not null,
-        courier      varchar         not null
-        constraint  delivery_fk references Courier,
-    date            date,
-        constraint dr_pk primary key(item_name,type)
-);
-create table import_export_detail
-(
-    port_id         SERIAL         not null,
-    item_name       varchar(50)     not null,
-    type            varchar(50) not null,
-    item_type       varchar(50)     not null,
-    port_city         varchar         not null
-        constraint import_export_detail_fk references PortCity,
-    tax             float         default(0)      not null,
-    date            date        not null,
-        constraint import_export_detail_pk primary key (item_name, type)
-);
+
 create table if not exists Shipment
 (
     shipment_id     SERIAL             not null,
@@ -93,5 +72,31 @@ create table if not exists Shipping
     container   varchar
         constraint shipping_fk_4 references container
 );
+create table if not exists  Delivery_Retrieval
+(
+    DR_id           SERIAL         not null,
+    item_name       varchar(50)     not null
+        constraint delivery_retrieval_fk_1 references shipment,
+    type            varchar(50)     not null,
+    courier         varchar         not null
+        constraint  delivery_retrieval_fk_2 references Courier,
+    date            date,
+        constraint delivery_retrieval_pk primary key(DR_id),
+        constraint delivery_retrieval_uq  unique (item_name,type)
 
+);
+create table import_export_detail
+(
+    port_id         SERIAL         not null,
+    item_name       varchar(50)     not null
+        constraint import_export_detail_fk_1 references shipment,
+    type            varchar(50) not null,
+    item_type       varchar(50)     not null,
+    port_city         varchar         not null
+        constraint import_export_detail_fk_2 references PortCity,
+    tax             float         default(0)      not null,
+    date            date        not null,
+        constraint import_export_detail_pk primary key (port_id),
+        constraint import_export_detail_uq  unique (item_name,type)
+);
 
