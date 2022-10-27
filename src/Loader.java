@@ -5,6 +5,8 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.sql.*;
 import java.util.Calendar;
+import java.util.Objects;
+
 public class Loader  {
     private String host = "localhost";
     private String dbname = "sustc";
@@ -46,9 +48,9 @@ public class Loader  {
     public static int dr_index = 1;
     public static int ie_index = 1;
     public static int shipping_index = 1;
-    public void insertFromFile (String filePath) {
+    public void insert (String filePath, int max) {
         int cnt;
-        int MAXRECORD = 10000;
+        int MAXRECORD = max;
         try {
             File csv = new File(filePath);
             csv.setReadable(true);
@@ -62,66 +64,51 @@ public class Loader  {
                 e.printStackTrace();
             }
             String line = "";
-            DataManipulation dm = new DataFactory().createDataManipulation("database");
             cnt = 0;
             line = br.readLine();
-            dm.getConnection();
-            PreparedStatement preOperation = con.prepareStatement("alter table ? disable trigger all");
-            preOperation.setString(1,"ship");
-            preOperation.addBatch();
-            preOperation.setString(1,"city");
-            preOperation.addBatch();
-            preOperation.setString(1,"company");
-            preOperation.addBatch();
-            preOperation.setString(1,"container");
-            preOperation.addBatch();
-            preOperation.setString(1,"courier");
-            preOperation.addBatch();
-            preOperation.setString(1,"delivery_retrieval");
-            preOperation.addBatch();
-            preOperation.setString(1,"import_export_detail");
-            preOperation.addBatch();
-            preOperation.setString(1,"itemtype");
-            preOperation.addBatch();
-            preOperation.setString(1,"portcity");
-            preOperation.addBatch();
-            preOperation.setString(1,"shipment");
-            preOperation.addBatch();
-            preOperation.setString(1,"shipping");
-            preOperation.addBatch();
-            preOperation.setString(1,"tax");
-            preOperation.addBatch();
-            preOperation.executeUpdate();
+            Statement operation = con.createStatement();
+            operation.executeUpdate("alter table ship disable trigger all;");
+            operation.executeUpdate("alter table city disable trigger all;");
+            operation.executeUpdate("alter table company disable trigger all;");
+            operation.executeUpdate("alter table container disable trigger all;");
+            operation.executeUpdate("alter table courier disable trigger all;");
+            operation.executeUpdate("alter table delivery_retrieval disable trigger all;");
+            operation.executeUpdate("alter table import_export_detail disable trigger all;");
+            operation.executeUpdate("alter table itemtype disable trigger all;");
+            operation.executeUpdate("alter table portcity disable trigger all;");
+            operation.executeUpdate("alter table shipment disable trigger all;");
+            operation.executeUpdate("alter table shipping disable trigger all;");
+            operation.executeUpdate("alter table tax disable trigger all;");
+
 
             long startTime=System.currentTimeMillis();
-            PreparedStatement company = con.prepareStatement("insert into company (name) values (?)  on conflict do nothing");
-            PreparedStatement exportCity = con.prepareStatement("insert into portcity (name) values (?)  on conflict do nothing");
-            PreparedStatement importCity = con.prepareStatement("insert into portcity (name) values (?)  on conflict do nothing");
+            PreparedStatement company = con.prepareStatement("insert into company (name) values (?)  on conflict do nothing;");
+            PreparedStatement exportCity = con.prepareStatement("insert into portcity (name) values (?)  on conflict do nothing;");
+            PreparedStatement importCity = con.prepareStatement("insert into portcity (name) values (?)  on conflict do nothing;");
 
-            PreparedStatement itemtype = con.prepareStatement("insert into itemtype (item_type) values (?)  on conflict do nothing");
-            PreparedStatement container = con.prepareStatement("insert into container (code, type) values (?)  on conflict do nothing");
-            PreparedStatement ship = con.prepareStatement("insert into ship (name, company) values (?)  on conflict do nothing");
-            PreparedStatement cityR = con.prepareStatement("insert into city (name) values (?)  on conflict do nothing");
-            PreparedStatement cityD = con.prepareStatement("insert into city (name) values (?)  on conflict do nothing");
+            PreparedStatement itemtype = con.prepareStatement("insert into itemtype (item_type) values (?)  on conflict do nothing;");
+            PreparedStatement container = con.prepareStatement("insert into container (code, type) values (?,?)  on conflict do nothing;");
+            PreparedStatement ship = con.prepareStatement("insert into ship (name, company) values (?,?)  on conflict do nothing;");
+            PreparedStatement cityR = con.prepareStatement("insert into city (name) values (?)  on conflict do nothing;");
+            PreparedStatement cityD = con.prepareStatement("insert into city (name) values (?)  on conflict do nothing;");
 
-            PreparedStatement courierR = con.prepareStatement("insert into courier (name, gender, birthday, phone_number, company, city) values (?)  on conflict do nothing");
-            PreparedStatement courierD = con.prepareStatement("insert into courier (name, gender, birthday, phone_number, company, city) values (?)  on conflict do nothing");
+            PreparedStatement courierR = con.prepareStatement("insert into courier (name, gender, birthday, phone_number, company, city) values (?,?,?,?,?,?)  on conflict do nothing;");
+            PreparedStatement courierD = con.prepareStatement("insert into courier (name, gender, birthday, phone_number, company, city) values (?,?,?,?,?,?)  on conflict do nothing;");
 
-            PreparedStatement import_detail = con.prepareStatement("insert into import_export_detail (type, port_city, tax, date) values (?)  on conflict do nothing");
-            PreparedStatement export_detail = con.prepareStatement("insert into import_export_detail (type, port_city, tax, date) values (?)  on conflict do nothing");
-            PreparedStatement retrieval = con.prepareStatement("insert into delivery_retrieval (courier, type, date) values (?)  on conflict do nothing");
-            PreparedStatement delivery = con.prepareStatement("insert into delivery_retrieval (courier, type, date) values (?)  on conflict do nothing");
+            PreparedStatement import_detail = con.prepareStatement("insert into import_export_detail (type, port_city, tax, date) values (?,?,?,?)  on conflict do nothing;");
+            PreparedStatement export_detail = con.prepareStatement("insert into import_export_detail (type, port_city, tax, date) values (?,?,?,?)  on conflict do nothing;");
+            PreparedStatement retrieval = con.prepareStatement("insert into delivery_retrieval (courier, type, date) values (?,?,?)  on conflict do nothing;");
+            PreparedStatement delivery = con.prepareStatement("insert into delivery_retrieval (courier, type, date) values (?,?,?)  on conflict do nothing;");
 
-            PreparedStatement shipping = con.prepareStatement("insert into shipping (retrieval_id, export_id, ship, container, import_id, delivery_id) values (?)  on conflict do nothing");
-            PreparedStatement shipment = con.prepareStatement("insert into shipment (item_name, item_price, item_type, from_city, to_city, shipping_id, log_time) values (?)  on conflict do nothing");
-            PreparedStatement alterFK = con.prepareStatement("alter table all in tablespace disable trigger all");
+            PreparedStatement shipping = con.prepareStatement("insert into shipping (retrieval_id, export_id, ship, container, import_id, delivery_id) values (?,?,?,?,?,?)  on conflict do nothing;");
+            PreparedStatement shipment = con.prepareStatement("insert into shipment (item_name, item_price, item_type, from_city, to_city, shipping_id, log_time) values (?,?,?,?,?,?,?)  on conflict do nothing;");
 
             //tax cal after insertion
+            String[] Info = line.split(",",-1);
 
             while ((line = br.readLine()) != null && cnt <= MAXRECORD) {
                 ++cnt;
-                dm.addFullRecords(line);
-                String[] Info = line.split(",",-1);
+                Info = line.split(",",-1);
                 String ItemName = Info[0];
                 String ItemType = Info[1];
                 String ItemPrice = Info[2];
@@ -169,10 +156,9 @@ public class Loader  {
                 retrieval.addBatch();
                 shipping.setInt(1,dr_index++);
 
-
-                if (ItemExportCity!="") {
+                if (!(ItemExportTime.isEmpty())) {
                     exportCity.setString(1, ItemExportCity);
-                    export_detail.addBatch();
+                    exportCity.addBatch();
                     export_detail.setString(1, "export");
                     export_detail.setString(2, ItemExportCity);
                     export_detail.setFloat(3, Float.parseFloat(ItemExportTax));
@@ -182,7 +168,8 @@ public class Loader  {
                 } else {
                     shipping.setNull(2,Types.INTEGER);
                 }
-                if (ShipName!="") {
+
+                if (!(ShipName.isEmpty())) {
                     container.setString(1,ContainerCode);
                     container.setString(2,ContainerType);
                     container.addBatch();
@@ -195,7 +182,7 @@ public class Loader  {
                     shipping.setString(3,null);
                     shipping.setString(4,null);
                 }
-                if (ItemImportCity!="") {
+                if (!(ItemImportTime.isEmpty())) {
                     importCity.setString(1, ItemImportCity);
                     importCity.addBatch();
                     import_detail.setString(1, "export");
@@ -207,7 +194,8 @@ public class Loader  {
                 }else {
                     shipping.setNull(5,Types.INTEGER);
                 }
-                if (DeliveryCourier!="") {
+
+                if (!(DeliveryFinishTime.isEmpty())) {
                     cityD.setString(1,DeliveryCity);
                     cityD.addBatch();
                     courierD.setString(1,DeliveryCourier);
@@ -222,7 +210,7 @@ public class Loader  {
                     delivery.setDate(3,Date.valueOf(DeliveryFinishTime));
                     delivery.addBatch();
                     shipping.setInt(6,dr_index++);
-                }else {
+                } else {
                     shipping.setNull(6,Types.INTEGER);
                 }
                 shipping.addBatch();
@@ -235,41 +223,42 @@ public class Loader  {
                 shipment.setTimestamp(7, Timestamp.valueOf(LogTime));
                 shipment.addBatch();
             }
-
-            preOperation = con.prepareStatement("alter table ? enable trigger all");
-            preOperation.setString(1,"ship");
-            preOperation.addBatch();
-            preOperation.setString(1,"city");
-            preOperation.addBatch();
-            preOperation.setString(1,"company");
-            preOperation.addBatch();
-            preOperation.setString(1,"container");
-            preOperation.addBatch();
-            preOperation.setString(1,"courier");
-            preOperation.addBatch();
-            preOperation.setString(1,"delivery_retrieval");
-            preOperation.addBatch();
-            preOperation.setString(1,"import_export_detail");
-            preOperation.addBatch();
-            preOperation.setString(1,"itemtype");
-            preOperation.addBatch();
-            preOperation.setString(1,"portcity");
-            preOperation.addBatch();
-            preOperation.setString(1,"shipment");
-            preOperation.addBatch();
-            preOperation.setString(1,"shipping");
-            preOperation.addBatch();
-            preOperation.setString(1,"tax");
-            preOperation.addBatch();
-            preOperation.executeUpdate();
+            company.executeBatch();
+            exportCity.executeBatch();
+            importCity.executeBatch();
+            itemtype.executeBatch();
+            container.executeBatch();
+            ship.executeBatch();
+            cityR.executeBatch();
+            cityD.executeBatch();
+            courierR.executeBatch();
+            courierD.executeBatch();
+            import_detail.executeBatch();
+            export_detail.executeBatch();
+            retrieval.executeBatch();
+            delivery.executeBatch();
+            shipping.executeBatch();
+            shipment.executeBatch();
 
 
-
+            operation.executeUpdate("alter table ship enable trigger all");
+            operation.executeUpdate("alter table city enable trigger all");
+            operation.executeUpdate("alter table company enable trigger all");
+            operation.executeUpdate("alter table container enable trigger all");
+            operation.executeUpdate("alter table courier enable trigger all");
+            operation.executeUpdate("alter table delivery_retrieval enable trigger all");
+            operation.executeUpdate("alter table import_export_detail enable trigger all");
+            operation.executeUpdate("alter table itemtype enable trigger all");
+            operation.executeUpdate("alter table portcity enable trigger all");
+            operation.executeUpdate("alter table shipment enable trigger all");
+            operation.executeUpdate("alter table shipping enable trigger all");
+            operation.executeUpdate("alter table tax enable trigger all");
 
             long endTime=System.currentTimeMillis();
-            System.out.println("Inserted data cnt: " + MAXRECORD +", costs: "+(endTime-startTime)/1000+"s");
+            System.out.printf("Inserted: %d records, speed: %.2f records/s\n",MAXRECORD, (float)(MAXRECORD*1e3/(endTime-startTime)));
         } catch (Exception e) {
             System.err.println(e);
+            System.out.println("wtf");
         }
     }
 
@@ -283,6 +272,8 @@ public class Loader  {
         Date out = new Date(temp);
         return out;
     }
+
+
 
 
 }
