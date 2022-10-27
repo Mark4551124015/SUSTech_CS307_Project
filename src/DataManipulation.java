@@ -7,8 +7,8 @@ public interface DataManipulation {
 //    public String FullInformationOfMoviesRuntime(int min, int max);
 //    public String findMovieById(int id);
 
-    public int addOneRecord(Records type, String str) throws SQLException;
-    public int addFullRecords(String str) throws SQLException;
+    long addOneRecord(Records type, String str) throws SQLException;
+    long addFullRecords(String str) throws SQLException;
 
     void getConnection();
     void closeConnection();

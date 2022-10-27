@@ -3,16 +3,17 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.Calendar;
 import java.util.Objects;
 
 public class Loader  {
-    private String host = "localhost";
-    private String dbname = "sustc";
-    private String user = "postgres";
-    private String pwd = "314159";
-    private String port = "5432";
+    private final String host = "localhost";
+    private final String dbname = "sustc";
+    private final String user = "postgres";
+    private final String pwd = "314159";
+    private final String port = "5432";
 
     private ResultSet resultSet;
     private Connection con = null;
@@ -49,6 +50,7 @@ public class Loader  {
     public static int ie_index = 1;
     public static int shipping_index = 1;
     public void insert (String filePath, int max) {
+        getConnection();
         int cnt;
         int MAXRECORD = max;
         try {
@@ -58,7 +60,7 @@ public class Loader  {
             InputStreamReader isr = null;
             BufferedReader br = null;
             try {
-                isr = new InputStreamReader(new FileInputStream(csv), "UTF-8");
+                isr = new InputStreamReader(new FileInputStream(csv), StandardCharsets.UTF_8);
                 br = new BufferedReader(isr);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -74,11 +76,9 @@ public class Loader  {
             operation.executeUpdate("alter table courier disable trigger all;");
             operation.executeUpdate("alter table delivery_retrieval disable trigger all;");
             operation.executeUpdate("alter table import_export_detail disable trigger all;");
-            operation.executeUpdate("alter table itemtype disable trigger all;");
             operation.executeUpdate("alter table portcity disable trigger all;");
             operation.executeUpdate("alter table shipment disable trigger all;");
             operation.executeUpdate("alter table shipping disable trigger all;");
-            operation.executeUpdate("alter table tax disable trigger all;");
 
 
             long startTime=System.currentTimeMillis();
@@ -86,7 +86,6 @@ public class Loader  {
             PreparedStatement exportCity = con.prepareStatement("insert into portcity (name) values (?)  on conflict do nothing;");
             PreparedStatement importCity = con.prepareStatement("insert into portcity (name) values (?)  on conflict do nothing;");
 
-            PreparedStatement itemtype = con.prepareStatement("insert into itemtype (item_type) values (?)  on conflict do nothing;");
             PreparedStatement container = con.prepareStatement("insert into container (code, type) values (?,?)  on conflict do nothing;");
             PreparedStatement ship = con.prepareStatement("insert into ship (name, company) values (?,?)  on conflict do nothing;");
             PreparedStatement cityR = con.prepareStatement("insert into city (name) values (?)  on conflict do nothing;");
@@ -95,13 +94,13 @@ public class Loader  {
             PreparedStatement courierR = con.prepareStatement("insert into courier (name, gender, birthday, phone_number, company, city) values (?,?,?,?,?,?)  on conflict do nothing;");
             PreparedStatement courierD = con.prepareStatement("insert into courier (name, gender, birthday, phone_number, company, city) values (?,?,?,?,?,?)  on conflict do nothing;");
 
-            PreparedStatement import_detail = con.prepareStatement("insert into import_export_detail (type, port_city, tax, date) values (?,?,?,?)  on conflict do nothing;");
-            PreparedStatement export_detail = con.prepareStatement("insert into import_export_detail (type, port_city, tax, date) values (?,?,?,?)  on conflict do nothing;");
-            PreparedStatement retrieval = con.prepareStatement("insert into delivery_retrieval (courier, type, date) values (?,?,?)  on conflict do nothing;");
-            PreparedStatement delivery = con.prepareStatement("insert into delivery_retrieval (courier, type, date) values (?,?,?)  on conflict do nothing;");
+            PreparedStatement import_detail = con.prepareStatement("insert into import_export_detail (item_name,type, item_type, port_city, tax, date) values (?,?,?,?,?,?)  on conflict do nothing;");
+            PreparedStatement export_detail = con.prepareStatement("insert into import_export_detail (item_name,type, item_type, port_city, tax, date) values (?,?,?,?,?,?)  on conflict do nothing;");
+            PreparedStatement retrieval = con.prepareStatement("insert into delivery_retrieval (item_name,type,courier,date) values (?,?,?,?)  on conflict do nothing;");
+            PreparedStatement delivery = con.prepareStatement("insert into delivery_retrieval (item_name,type,courier,date) values (?,?,?,?)  on conflict do nothing;");
 
-            PreparedStatement shipping = con.prepareStatement("insert into shipping (retrieval_id, export_id, ship, container, import_id, delivery_id) values (?,?,?,?,?,?)  on conflict do nothing;");
-            PreparedStatement shipment = con.prepareStatement("insert into shipment (item_name, item_price, item_type, from_city, to_city, shipping_id, log_time) values (?,?,?,?,?,?,?)  on conflict do nothing;");
+            PreparedStatement shipping = con.prepareStatement("insert into shipping (item_name, ship, container) values (?,?,?)  on conflict do nothing;");
+            PreparedStatement shipment = con.prepareStatement("insert into shipment (item_name, item_price, item_type, from_city, to_city, log_time) values (?,?,?,?,?,?)  on conflict do nothing;");
 
             //tax cal after insertion
             String[] Info = line.split(",",-1);
@@ -135,11 +134,19 @@ public class Loader  {
                 String ShipName = Info[23];
                 String CompanyName = Info[24];
                 String LogTime = Info[25];
+
+                shipment.setString(1, ItemName);
+                shipment.setFloat(2,Float.parseFloat(ItemPrice));
+                shipment.setString(3, ItemType);
+                shipment.setString(4, RetrievalCity);
+                shipment.setString(5, DeliveryCity);
+                shipment.setTimestamp(6, Timestamp.valueOf(LogTime));
+                shipment.addBatch();
+
                 //single insertion
                 company.setString(1,CompanyName);
                 company.addBatch();
-                itemtype.setString(1,ItemType);
-                itemtype.addBatch();
+
                 cityR.setString(1,RetrievalCity);
                 cityR.addBatch();
 
@@ -150,54 +157,62 @@ public class Loader  {
                 courierR.setString(5, CompanyName);
                 courierR.setString(6, RetrievalCity);
                 courierR.addBatch();
-                retrieval.setString(1,RetrievalCourier);
+
+                retrieval.setString(1,ItemName);
                 retrieval.setString(2,"retrieval");
-                retrieval.setDate(3,Date.valueOf(RetrievalStartTime));
+                retrieval.setString(3,RetrievalCourier);
+                retrieval.setDate(4,Date.valueOf(RetrievalStartTime));
                 retrieval.addBatch();
-                shipping.setInt(1,dr_index++);
 
                 if (!(ItemExportTime.isEmpty())) {
                     exportCity.setString(1, ItemExportCity);
                     exportCity.addBatch();
-                    export_detail.setString(1, "export");
-                    export_detail.setString(2, ItemExportCity);
-                    export_detail.setFloat(3, Float.parseFloat(ItemExportTax));
-                    export_detail.setDate(4, Date.valueOf(ItemExportTime));
+
+                    export_detail.setString(1, ItemName);
+                    export_detail.setString(2, "export");
+                    export_detail.setString(3, ItemType);
+                    export_detail.setString(4, ItemExportCity);
+                    export_detail.setFloat(5, Float.parseFloat(ItemExportTax));
+                    export_detail.setDate(6, Date.valueOf(ItemExportTime));
                     export_detail.addBatch();
-                    shipping.setInt(2,ie_index++);
-                } else {
-                    shipping.setNull(2,Types.INTEGER);
                 }
 
                 if (!(ShipName.isEmpty())) {
                     container.setString(1,ContainerCode);
                     container.setString(2,ContainerType);
                     container.addBatch();
+
                     ship.setString(1,ShipName);
                     ship.setString(2,CompanyName);
                     ship.addBatch();
-                    shipping.setString(3,ShipName);
-                    shipping.setString(4,ContainerCode);
+
+                    shipping.setString(2,ShipName);
+                    shipping.setString(3,ContainerCode);
                 }else {
+                    shipping.setString(2,null);
                     shipping.setString(3,null);
-                    shipping.setString(4,null);
                 }
+                shipping.setString(1,ItemName);
+                shipping.addBatch();
+
+
                 if (!(ItemImportTime.isEmpty())) {
                     importCity.setString(1, ItemImportCity);
                     importCity.addBatch();
-                    import_detail.setString(1, "export");
-                    import_detail.setString(2, ItemImportCity);
-                    import_detail.setFloat(3, Float.parseFloat(ItemImportTax));
-                    import_detail.setDate(4, Date.valueOf(ItemImportTime));
+
+                    import_detail.setString(1, ItemName);
+                    import_detail.setString(2, "import");
+                    import_detail.setString(3, ItemType);
+                    import_detail.setString(4, ItemImportCity);
+                    import_detail.setFloat(5, Float.parseFloat(ItemImportTax));
+                    import_detail.setDate(6, Date.valueOf(ItemImportTime));
                     import_detail.addBatch();
-                    shipping.setInt(5,ie_index++);
-                }else {
-                    shipping.setNull(5,Types.INTEGER);
                 }
 
                 if (!(DeliveryFinishTime.isEmpty())) {
                     cityD.setString(1,DeliveryCity);
                     cityD.addBatch();
+
                     courierD.setString(1,DeliveryCourier);
                     courierD.setString(2,DeliveryCourierGender);
                     courierD.setDate(3, CalBirth(DeliveryFinishTime, Float.parseFloat(DeliveryCourierAge)));
@@ -205,28 +220,21 @@ public class Loader  {
                     courierD.setString(5, CompanyName);
                     courierD.setString(6, DeliveryCity);
                     courierD.addBatch();
-                    delivery.setString(1,DeliveryCourier);
+
+                    delivery.setString(1,ItemName);
                     delivery.setString(2,"delivery");
-                    delivery.setDate(3,Date.valueOf(DeliveryFinishTime));
+                    delivery.setString(3,DeliveryCourier);
+                    delivery.setDate(4,Date.valueOf(RetrievalStartTime));
                     delivery.addBatch();
-                    shipping.setInt(6,dr_index++);
-                } else {
-                    shipping.setNull(6,Types.INTEGER);
                 }
-                shipping.addBatch();
-                shipment.setString(1, ItemName);
-                shipment.setFloat(2,Float.parseFloat(ItemPrice));
-                shipment.setString(3, ItemType);
-                shipment.setString(4, RetrievalCity);
-                shipment.setString(5, DeliveryCity);
-                shipment.setInt(6, shipping_index++);
-                shipment.setTimestamp(7, Timestamp.valueOf(LogTime));
-                shipment.addBatch();
+
+
+
+
             }
             company.executeBatch();
             exportCity.executeBatch();
             importCity.executeBatch();
-            itemtype.executeBatch();
             container.executeBatch();
             ship.executeBatch();
             cityR.executeBatch();
@@ -248,17 +256,15 @@ public class Loader  {
             operation.executeUpdate("alter table courier enable trigger all");
             operation.executeUpdate("alter table delivery_retrieval enable trigger all");
             operation.executeUpdate("alter table import_export_detail enable trigger all");
-            operation.executeUpdate("alter table itemtype enable trigger all");
             operation.executeUpdate("alter table portcity enable trigger all");
             operation.executeUpdate("alter table shipment enable trigger all");
             operation.executeUpdate("alter table shipping enable trigger all");
-            operation.executeUpdate("alter table tax enable trigger all");
 
             long endTime=System.currentTimeMillis();
             System.out.printf("Inserted: %d records, speed: %.2f records/s\n",MAXRECORD, (float)(MAXRECORD*1e3/(endTime-startTime)));
         } catch (Exception e) {
             System.err.println(e);
-            System.out.println("wtf");
+            closeConnection();
         }
     }
 
