@@ -16,7 +16,6 @@ public class AdvancedQuery {
     FileDBManager fileDBManager;
 
     public static void main(String[] args) {
-
         AdvancedQuery advancedQuery = new AdvancedQuery();
         advancedQuery.queryBestExportCity();
     }
