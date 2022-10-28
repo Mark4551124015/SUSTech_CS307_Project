@@ -11,10 +11,8 @@ import java.util.Iterator;
 import java.util.Objects;
 
 public class Couriers extends BaseModel<Courier> {
-    protected int selfIncreasingNumber;
 
     public void initialize() {
-        this.selfIncreasingNumber = 1;
         this.data = new ArrayList<Courier>();
     }
 
@@ -39,8 +37,11 @@ public class Couriers extends BaseModel<Courier> {
             return null;
         }
 
-        Courier newCourier = new Courier(selfIncreasingNumber, name, gender, birthday, phoneNumber, city);
-        selfIncreasingNumber++;
+        if (select(courier -> courier.name.equals(name)).size() > 0) {
+            return null;
+        }
+
+        Courier newCourier = new Courier(name, gender, birthday, phoneNumber, city);
         data.add(newCourier);
         return newCourier;
     }

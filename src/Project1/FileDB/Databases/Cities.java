@@ -9,7 +9,6 @@ import java.util.Iterator;
 public class Cities extends BaseModel<City> {
 
 
-
     public void initialize() {
         data = new ArrayList<>();
     }
@@ -31,6 +30,10 @@ public class Cities extends BaseModel<City> {
     }*/
 
     public City insert(String cityName) {
+        if (select(city -> city.name.equals(cityName)).size() > 0) {
+            return null;
+        }
+
         City newCity = new City(cityName);
         data.add(newCity);
         return newCity;

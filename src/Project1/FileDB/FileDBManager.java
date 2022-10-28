@@ -13,6 +13,7 @@ public class FileDBManager {
     static Couriers couriers;
     static Cities cities;
     static Companies companies;
+    static FileDBManager instance;
 
     static BaseModel[] Models = new BaseModel[]{
             new Cities(),
@@ -42,7 +43,7 @@ public class FileDBManager {
             for (int i = 0; i < 100; i++) {
                 Date date = new Date();
                 getCouriers().insert(
-                        "Courier Of City " + city.name,
+                        "Courier " + i + " Of City " + city.name,
                         "男",
                         date,
                         "13888827812",
@@ -71,7 +72,6 @@ public class FileDBManager {
     }
 
 
-
     public static Cities getCities() {
         return (Cities) Models[0];
     }
@@ -89,7 +89,7 @@ public class FileDBManager {
     }
 
 
-    public static Ships getShips(){
+    public static Ships getShips() {
         return (Ships) Models[4];
     }
 
@@ -102,15 +102,15 @@ public class FileDBManager {
         return (Shippings) Models[6];
     }
 
-    public static Shipments getShipments(){
+    public static Shipments getShipments() {
         return (Shipments) Models[7];
     }
 
-    public static ImportAndExports getImportAndExports(){
+    public static ImportAndExports getImportAndExports() {
         return (ImportAndExports) Models[8];
     }
 
-    public static DeliveryAndRetrievals getDeliveryAndRetrievals(){
+    public static DeliveryAndRetrievals getDeliveryAndRetrievals() {
         return (DeliveryAndRetrievals) Models[9];
     }
 
@@ -130,5 +130,14 @@ public class FileDBManager {
         }
     }
 
-
+    public static FileDBManager getInstance() {
+        if (instance == null) {
+            try {
+                instance = new FileDBManager();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return instance;
+    }
 }

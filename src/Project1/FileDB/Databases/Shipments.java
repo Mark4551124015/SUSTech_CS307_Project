@@ -27,6 +27,10 @@ public class Shipments extends BaseModel<Shipment> {
             return null;
         }
 
+        if (select(shipment -> shipment.itemName.equals(itemName)).size() > 0) {
+            return null;
+        }
+
         Shipment newRecord = new Shipment(itemName, itemPrice, itemType, fromCity, toCity, logTime);
         data.add(newRecord);
 

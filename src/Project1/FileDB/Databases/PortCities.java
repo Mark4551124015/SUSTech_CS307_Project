@@ -26,13 +26,13 @@ public class PortCities extends BaseModel<PortCity> {
         return result.toArray(PortCity[]::new);
     }*/
 
-    public boolean insert(String name) {
+    public PortCity insert(String name) {
         if (select(item -> item.name.equals(name)).size() > 0) {
-            return false;
+            return null;
         }
         PortCity newRecord = new PortCity(name);
         data.add(newRecord);
 
-        return true;
+        return newRecord;
     }
 }

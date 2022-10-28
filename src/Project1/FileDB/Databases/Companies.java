@@ -6,10 +6,9 @@ import Project1.FileDB.Databases.Models.Constraint;
 import java.util.ArrayList;
 
 public class Companies extends BaseModel<Company> {
-    public ArrayList<Company> companies;
 
     public void initialize(){
-        this.companies = new ArrayList<>();
+        this.data = new ArrayList<>();
     }
 
     @Override
@@ -28,12 +27,12 @@ public class Companies extends BaseModel<Company> {
         return result.toArray(Company[]::new);
     }*/
 
-    public boolean insert(String name) {
+    public Company insert(String name) {
         if (select(company -> company.name.equals(name)).size() > 0) {
-            return false;
+            return null;
         }
         Company newRecord = new Company(name);
         data.add(newRecord);
-        return true;
+        return newRecord;
     }
 }

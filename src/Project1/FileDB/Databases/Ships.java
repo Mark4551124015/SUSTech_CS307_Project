@@ -32,6 +32,10 @@ public class Ships extends BaseModel<Ship> {
             return null;
         }
 
+        if (select(ship -> ship.name.equals(name)).size() > 0) {
+            return null;
+        }
+
         Ship newRecord = new Ship(name, companyName);
 
         data.add(newRecord);
