@@ -28,8 +28,8 @@ create table if not exists Courier
         constraint courier_uq_2 unique,
     company     varchar             not null
         constraint courier_fk_1 references Company,
-    city         varchar            not null
-        constraint courier_fk_2 references city
+    port_city         varchar            not null
+        constraint courier_fk_2 references PortCity
 );
 create table if not exists Ship
 (
@@ -55,14 +55,18 @@ create table if not exists Shipment
     item_name       varchar(50)     not null
         constraint shipment_pk primary key,
     item_price      float             not null,
-    item_type    varchar     not null,
-    from_city    varchar             not null
+    item_type    varchar            not null,
+    from_city    varchar            not null
         constraint shipment_fk_2 references City,
-    to_city      varchar             not null
+    to_city      varchar            not null
         constraint shipment_fk_3 references City,
+    import_city    varchar          not null
+        constraint shipment_fk_4 references PortCity,
+    export_city     varchar         not null
+        constraint shipment_fk_5 references PortCity,
     company         varchar         not null
-        constraint shipment_fk_4 references company,
-    log_time        timestamp      not null
+        constraint shipment_fk_6 references company,
+    log_time        timestamp       not null
 );
 create table if not exists Shipping
 (
@@ -82,12 +86,14 @@ create table if not exists  Delivery_Retrieval
     type            varchar(50)     not null,
     courier         varchar         not null
         constraint  delivery_retrieval_fk_2 references Courier,
+    city            varchar(50)     not null
+        constraint  delivery_retrieval_fk_3 references City,
     date            date,
         constraint delivery_retrieval_pk primary key(DR_id),
         constraint delivery_retrieval_uq  unique (item_name,type)
 
 );
-create table import_export_detail
+create table if not exists import_export_detail
 (
     port_id         SERIAL         not null,
     item_name       varchar(50)     not null

@@ -5,14 +5,12 @@ public class Client {
 
     public static void main(String[] args) throws Exception {
         File file = new File("test.log");
-
         Loader ld = new Loader();
 
         DatabaseManipulation dm = new DatabaseManipulation();
         dm.getConnection();
-//        dm.selectExportDetailByPortCity("上海");
-        ld.loadFromFile("data/shipment_records.csv", 10000);
-        dm.selectShipmentByName("coconut-7d2ee");
+        ld.getConnection();
+        ld.loadFromFile("data/shipment_records.csv",100000);
         dm.closeConnection();
     }
 }

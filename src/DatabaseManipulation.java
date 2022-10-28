@@ -87,7 +87,7 @@ public class DatabaseManipulation {
                 sql = "insert into courier (name, gender, birthday, phone_number, company, city)" +
                         "values (?,?,?,?,?,?) on conflict do nothing";
                 addOneRecord(Records.company, Info[4]);
-                addOneRecord(Records.city, Info[5]);
+                addOneRecord(Records.portCity, Info[5]);
                 PreparedStatement preparedStatement = con.prepareStatement(sql);
                 preparedStatement.setString(1, Info[0]);
                 preparedStatement.setString(2, Info[1]);
@@ -108,13 +108,15 @@ public class DatabaseManipulation {
 
             } //2
             case delivery_retrieval -> {
-                sql = "insert into delivery_retrieval (item_name,type,courier, date)" +
-                        "values (?,?,?,?) on conflict do nothing";
+                sql = "insert into delivery_retrieval (item_name,type,courier,city, date)" +
+                        "values (?,?,?,?,?) on conflict do nothing";
                 PreparedStatement preparedStatement = con.prepareStatement(sql);
                 preparedStatement.setString(1, Info[0]);
                 preparedStatement.setString(2, Info[1]);
                 preparedStatement.setString(3, Info[2]);
-                preparedStatement.setDate(4, Date.valueOf(Info[3]));
+                preparedStatement.setString(4, Info[3]);
+
+                preparedStatement.setDate(5, Date.valueOf(Info[4]));
                 preparedStatement.executeUpdate();
 
             }
@@ -149,16 +151,16 @@ public class DatabaseManipulation {
         PreparedStatement cityR = con.prepareStatement("insert into city (name) values (?)  on conflict do nothing;");
         PreparedStatement cityD = con.prepareStatement("insert into city (name) values (?)  on conflict do nothing;");
 
-        PreparedStatement courierR = con.prepareStatement("insert into courier (name, gender, birthday, phone_number, company, city) values (?,?,?,?,?,?)  on conflict do nothing;");
-        PreparedStatement courierD = con.prepareStatement("insert into courier (name, gender, birthday, phone_number, company, city) values (?,?,?,?,?,?)  on conflict do nothing;");
+        PreparedStatement courierR = con.prepareStatement("insert into courier (name, gender, birthday, phone_number, company, port_city) values (?,?,?,?,?,?)  on conflict do nothing;");
+        PreparedStatement courierD = con.prepareStatement("insert into courier (name, gender, birthday, phone_number, company, port_city) values (?,?,?,?,?,?)  on conflict do nothing;");
 
         PreparedStatement import_detail = con.prepareStatement("insert into import_export_detail (item_name,type, item_type, port_city, tax, date) values (?,?,?,?,?,?)  on conflict do nothing;");
         PreparedStatement export_detail = con.prepareStatement("insert into import_export_detail (item_name,type, item_type, port_city, tax, date) values (?,?,?,?,?,?)  on conflict do nothing;");
-        PreparedStatement retrieval = con.prepareStatement("insert into delivery_retrieval (item_name,type,courier,date) values (?,?,?,?)  on conflict do nothing;");
-        PreparedStatement delivery = con.prepareStatement("insert into delivery_retrieval (item_name,type,courier,date) values (?,?,?,?)  on conflict do nothing;");
+        PreparedStatement retrieval = con.prepareStatement("insert into delivery_retrieval (item_name,type,courier,city,date) values (?,?,?,?,?)  on conflict do nothing;");
+        PreparedStatement delivery = con.prepareStatement("insert into delivery_retrieval (item_name,type,courier,city,date) values (?,?,?,?,?)  on conflict do nothing;");
 
         PreparedStatement shipping = con.prepareStatement("insert into shipping (item_name, ship, container) values (?,?,?)  on conflict do nothing;");
-        PreparedStatement shipment = con.prepareStatement("insert into shipment (item_name, item_price, item_type, from_city, to_city, company, log_time) values (?,?,?,?,?,?,?)  on conflict do nothing;");
+        PreparedStatement shipment = con.prepareStatement("insert into shipment (item_name, item_price, item_type, from_city, to_city, export_city, import_city, company, log_time) values (?,?,?,?,?,?,?,?,?)  on conflict do nothing;");
 
         String ItemName = Info[0];
         String ItemType = Info[1];
@@ -189,40 +191,45 @@ public class DatabaseManipulation {
 
         company.setString(1, CompanyName);
         company.addBatch();
+        cityD.setString(1, DeliveryCity);
+        cityD.addBatch();
+        cityR.setString(1, RetrievalCity);
+        cityR.addBatch();
 
         shipment.setString(1, ItemName);
         shipment.setFloat(2, Float.parseFloat(ItemPrice));
         shipment.setString(3, ItemType);
         shipment.setString(4, RetrievalCity);
         shipment.setString(5, DeliveryCity);
-        shipment.setString(6,CompanyName);
-        shipment.setTimestamp(7, Timestamp.valueOf(LogTime));
+        shipment.setString(6,ItemExportCity);
+        shipment.setString(7,ItemImportCity);
+        shipment.setString(8,CompanyName);
+        shipment.setTimestamp(9, Timestamp.valueOf(LogTime));
         shipment.addBatch();
-
         //single insertion
 
 
-        cityR.setString(1, RetrievalCity);
-        cityR.addBatch();
+        exportCity.setString(1, ItemExportCity);
+        exportCity.addBatch();
+        importCity.setString(1, ItemImportCity);
+        importCity.addBatch();
 
         courierR.setString(1, RetrievalCourier);
         courierR.setString(2, RetrievalCourierGender);
         courierR.setDate(3, CalBirth(RetrievalStartTime, Float.parseFloat(RetrievalCourierAge)));
         courierR.setString(4, RetrievalCourierPhoneNumber);
         courierR.setString(5, CompanyName);
-        courierR.setString(6, RetrievalCity);
+        courierR.setString(6, ItemExportCity);
         courierR.addBatch();
 
         retrieval.setString(1, ItemName);
         retrieval.setString(2, "retrieval");
         retrieval.setString(3, RetrievalCourier);
-        retrieval.setDate(4, Date.valueOf(RetrievalStartTime));
+        retrieval.setString(4, RetrievalCity);
+        retrieval.setDate(5, Date.valueOf(RetrievalStartTime));
         retrieval.addBatch();
 
         if (!(ItemExportTime.isEmpty())) {
-            exportCity.setString(1, ItemExportCity);
-            exportCity.addBatch();
-
             export_detail.setString(1, ItemName);
             export_detail.setString(2, "export");
             export_detail.setString(3, ItemType);
@@ -252,9 +259,6 @@ public class DatabaseManipulation {
 
 
         if (!(ItemImportTime.isEmpty())) {
-            importCity.setString(1, ItemImportCity);
-            importCity.addBatch();
-
             import_detail.setString(1, ItemName);
             import_detail.setString(2, "import");
             import_detail.setString(3, ItemType);
@@ -265,31 +269,31 @@ public class DatabaseManipulation {
         }
 
         if (!(DeliveryFinishTime.isEmpty())) {
-            cityD.setString(1, DeliveryCity);
-            cityD.addBatch();
 
             courierD.setString(1, DeliveryCourier);
             courierD.setString(2, DeliveryCourierGender);
             courierD.setDate(3, CalBirth(DeliveryFinishTime, Float.parseFloat(DeliveryCourierAge)));
             courierD.setString(4, DeliveryCourierPhoneNumber);
             courierD.setString(5, CompanyName);
-            courierD.setString(6, DeliveryCity);
+            courierD.setString(6, ItemImportCity);
             courierD.addBatch();
 
             delivery.setString(1, ItemName);
             delivery.setString(2, "delivery");
             delivery.setString(3, DeliveryCourier);
-            delivery.setDate(4, Date.valueOf(DeliveryFinishTime));
+            delivery.setString(4, DeliveryCity);
+            delivery.setDate(5, Date.valueOf(DeliveryFinishTime));
             delivery.addBatch();
         }
         company.executeBatch();
-        shipment.executeBatch();
         exportCity.executeBatch();
         importCity.executeBatch();
-        container.executeBatch();
-        ship.executeBatch();
         cityR.executeBatch();
         cityD.executeBatch();
+
+        shipment.executeBatch();
+        container.executeBatch();
+        ship.executeBatch();
         courierR.executeBatch();
         courierD.executeBatch();
         import_detail.executeBatch();
@@ -405,7 +409,6 @@ public class DatabaseManipulation {
         long endTime = System.currentTimeMillis();
         System.out.printf("Deleted Courier: %d records, speed: %.2f records/s\n", name.length, (float) (name.length * 1e3 / (endTime - startTime)));
     }
-
     //Select Records
     public long selectShipmentByName(String Item) throws SQLException {
         long start = System.currentTimeMillis();
@@ -413,23 +416,25 @@ public class DatabaseManipulation {
             getConnection();
         }
         String sql = "select * from shipment where item_name = ?";
-        String[] Info = new String[7];
+        String[] Info = new String[9];
         PreparedStatement preparedStatement = con.prepareStatement(sql);
         preparedStatement.setString(1, Item);
         resultSet = preparedStatement.executeQuery();
         System.out.println("SHIPMENT DETAILS: ");
-        System.out.println("----------------------------------------------------------------------------------------------------------------------------");
-        System.out.printf("%15s %10s %15s %15s %15s %15s %20s\n",  "Item Name", "Item Type", "Item Price","From City", "To City", "Company", "Log Time");
-        System.out.println("----------------------------------------------------------------------------------------------------------------------------");
+        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.printf("%15s %10s %15s %15s %15s %15s %15s %15s %20s\n",  "Item Name", "Item Type", "Item Price","From City", "To City","Export City", "Import City", "Company", "Log Time");
+        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         if (resultSet.next()) {
             Info[0] = resultSet.getString("item_name");
             Info[1] = resultSet.getString("item_type");
             Info[2] = "¥" + resultSet.getInt("item_price");
             Info[3] = resultSet.getString("from_city");
             Info[4] = resultSet.getString("to_city");
-            Info[5] = resultSet.getString("company");
-            Info[6] = resultSet.getString("log_time");
-            System.out.format("%15s %10s %15s %15s %15s %15s %20s\n", Info[0], Info[1], Info[2], Info[3], Info[4], Info[5], Info[6]);
+            Info[5] = resultSet.getString("export_city");
+            Info[6] = resultSet.getString("import_city");
+            Info[7] = resultSet.getString("company");
+            Info[8] = resultSet.getString("log_time");
+            System.out.format("%15s %10s %15s %15s %15s %15s %15s %15s %20s\n", Info[0], Info[1], Info[2], Info[3], Info[4], Info[5], Info[6],Info[7],Info[8]);
         }
         return System.currentTimeMillis()-start;
     }
@@ -439,23 +444,25 @@ public class DatabaseManipulation {
             getConnection();
         }
         String sql = "select * from shipment where shipment_id = ?";
-        String[] Info = new String[7];
+        String[] Info = new String[9];
         PreparedStatement preparedStatement = con.prepareStatement(sql);
         preparedStatement.setInt(1, id);
         resultSet = preparedStatement.executeQuery();
         System.out.println("SHIPMENT DETAILS: ");
-        System.out.println("----------------------------------------------------------------------------------------------------------------------------");
-        System.out.printf("%15s %10s %15s %15s %15s %15s %20s\n",  "Item Name", "Item Type", "Item Price","From City", "To City", "Company", "Log Time");
-        System.out.println("----------------------------------------------------------------------------------------------------------------------------");
+        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.printf("%15s %10s %15s %15s %15s %15s %15s %15s %20s\n",  "Item Name", "Item Type", "Item Price","From City", "To City","Export City", "Import City", "Company", "Log Time");
+        System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------------------------");
         if (resultSet.next()) {
             Info[0] = resultSet.getString("item_name");
             Info[1] = resultSet.getString("item_type");
             Info[2] = "¥" + resultSet.getInt("item_price");
             Info[3] = resultSet.getString("from_city");
             Info[4] = resultSet.getString("to_city");
-            Info[5] = resultSet.getString("company");
-            Info[6] = resultSet.getString("log_time");
-            System.out.format("%15s %10s %15s %15s %15s %15s %20s\n", Info[0], Info[1], Info[2], Info[3], Info[4], Info[5], Info[6]);
+            Info[5] = resultSet.getString("export_city");
+            Info[6] = resultSet.getString("import_city");
+            Info[7] = resultSet.getString("company");
+            Info[8] = resultSet.getString("log_time");
+            System.out.format("%15s %10s %15s %15s %15s %15s %15s %15s %20s\n", Info[0], Info[1], Info[2], Info[3], Info[4], Info[5], Info[6],Info[7],Info[8]);
         }
         return System.currentTimeMillis()-start;
     }
@@ -567,14 +574,17 @@ public class DatabaseManipulation {
         resultSet = preparedStatement.executeQuery();
 //        resultSet.next();
         System.out.println("RETRIEVAL/DELIVERY DETAILS: ");
-        System.out.println("-----------------------------------------------------------------");
-        System.out.printf("%20s %10s %15s %10s\n", "Item Name", "Courier", "Date", "Type");
-        System.out.println("-----------------------------------------------------------------");
+        System.out.println("-----------------------------------------------------------------------------");
+        System.out.printf("%20s %10s %15s %15s %10s\n", "Item Name", "Courier", "Date", "City", "Type");
+        System.out.println("-----------------------------------------------------------------------------");
         while (resultSet.next()) {
             Info[0] = resultSet.getString("item_name");
             Info[1] = resultSet.getString("courier");
-            Info[2] = resultSet.getString("date");
-            Info[3] = resultSet.getString("type");
+            Info[2] = resultSet.getString("city");
+
+            Info[3] = resultSet.getString("date");
+
+            Info[4] = resultSet.getString("type");
             System.out.format("%20s %10s %15s %10s\n", Info[0], Info[1], Info[2], Info[3]);
         }
         return System.currentTimeMillis()-start;
@@ -592,16 +602,13 @@ public class DatabaseManipulation {
         }
         PreparedStatement cityD = con.prepareStatement("insert into city (name) values (?)  on conflict do nothing;");
 
-        PreparedStatement exportCity = con.prepareStatement("insert into portcity (name) values (?)  on conflict do nothing;");
-        PreparedStatement importCity = con.prepareStatement("insert into portcity (name) values (?)  on conflict do nothing;");
-
         PreparedStatement container = con.prepareStatement("insert into container (code, type) values (?,?)  on conflict do nothing;");
         PreparedStatement ship = con.prepareStatement("insert into ship (name, company) values (?,?)  on conflict do nothing;");
 
-        PreparedStatement courierD = con.prepareStatement("insert into courier (name, gender, birthday, phone_number, company, city) values (?,?,?,?,?,?)  on conflict do nothing;");
+        PreparedStatement courierD = con.prepareStatement("insert into courier (name, gender, birthday, phone_number, company, port_city) values (?,?,?,?,?,?)  on conflict do nothing;");
         PreparedStatement import_detail = con.prepareStatement("insert into import_export_detail (item_name,type, item_type, port_city, tax, date) values (?,?,?,?,?,?)  on conflict do nothing;");
         PreparedStatement export_detail = con.prepareStatement("insert into import_export_detail (item_name,type, item_type, port_city, tax, date) values (?,?,?,?,?,?)  on conflict do nothing;");
-        PreparedStatement delivery = con.prepareStatement("insert into delivery_retrieval (item_name,type,courier,date) values (?,?,?,?)  on conflict do nothing;");
+        PreparedStatement delivery = con.prepareStatement("insert into delivery_retrieval (item_name,type,courier,city,date) values (?,?,?,?,?)  on conflict do nothing;");
 
         PreparedStatement shipping = con.prepareStatement("insert into shipping (item_name, ship, container) values (?,?,?)  on conflict do nothing;");
         PreparedStatement shipment = con.prepareStatement("update shipment set log_time = ? where item_name = ?");
@@ -633,8 +640,6 @@ public class DatabaseManipulation {
 
 
         if (!(ItemExportTime.isEmpty()) && getObjID(Records.import_export_detail, ItemName+",export")<0) {
-            exportCity.setString(1, ItemExportCity);
-            exportCity.addBatch();
             export_detail.setString(1, ItemName);
             export_detail.setString(2, "export");
             export_detail.setString(3, ItemType);
@@ -662,8 +667,6 @@ public class DatabaseManipulation {
 
 
         if (!(ItemImportTime.isEmpty())&& getObjID(Records.import_export_detail, ItemName+",import")<0) {
-            importCity.setString(1, ItemImportCity);
-            importCity.addBatch();
             import_detail.setString(1, ItemName);
             import_detail.setString(2, "import");
             import_detail.setString(3, ItemType);
@@ -671,32 +674,29 @@ public class DatabaseManipulation {
             import_detail.setFloat(5, Float.parseFloat(ItemImportTax));
             import_detail.setDate(6, Date.valueOf(ItemImportTime));
             import_detail.addBatch();
-            System.out.println(-565656);
         }
 
         if (!(DeliveryFinishTime.isEmpty())&& getObjID(Records.delivery_retrieval, ItemName+",delivery")<0) {
-            cityD.setString(1, DeliveryCity);
-            cityD.addBatch();
+
             courierD.setString(1, DeliveryCourier);
             courierD.setString(2, DeliveryCourierGender);
             courierD.setDate(3, CalBirth(DeliveryFinishTime, Float.parseFloat(DeliveryCourierAge)));
             courierD.setString(4, DeliveryCourierPhoneNumber);
             courierD.setString(5, CompanyName);
-            courierD.setString(6, DeliveryCity);
+            courierD.setString(6, ItemImportCity);
             courierD.addBatch();
 
             delivery.setString(1, ItemName);
             delivery.setString(2, "delivery");
             delivery.setString(3, DeliveryCourier);
-            delivery.setDate(4, Date.valueOf(DeliveryFinishTime));
+            delivery.setString(4, DeliveryCity);
+            delivery.setDate(5, Date.valueOf(DeliveryFinishTime));
             delivery.addBatch();
         }
+        cityD.executeBatch();
         shipment.executeBatch();
-        exportCity.executeBatch();
-        importCity.executeBatch();
         container.executeBatch();
         ship.executeBatch();
-        cityD.executeBatch();
         courierD.executeBatch();
         import_detail.executeBatch();
         export_detail.executeBatch();
@@ -716,7 +716,7 @@ public class DatabaseManipulation {
         if (con.isClosed()) {
             getConnection();
         }
-        String sql = "update courier set gender = ?, birthday=?, phone_number=?, company=?, city=? where name = ?";
+        String sql = "update courier set gender = ?, birthday=?, phone_number=?, company=?, port_city=? where name = ?";
 
         addOneRecord(Records.company, Info[4]);
         addOneRecord(Records.city, Info[5]);
@@ -730,8 +730,7 @@ public class DatabaseManipulation {
         preparedStatement.executeUpdate();
         return System.currentTimeMillis() - start;
     }
-
-int getObjID (Records type, String arg) throws SQLException {
+    int getObjID (Records type, String arg) throws SQLException {
     String[] Info = arg.split(",", -1);
     switch (type) {
         case city -> {
