@@ -56,10 +56,12 @@ create table if not exists Shipment
         constraint shipment_pk primary key,
     item_price      float             not null,
     item_type    varchar     not null,
-        from_city    varchar             not null
+    from_city    varchar             not null
         constraint shipment_fk_2 references City,
     to_city      varchar             not null
         constraint shipment_fk_3 references City,
+    company         varchar         not null
+        constraint shipment_fk_4 references company,
     log_time        timestamp      not null
 );
 create table if not exists Shipping

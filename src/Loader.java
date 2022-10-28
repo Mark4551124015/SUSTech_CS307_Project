@@ -44,7 +44,7 @@ public class Loader  {
             }
         }
     }
-    public void insert (String filePath, int max) {
+    public void loadFromFile (String filePath, int max) {
         getConnection();
         int cnt;
         int MAXRECORD = max;
@@ -95,7 +95,7 @@ public class Loader  {
             PreparedStatement delivery = con.prepareStatement("insert into delivery_retrieval (item_name,type,courier,date) values (?,?,?,?)  on conflict do nothing;");
 
             PreparedStatement shipping = con.prepareStatement("insert into shipping (item_name, ship, container) values (?,?,?)  on conflict do nothing;");
-            PreparedStatement shipment = con.prepareStatement("insert into shipment (item_name, item_price, item_type, from_city, to_city, log_time) values (?,?,?,?,?,?)  on conflict do nothing;");
+            PreparedStatement shipment = con.prepareStatement("insert into shipment (item_name, item_price, item_type, from_city, to_city, company, log_time) values (?,?,?,?,?,?,?)  on conflict do nothing;");
 
             //tax cal after insertion
             String[] Info = line.split(",",-1);
@@ -130,17 +130,20 @@ public class Loader  {
                 String CompanyName = Info[24];
                 String LogTime = Info[25];
 
+                company.setString(1,CompanyName);
+                company.addBatch();
+
                 shipment.setString(1, ItemName);
-                shipment.setFloat(2,Float.parseFloat(ItemPrice));
+                shipment.setFloat(2, Float.parseFloat(ItemPrice));
                 shipment.setString(3, ItemType);
                 shipment.setString(4, RetrievalCity);
                 shipment.setString(5, DeliveryCity);
-                shipment.setTimestamp(6, Timestamp.valueOf(LogTime));
+                shipment.setString(6,CompanyName);
+                shipment.setTimestamp(7, Timestamp.valueOf(LogTime));
                 shipment.addBatch();
 
                 //single insertion
-                company.setString(1,CompanyName);
-                company.addBatch();
+
 
                 cityR.setString(1,RetrievalCity);
                 cityR.addBatch();
@@ -223,6 +226,7 @@ public class Loader  {
                 }
             }
             company.executeBatch();
+            shipment.executeBatch();
             exportCity.executeBatch();
             importCity.executeBatch();
             container.executeBatch();
@@ -236,7 +240,7 @@ public class Loader  {
             retrieval.executeBatch();
             delivery.executeBatch();
             shipping.executeBatch();
-            shipment.executeBatch();
+
 
 
             operation.executeUpdate("alter table ship enable trigger all");

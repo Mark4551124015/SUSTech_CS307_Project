@@ -139,7 +139,7 @@ public class DatabaseManipulation {
             getConnection();
         }
         long startTime = System.currentTimeMillis();
-        String[] Info = str.split(",");
+        String[] Info = str.split(",",-1);
         PreparedStatement company = con.prepareStatement("insert into company (name) values (?)  on conflict do nothing;");
         PreparedStatement exportCity = con.prepareStatement("insert into portcity (name) values (?)  on conflict do nothing;");
         PreparedStatement importCity = con.prepareStatement("insert into portcity (name) values (?)  on conflict do nothing;");
@@ -158,7 +158,7 @@ public class DatabaseManipulation {
         PreparedStatement delivery = con.prepareStatement("insert into delivery_retrieval (item_name,type,courier,date) values (?,?,?,?)  on conflict do nothing;");
 
         PreparedStatement shipping = con.prepareStatement("insert into shipping (item_name, ship, container) values (?,?,?)  on conflict do nothing;");
-        PreparedStatement shipment = con.prepareStatement("insert into shipment (item_name, item_price, item_type, from_city, to_city, log_time) values (?,?,?,?,?,?)  on conflict do nothing;");
+        PreparedStatement shipment = con.prepareStatement("insert into shipment (item_name, item_price, item_type, from_city, to_city, company, log_time) values (?,?,?,?,?,?,?)  on conflict do nothing;");
 
         String ItemName = Info[0];
         String ItemType = Info[1];
@@ -187,17 +187,20 @@ public class DatabaseManipulation {
         String CompanyName = Info[24];
         String LogTime = Info[25];
 
+        company.setString(1, CompanyName);
+        company.addBatch();
+
         shipment.setString(1, ItemName);
         shipment.setFloat(2, Float.parseFloat(ItemPrice));
         shipment.setString(3, ItemType);
         shipment.setString(4, RetrievalCity);
         shipment.setString(5, DeliveryCity);
-        shipment.setTimestamp(6, Timestamp.valueOf(LogTime));
+        shipment.setString(6,CompanyName);
+        shipment.setTimestamp(7, Timestamp.valueOf(LogTime));
         shipment.addBatch();
 
         //single insertion
-        company.setString(1, CompanyName);
-        company.addBatch();
+
 
         cityR.setString(1, RetrievalCity);
         cityR.addBatch();
@@ -279,8 +282,8 @@ public class DatabaseManipulation {
             delivery.setDate(4, Date.valueOf(DeliveryFinishTime));
             delivery.addBatch();
         }
-        shipment.executeBatch();
         company.executeBatch();
+        shipment.executeBatch();
         exportCity.executeBatch();
         importCity.executeBatch();
         container.executeBatch();
@@ -311,10 +314,10 @@ public class DatabaseManipulation {
         shipping.setString(1, name);
         rd_detail.setString(1, name);
         ie_detail.setString(1, name);
-        shipment.executeUpdate();
         shipping.executeUpdate();
         rd_detail.executeUpdate();
         ie_detail.executeUpdate();
+        shipment.executeUpdate();
         long endTime = System.currentTimeMillis();
         return endTime - startTime;
     }
@@ -346,28 +349,113 @@ public class DatabaseManipulation {
         long endTime = System.currentTimeMillis();
         System.out.printf("Deleted: %d records, speed: %.2f records/s\n", name.length, (float) (name.length * 1e3 / (endTime - startTime)));
     }
+    public long deleteCity(String name) throws SQLException {
+        long startTime = System.currentTimeMillis();
+        if (con.isClosed()) {
+            getConnection();
+        }
+        PreparedStatement city = con.prepareStatement("delete from city where name = ?");
+
+        city.setString(1, name);
+        city.executeUpdate();
+        long endTime = System.currentTimeMillis();
+        return endTime - startTime;
+    }
+    public void deleteCity(String[] name) throws SQLException {
+        long startTime = System.currentTimeMillis();
+        if (con.isClosed()) {
+            getConnection();
+        }
+        String tmp;
+        PreparedStatement city = con.prepareStatement("delete from city where name = ?");
+        for (int i = 0; i < name.length; i++) {
+            tmp = name[i];
+            city.setString(1, tmp);
+            city.addBatch();
+        }
+        city.executeBatch();
+        long endTime = System.currentTimeMillis();
+        System.out.printf("Deleted City: %d records, speed: %.2f records/s\n", name.length, (float) (name.length * 1e3 / (endTime - startTime)));
+    }
+    public long deleteCourier(String name) throws SQLException {
+        if (con.isClosed()) {
+            getConnection();
+        }
+        long startTime = System.currentTimeMillis();
+        PreparedStatement courier = con.prepareStatement("delete from courier where name = ?");
+        courier.setString(1, name);
+        courier.executeUpdate();
+        long endTime = System.currentTimeMillis();
+        return endTime - startTime;
+    }
+    public void deleteCourier(String[] name) throws SQLException {
+
+        long startTime = System.currentTimeMillis();
+        if (con.isClosed()) {
+            getConnection();
+        }
+        String tmp;
+        PreparedStatement courier = con.prepareStatement("delete from courier where name = ?");
+        for (int i = 0; i < name.length; i++) {
+            tmp = name[i];
+            courier.setString(1, tmp);
+            courier.addBatch();
+        }
+        courier.executeBatch();
+        long endTime = System.currentTimeMillis();
+        System.out.printf("Deleted Courier: %d records, speed: %.2f records/s\n", name.length, (float) (name.length * 1e3 / (endTime - startTime)));
+    }
+
     //Select Records
-    public long selectShipment(String Item) throws SQLException {
+    public long selectShipmentByName(String Item) throws SQLException {
         long start = System.currentTimeMillis();
         if (con.isClosed()) {
             getConnection();
         }
         String sql = "select * from shipment where item_name = ?";
-        String[] Info = new String[5];
+        String[] Info = new String[7];
         PreparedStatement preparedStatement = con.prepareStatement(sql);
         preparedStatement.setString(1, Item);
         resultSet = preparedStatement.executeQuery();
-        resultSet.next();
-        System.out.println("EXPORT DETAILS: ");
-        System.out.println("----------------------------------------------------------");
-        System.out.printf("%10s %20s %10s %10s\n", "City", "Item Name", "Tax", "Date");
-        System.out.println("----------------------------------------------------------");
-        while (resultSet.next()) {
-            Info[0] = resultSet.getString("port_city");
-            Info[1] = resultSet.getString("item_name");
-            Info[2] = "¥" + resultSet.getInt("tax");
-            Info[3] = resultSet.getString("date");
-            System.out.format("%10s %20s %10s %10s\n", Info[0], Info[1], Info[2], Info[3]);
+        System.out.println("SHIPMENT DETAILS: ");
+        System.out.println("----------------------------------------------------------------------------------------------------------------------------");
+        System.out.printf("%15s %10s %15s %15s %15s %15s %20s\n",  "Item Name", "Item Type", "Item Price","From City", "To City", "Company", "Log Time");
+        System.out.println("----------------------------------------------------------------------------------------------------------------------------");
+        if (resultSet.next()) {
+            Info[0] = resultSet.getString("item_name");
+            Info[1] = resultSet.getString("item_type");
+            Info[2] = "¥" + resultSet.getInt("item_price");
+            Info[3] = resultSet.getString("from_city");
+            Info[4] = resultSet.getString("to_city");
+            Info[5] = resultSet.getString("company");
+            Info[6] = resultSet.getString("log_time");
+            System.out.format("%15s %10s %15s %15s %15s %15s %20s\n", Info[0], Info[1], Info[2], Info[3], Info[4], Info[5], Info[6]);
+        }
+        return System.currentTimeMillis()-start;
+    }
+    public long selectShipmentByID(int id) throws SQLException {
+        long start = System.currentTimeMillis();
+        if (con.isClosed()) {
+            getConnection();
+        }
+        String sql = "select * from shipment where shipment_id = ?";
+        String[] Info = new String[7];
+        PreparedStatement preparedStatement = con.prepareStatement(sql);
+        preparedStatement.setInt(1, id);
+        resultSet = preparedStatement.executeQuery();
+        System.out.println("SHIPMENT DETAILS: ");
+        System.out.println("----------------------------------------------------------------------------------------------------------------------------");
+        System.out.printf("%15s %10s %15s %15s %15s %15s %20s\n",  "Item Name", "Item Type", "Item Price","From City", "To City", "Company", "Log Time");
+        System.out.println("----------------------------------------------------------------------------------------------------------------------------");
+        if (resultSet.next()) {
+            Info[0] = resultSet.getString("item_name");
+            Info[1] = resultSet.getString("item_type");
+            Info[2] = "¥" + resultSet.getInt("item_price");
+            Info[3] = resultSet.getString("from_city");
+            Info[4] = resultSet.getString("to_city");
+            Info[5] = resultSet.getString("company");
+            Info[6] = resultSet.getString("log_time");
+            System.out.format("%15s %10s %15s %15s %15s %15s %20s\n", Info[0], Info[1], Info[2], Info[3], Info[4], Info[5], Info[6]);
         }
         return System.currentTimeMillis()-start;
     }
@@ -381,7 +469,7 @@ public class DatabaseManipulation {
         PreparedStatement preparedStatement = con.prepareStatement(sql);
         preparedStatement.setString(1, str);
         resultSet = preparedStatement.executeQuery();
-        resultSet.next();
+
         System.out.println("EXPORT DETAILS: ");
         System.out.println("----------------------------------------------------------");
         System.out.printf("%10s %20s %10s %10s\n", "City", "Item Name", "Tax", "Date");
@@ -405,7 +493,7 @@ public class DatabaseManipulation {
         PreparedStatement preparedStatement = con.prepareStatement(sql);
         preparedStatement.setString(1, str);
         resultSet = preparedStatement.executeQuery();
-        resultSet.next();
+
         System.out.println("IMPORT DETAILS: ");
         System.out.println("----------------------------------------------------------");
         System.out.printf("%10s %20s %10s %10s\n", "City", "Item Name", "Tax", "Date");
@@ -429,7 +517,7 @@ public class DatabaseManipulation {
         PreparedStatement preparedStatement = con.prepareStatement(sql);
         preparedStatement.setString(1, str);
         resultSet = preparedStatement.executeQuery();
-        resultSet.next();
+
         System.out.println("SHIPPING DETAILS: ");
         System.out.println("----------------------------------------------------------");
         System.out.printf("%15s %17s %15s\n", "Item Name", "Ship", "Container");
@@ -493,12 +581,15 @@ public class DatabaseManipulation {
     }
     //Update Records
     public long updateByRecord(String str) throws SQLException {
-        long start = System.currentTimeMillis();
+        String[] Info = str.split(",",-1);
+        if (getObjID(Records.courier,Info[0]) < 0) {
+            System.out.println("Does not exist");
+            return -1;
+        }
+        long startTime = System.currentTimeMillis();
         if (con.isClosed()) {
             getConnection();
         }
-        long startTime = System.currentTimeMillis();
-        String[] Info = str.split(",");
         PreparedStatement cityD = con.prepareStatement("insert into city (name) values (?)  on conflict do nothing;");
 
         PreparedStatement exportCity = con.prepareStatement("insert into portcity (name) values (?)  on conflict do nothing;");
@@ -541,10 +632,9 @@ public class DatabaseManipulation {
         shipment.addBatch();
 
 
-        if (!(ItemExportTime.isEmpty())) {
+        if (!(ItemExportTime.isEmpty()) && getObjID(Records.import_export_detail, ItemName+",export")<0) {
             exportCity.setString(1, ItemExportCity);
             exportCity.addBatch();
-
             export_detail.setString(1, ItemName);
             export_detail.setString(2, "export");
             export_detail.setString(3, ItemType);
@@ -554,7 +644,7 @@ public class DatabaseManipulation {
             export_detail.addBatch();
         }
 
-        if (!(ShipName.isEmpty())) {
+        if (!(ShipName.isEmpty())&& getObjID(Records.import_export_detail, ItemName+",export")<0) {
             container.setString(1, ContainerCode);
             container.setString(2, ContainerType);
             container.addBatch();
@@ -565,15 +655,13 @@ public class DatabaseManipulation {
 
             shipping.setString(2, ShipName);
             shipping.setString(3, ContainerCode);
-        } else {
-            shipping.setString(2, null);
-            shipping.setString(3, null);
+            shipping.setString(1, ItemName);
+            shipping.addBatch();
         }
-        shipping.setString(1, ItemName);
-        shipping.addBatch();
 
 
-        if (!(ItemImportTime.isEmpty())) {
+
+        if (!(ItemImportTime.isEmpty())&& getObjID(Records.import_export_detail, ItemName+",import")<0) {
             importCity.setString(1, ItemImportCity);
             importCity.addBatch();
             import_detail.setString(1, ItemName);
@@ -583,12 +671,12 @@ public class DatabaseManipulation {
             import_detail.setFloat(5, Float.parseFloat(ItemImportTax));
             import_detail.setDate(6, Date.valueOf(ItemImportTime));
             import_detail.addBatch();
+            System.out.println(-565656);
         }
 
-        if (!(DeliveryFinishTime.isEmpty())) {
+        if (!(DeliveryFinishTime.isEmpty())&& getObjID(Records.delivery_retrieval, ItemName+",delivery")<0) {
             cityD.setString(1, DeliveryCity);
             cityD.addBatch();
-
             courierD.setString(1, DeliveryCourier);
             courierD.setString(2, DeliveryCourierGender);
             courierD.setDate(3, CalBirth(DeliveryFinishTime, Float.parseFloat(DeliveryCourierAge)));
@@ -618,170 +706,136 @@ public class DatabaseManipulation {
         return System.currentTimeMillis() - startTime;
 
     }
-    int getObjID (Records type, String arg) throws SQLException {
-            String[] Info = arg.split(",", -1);
-            switch (type) {
-                case city -> {
-                    String sql = "select city_id from city where name = ?";
-                    PreparedStatement preparedStatement = con.prepareStatement(sql);
-                    preparedStatement.setString(1, Info[0]);
-                    resultSet = preparedStatement.executeQuery();
-                    if (resultSet.next()) {
-                        return resultSet.getInt("city_id");
-                    }
-
-                }
-                case courier -> {
-                    String sql = "select courier_id from courier where name = ?";
-                    PreparedStatement preparedStatement = con.prepareStatement(sql);
-                    preparedStatement.setString(1, Info[0]);
-                    resultSet = preparedStatement.executeQuery();
-                    if (resultSet.next()) {
-                        return resultSet.getInt("courier_id");
-                    }
-
-                }
-                case portCity -> {
-                    String sql = "select port_city_id from portcity where name = ?";
-                    PreparedStatement preparedStatement = con.prepareStatement(sql);
-                    preparedStatement.setString(1, Info[0]);
-                    resultSet = preparedStatement.executeQuery();
-                    if (resultSet.next()) {
-                        return resultSet.getInt("port_city_id");
-                    }
-
-                }
-                case company -> {
-                    String sql = "select company_id from company where name = ?";
-                    PreparedStatement preparedStatement = con.prepareStatement(sql);
-                    preparedStatement.setString(1, Info[0]);
-                    resultSet = preparedStatement.executeQuery();
-                    if (resultSet.next()) {
-                        return resultSet.getInt("company_id");
-                    }
-
-                }
-                case container -> {
-                    String sql = "select container_id from container where code = ?";
-                    PreparedStatement preparedStatement = con.prepareStatement(sql);
-                    preparedStatement.setString(1, Info[0]);
-                    resultSet = preparedStatement.executeQuery();
-                    if (resultSet.next()) {
-                        return resultSet.getInt("container_id");
-                    }
-                }
-                case ship -> {
-                    String sql = "select ship_id from ship where name = ?";
-                    PreparedStatement preparedStatement = con.prepareStatement(sql);
-                    preparedStatement.setString(1, Info[0]);
-                    resultSet = preparedStatement.executeQuery();
-                    if (resultSet.next()) {
-                        return resultSet.getInt("ship_id");
-                    }
-
-                }
-                case delivery_retrieval -> {
-                    String sql = "select dr_id from delivery_retrieval where item_name = ? and type = ?";
-                    PreparedStatement preparedStatement = con.prepareStatement(sql);
-                    preparedStatement.setString(1, Info[0]);
-                    preparedStatement.setString(2, Info[1]);
-                    resultSet = preparedStatement.executeQuery();
-                    if (resultSet.next()) {
-                        return resultSet.getInt("dr_id");
-                    }
-
-                }
-                case import_export_detail -> {
-                    String sql = "select port_id from import_export_detail where item_name = ? and type = ?";
-                    PreparedStatement preparedStatement = con.prepareStatement(sql);
-                    preparedStatement.setString(1, Info[0]);
-                    preparedStatement.setString(2, Info[1]);
-                    resultSet = preparedStatement.executeQuery();
-                    if (resultSet.next()) {
-                        return resultSet.getInt("port_id");
-                    }
-
-                }
-                case shipping -> {
-                    String sql = "select shipping_id from shipping where item_name = ?";
-                    PreparedStatement preparedStatement = con.prepareStatement(sql);
-                    preparedStatement.setString(1, Info[0]);
-                    resultSet = preparedStatement.executeQuery();
-                    if (resultSet.next()) {
-                        return resultSet.getInt("shipping_id");
-                    }
-                }
-                case shipment -> {
-                    String sql = "select shipment_id from shipment where item_name = ?";
-                    PreparedStatement preparedStatement = con.prepareStatement(sql);
-                    preparedStatement.setString(1, Info[0]);
-                    resultSet = preparedStatement.executeQuery();
-                    if (resultSet.next()) {
-                        return resultSet.getInt("shipment_id");
-                    }
-                }
-            }
+    public long updateCourier(String str) throws SQLException {
+        String[] Info = str.split(",",-1);
+        if (getObjID(Records.courier,Info[0]) < 0) {
+            System.out.println("Does not exist");
             return -1;
         }
+        long start = System.currentTimeMillis();
+        if (con.isClosed()) {
+            getConnection();
+        }
+        String sql = "update courier set gender = ?, birthday=?, phone_number=?, company=?, city=? where name = ?";
 
+        addOneRecord(Records.company, Info[4]);
+        addOneRecord(Records.city, Info[5]);
+        PreparedStatement preparedStatement = con.prepareStatement(sql);
+        preparedStatement.setString(1, Info[1]);
+        preparedStatement.setDate(2, Date.valueOf(Info[2]));
+        preparedStatement.setString(3, Info[3]);
+        preparedStatement.setString(4, Info[4]);
+        preparedStatement.setString(5, Info[5]);
+        preparedStatement.setString(6, Info[0]);
+        preparedStatement.executeUpdate();
+        return System.currentTimeMillis() - start;
+    }
 
-    //Update Records
+int getObjID (Records type, String arg) throws SQLException {
+    String[] Info = arg.split(",", -1);
+    switch (type) {
+        case city -> {
+            String sql = "select city_id from city where name = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, Info[0]);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("city_id");
+            }
 
-    //Select Records
+        }
+        case courier -> {
+            String sql = "select courier_id from courier where name = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, Info[0]);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("courier_id");
+            }
 
-//    @Override
-//    public String continentsWithCountryCount() {
-//        getConnection();
-//        StringBuilder sb = new StringBuilder();
-//        String sql = "select continent, count(*) countryNumber from countries group by continent;";
-//        try {
-//            Statement statement = con.createStatement();
-//            resultSet = statement.executeQuery(sql);
-//            while (resultSet.next()) {
-//                sb.append(resultSet.getString("continent") + "\t");
-//                sb.append(resultSet.getString("countryNumber"));
-//                sb.append(System.lineSeparator());
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        } finally {
-//            closeConnection();
-//        }
-//        return sb.toString();
-//    }
-//
-//    @Override
-//    public String FullInformationOfMoviesRuntime(int min, int max) {
-//        getConnection();
-//        StringBuilder sb = new StringBuilder();
-//        String sql = "select m.title,c.country_name country,c.continent ,m.runtime " +
-//                "from movies m " +
-//                "join countries c on m.country=c.country_code " +
-//                "where m.runtime between ? and ? order by runtime;";
-//        try {
-//            PreparedStatement preparedStatement = con.prepareStatement(sql);
-//            preparedStatement.setInt(1, min);
-//            preparedStatement.setInt(2, max);
-//            resultSet = preparedStatement.executeQuery();
-//            while (resultSet.next()) {
-//                sb.append(resultSet.getString("runtime") + "\t");
-//                sb.append(String.format("%-18s", resultSet.getString("country")));
-//                sb.append(resultSet.getString("continent") + "\t");
-//                sb.append(resultSet.getString("title") + "\t");
-//                sb.append(System.lineSeparator());
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        } finally {
-//            closeConnection();
-//        }
-//        return sb.toString();
-//    }
-//
-//    @Override
-//    public String findMovieById(int id) {
-//        return null;
-//    }
+        }
+        case portCity -> {
+            String sql = "select port_city_id from portcity where name = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, Info[0]);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("port_city_id");
+            }
+
+        }
+        case company -> {
+            String sql = "select company_id from company where name = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, Info[0]);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("company_id");
+            }
+
+        }
+        case container -> {
+            String sql = "select container_id from container where code = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, Info[0]);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("container_id");
+            }
+        }
+        case ship -> {
+            String sql = "select ship_id from ship where name = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, Info[0]);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("ship_id");
+            }
+
+        }
+        case delivery_retrieval -> {
+            String sql = "select dr_id from delivery_retrieval where item_name = ? and type = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, Info[0]);
+            preparedStatement.setString(2, Info[1]);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("dr_id");
+            }
+
+        }
+        case import_export_detail -> {
+            String sql = "select port_id from import_export_detail where item_name = ? and type = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, Info[0]);
+            preparedStatement.setString(2, Info[1]);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("port_id");
+            }
+
+        }
+        case shipping -> {
+            String sql = "select shipping_id from shipping where item_name = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, Info[0]);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("shipping_id");
+            }
+        }
+        case shipment -> {
+            String sql = "select shipment_id from shipment where item_name = ?";
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1, Info[0]);
+            resultSet = preparedStatement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("shipment_id");
+            }
+        }
+    }
+    return -1;
+}
     public static Date CalBirth (String str, float age) {
         Date date = Date.valueOf(str);
         Calendar birth = Calendar.getInstance();
