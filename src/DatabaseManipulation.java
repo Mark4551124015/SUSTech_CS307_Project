@@ -9,11 +9,6 @@ import java.util.Calendar;
 public class DatabaseManipulation {
     private Connection con = null;
     private ResultSet resultSet;
-    private final String host = "localhost";
-    private final String dbname = "sustc";
-    private final String user = "postgres";
-    private final String pwd = "314159";
-    private final String port = "5432";
 
     public void getConnection() {
         try {
@@ -25,10 +20,9 @@ public class DatabaseManipulation {
         }
 
         try {
-            String url = "jdbc:postgresql://" + host + ":" + port + "/" + dbname;
-            con = DriverManager.getConnection(url, user, pwd);
-
-        } catch (SQLException e) {
+            JDBC jb = new JDBC();
+            con = jb.getNewCon();
+        } catch (Exception e) {
             System.err.println("Database connection failed");
             System.err.println(e.getMessage());
             System.exit(1);
@@ -847,5 +841,4 @@ public class DatabaseManipulation {
     }
 
 }
-
 //

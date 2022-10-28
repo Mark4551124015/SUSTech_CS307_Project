@@ -17,7 +17,11 @@ public class SpeedTest {
     public static void main(String[] args) {
         SpeedTest speedTest = new SpeedTest();
         try {
+            speedTest.insertTest();
             speedTest.deleteTest();
+
+
+
         } catch (IOException e) {
             e.printStackTrace();
         }

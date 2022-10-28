@@ -12,45 +12,14 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Loader  {
-    private final String host = "localhost";
-    private final String dbname = "sustc";
-    private  final String user = "postgres";
-    private final String pwd = "314159";
-    private final String port = "5432";
-    public Connection con = null;
-    public void getConnection() {
-        try {
-            Class.forName("org.postgresql.Driver");
 
-        } catch (Exception e) {
-            System.err.println("Cannot find the PostgreSQL driver. Check CLASSPATH.");
-            System.exit(1);
-        }
-
-        try {
-            String url = "jdbc:postgresql://" + host + ":" + port + "/" + dbname+"?reWriteBatchedInserts=true";
-            con = DriverManager.getConnection(url, user, pwd);
-
-        } catch (SQLException e) {
-            System.err.println("Database connection failed");
-            System.err.println(e.getMessage());
-            System.exit(1);
-        }
-    }
-    public void closeConnection() {
-        if (con != null) {
-            try {
-                con.close();
-                con = null;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
     public void loadFromFile (String filePath, int max) {
+        System.out.println("Start loading...");
         int cnt;
         int MAXRECORD = max;
         try {
+            JDBC jb = new JDBC();
+            Connection con = jb.getNewCon();
             File csv = new File(filePath);
             csv.setReadable(true);
             csv.setWritable(true);
@@ -64,21 +33,8 @@ public class Loader  {
 
             Statement operation = con.createStatement();
             con.setAutoCommit(false);
-            System.out.println("start");
             long startTime=System.currentTimeMillis();
-            operation.executeUpdate("alter table delivery_retrieval set unlogged;");
-            operation.executeUpdate("alter table import_export_detail set unlogged;");
-
-            operation.executeUpdate("alter table courier set unlogged;");
-
-            operation.executeUpdate("alter table shipping  set unlogged;");
-            operation.executeUpdate("alter table shipment  set unlogged;");
-
-            operation.executeUpdate("alter table ship set unlogged;");
-            operation.executeUpdate("alter table city set unlogged;");
-            operation.executeUpdate("alter table company set unlogged;");
-            operation.executeUpdate("alter table container set unlogged;");
-            operation.executeUpdate("alter table portcity  set unlogged;");
+            
 
             operation.executeUpdate("alter table ship disable trigger all;");
             operation.executeUpdate("alter table city disable trigger all;");
@@ -91,11 +47,6 @@ public class Loader  {
             operation.executeUpdate("alter table shipment disable trigger all;");
             operation.executeUpdate("alter table shipping disable trigger all;");
             con.commit();
-
-
-
-
-
 
             PreparedStatement company = con.prepareStatement("insert into company (name) values (?)  on conflict do nothing;");
             PreparedStatement exportCity = con.prepareStatement("insert into portcity (name) values (?)  on conflict do nothing;");
@@ -118,37 +69,63 @@ public class Loader  {
             PreparedStatement shipment = con.prepareStatement("insert into shipment (item_name, item_price, item_type, from_city, to_city, export_city, import_city, company, log_time) values (?,?,?,?,?,?,?,?,?)  on conflict do nothing;");
 
             //tax cal after insertion
-            String[] Info;
+            String[] Info = new String[50];
+            String ItemName = Info[0];
+            String ItemType = Info[1];
+            String ItemPrice = Info[2];
+            String RetrievalCity = Info[3];
+            String RetrievalStartTime = Info[4];
+            String RetrievalCourier = Info[5];
+            String RetrievalCourierGender = Info[6];
+            String RetrievalCourierPhoneNumber = Info[7];
+            String RetrievalCourierAge = Info[8];
+            String DeliveryFinishTime = Info[9];
+            String DeliveryCity = Info[10];
+            String DeliveryCourier = Info[11];
+            String DeliveryCourierGender = Info[12];
+            String DeliveryCourierPhoneNumber = Info[13];
+            String DeliveryCourierAge = Info[14];
+            String ItemExportCity = Info[15];
+            String ItemExportTax = Info[16];
+            String ItemExportTime = Info[17];
+            String ItemImportCity = Info[18];
+            String ItemImportTax = Info[19];
+            String ItemImportTime = Info[20];
+            String ContainerCode = Info[21];
+            String ContainerType = Info[22];
+            String ShipName = Info[23];
+            String CompanyName = Info[24];
+            String LogTime ;
 
             while ((line = br.readLine()) != null && cnt <= MAXRECORD) {
                 ++cnt;
                 Info = line.split(",",-1);
-                String ItemName = Info[0];
-                String ItemType = Info[1];
-                String ItemPrice = Info[2];
-                String RetrievalCity = Info[3];
-                String RetrievalStartTime = Info[4];
-                String RetrievalCourier = Info[5];
-                String RetrievalCourierGender = Info[6];
-                String RetrievalCourierPhoneNumber = Info[7];
-                String RetrievalCourierAge = Info[8];
-                String DeliveryFinishTime = Info[9];
-                String DeliveryCity = Info[10];
-                String DeliveryCourier = Info[11];
-                String DeliveryCourierGender = Info[12];
-                String DeliveryCourierPhoneNumber = Info[13];
-                String DeliveryCourierAge = Info[14];
-                String ItemExportCity = Info[15];
-                String ItemExportTax = Info[16];
-                String ItemExportTime = Info[17];
-                String ItemImportCity = Info[18];
-                String ItemImportTax = Info[19];
-                String ItemImportTime = Info[20];
-                String ContainerCode = Info[21];
-                String ContainerType = Info[22];
-                String ShipName = Info[23];
-                String CompanyName = Info[24];
-                String LogTime = Info[25];
+                 ItemName = Info[0];
+                 ItemType = Info[1];
+                 ItemPrice = Info[2];
+                 RetrievalCity = Info[3];
+                RetrievalStartTime = Info[4];
+                 RetrievalCourier = Info[5];
+                RetrievalCourierGender = Info[6];
+                 RetrievalCourierPhoneNumber = Info[7];
+                 RetrievalCourierAge = Info[8];
+                 DeliveryFinishTime = Info[9];
+                 DeliveryCity = Info[10];
+                 DeliveryCourier = Info[11];
+                 DeliveryCourierGender = Info[12];
+                 DeliveryCourierPhoneNumber = Info[13];
+                 DeliveryCourierAge = Info[14];
+                 ItemExportCity = Info[15];
+                 ItemExportTax = Info[16];
+                 ItemExportTime = Info[17];
+                 ItemImportCity = Info[18];
+                 ItemImportTax = Info[19];
+                 ItemImportTime = Info[20];
+                 ContainerCode = Info[21];
+                 ContainerType = Info[22];
+                 ShipName = Info[23];
+                 CompanyName = Info[24];
+                 LogTime = Info[25];
 
                 company.setString(1,CompanyName);
                 company.addBatch();
@@ -247,39 +224,7 @@ public class Loader  {
                     delivery.setDate(5,Date.valueOf(DeliveryFinishTime));
                     delivery.addBatch();
                 }
-                if (cnt %5000 == 0) {
-                    company.executeBatch();
-                    exportCity.executeBatch();
-                    importCity.executeBatch();
-                    cityR.executeBatch();
-                    cityD.executeBatch();
-                    shipment.executeBatch();
-                    container.executeBatch();
-                    ship.executeBatch();
-                    courierR.executeBatch();
-                    courierD.executeBatch();
-                    import_detail.executeBatch();
-                    export_detail.executeBatch();
-                    retrieval.executeBatch();
-                    delivery.executeBatch();
-                    shipping.executeBatch();
-                    company.clearBatch();
-                    exportCity.clearBatch();
-                    importCity.clearBatch();
-                    cityR.clearBatch();
-                    cityD.clearBatch();
-                    shipment.clearBatch();
-                    container.clearBatch();
-                    ship.clearBatch();
-                    courierR.clearBatch();
-                    courierD.clearBatch();
-                    import_detail.clearBatch();
-                    export_detail.clearBatch();
-                    retrieval.clearBatch();
-                    delivery.clearBatch();
-                    shipping.clearBatch();
-                    con.commit();
-                }
+
             }
             company.executeBatch();
             exportCity.executeBatch();
@@ -312,16 +257,6 @@ public class Loader  {
             delivery.clearBatch();
             shipping.clearBatch();
 
-            operation.executeUpdate("alter table company set logged;");
-            operation.executeUpdate("alter table ship set logged;");
-            operation.executeUpdate("alter table city set logged;");
-            operation.executeUpdate("alter table container set logged;");
-            operation.executeUpdate("alter table portcity  set logged;");
-            operation.executeUpdate("alter table shipment  set logged;");
-            operation.executeUpdate("alter table shipping  set logged;");
-            operation.executeUpdate("alter table courier set logged;");
-            operation.executeUpdate("alter table delivery_retrieval set logged;");
-            operation.executeUpdate("alter table import_export_detail set logged;");
 
             operation.executeUpdate("alter table ship enable trigger all");
             operation.executeUpdate("alter table city enable trigger all");
@@ -333,18 +268,19 @@ public class Loader  {
             operation.executeUpdate("alter table portcity enable trigger all");
             operation.executeUpdate("alter table shipment enable trigger all");
             operation.executeUpdate("alter table shipping enable trigger all");
-//            operation.executeUpdate("ALTER SYSTEM SET full_page_writes = true");
+
             con.commit();
+            con.setAutoCommit(true);
+
             con.setAutoCommit(true);
             long endTime=System.currentTimeMillis();
             System.out.printf("Inserted: %d records, speed: %.2f records/s\n",MAXRECORD, (float)(MAXRECORD*1e3/(endTime-startTime)));
+
         } catch (Exception e) {
             System.err.println(e);
 
         }
     }
-
-
     public static Date CalBirth (String str, float age) {
         Date date = Date.valueOf(str);
         Calendar birth = Calendar.getInstance();

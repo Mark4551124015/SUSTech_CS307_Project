@@ -9,7 +9,6 @@ public class Client {
 
         DatabaseManipulation dm = new DatabaseManipulation();
         dm.getConnection();
-        ld.getConnection();
         ld.loadFromFile("data/shipment_records.csv",100000);
         dm.closeConnection();
     }
