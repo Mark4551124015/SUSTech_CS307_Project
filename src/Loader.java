@@ -203,7 +203,6 @@ public class Loader  {
                     import_detail.setDate(6, Date.valueOf(ItemImportTime));
                     import_detail.addBatch();
                 }
-
                 if (!(DeliveryFinishTime.isEmpty())) {
                     cityD.setString(1,DeliveryCity);
                     cityD.addBatch();
@@ -222,10 +221,6 @@ public class Loader  {
                     delivery.setDate(4,Date.valueOf(RetrievalStartTime));
                     delivery.addBatch();
                 }
-
-
-
-
             }
             company.executeBatch();
             exportCity.executeBatch();
