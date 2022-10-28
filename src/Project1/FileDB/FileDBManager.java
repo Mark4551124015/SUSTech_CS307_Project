@@ -57,18 +57,7 @@ public class FileDBManager {
     }
 
     public FileDBManager() throws IOException {
-
-        for (int i = 0; i < Models.length; i++) {
-            BaseModel model = Models[i];
-            if (!model.getDBFile().exists()) {
-                model.initialize();
-                model.save();
-            }
-
-            FileReader reader = new FileReader(model.getDBFile());
-            Models[i] = getGson().fromJson(reader, model.getClass());
-            reader.close();
-        }
+        reload();
     }
 
 
@@ -124,7 +113,7 @@ public class FileDBManager {
 
     }
 
-    public void save() throws IOException {
+    public static void save() throws IOException {
         for (BaseModel model : Models) {
             model.save();
         }
@@ -139,5 +128,38 @@ public class FileDBManager {
             }
         }
         return instance;
+    }
+
+    public static void reload() throws IOException {
+        for (int i = 0; i < Models.length; i++) {
+            BaseModel model = Models[i];
+            if (!model.getDBFile().exists()) {
+                model.initialize();
+                model.save();
+            }
+
+            FileReader reader = new FileReader(model.getDBFile());
+            Models[i] = getGson().fromJson(reader, model.getClass());
+            reader.close();
+        }
+
+    }
+
+    public static void initializeAll() {
+        for (BaseModel model : Models) {
+            model.initialize();
+        }
+        try {
+            save();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public static void shuffleAll() {
+        for (BaseModel model : Models) {
+            model.shuffle();
+        }
     }
 }

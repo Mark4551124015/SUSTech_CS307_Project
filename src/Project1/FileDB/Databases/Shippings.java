@@ -25,6 +25,10 @@ public class Shippings extends BaseModel<Shipping> {
             return null;
         }
 
+        if (FileDBManager.getShipments().select(shipment -> shipment.itemName.equals(itemName)).size() < 1) {
+            return null;
+        }
+
         Shipping newRecord = new Shipping(itemName, ship, containerCode);
         this.data.add(newRecord);
         return newRecord;

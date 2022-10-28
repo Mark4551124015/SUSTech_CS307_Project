@@ -1,7 +1,5 @@
 package Project1.FileDB;
 
-import Project1.FileDB.Databases.Models.Company;
-
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.text.ParseException;
@@ -45,79 +43,21 @@ public class DataImporter {
         int counter = 0;
 
         while (line != null && counter < max) {
+/*
             // Timer
-            long startTime=System.currentTimeMillis();
+            long startTime = System.currentTimeMillis();
+*/
 
-            String[] primaryData = line.split(",", -1);
-            String ItemName = primaryData[0];
-            String ItemType = primaryData[1];
-            double ItemPrice = Double.parseDouble(primaryData[2]);
-            String RetrievalCity = primaryData[3];
-            String RetrievalStartTime = primaryData[4];
-            String RetrievalCourier = primaryData[5];
-            String RetrievalCourierGender = primaryData[6];
-            String RetrievalCourierPhoneNumber = primaryData[7];
-            float RetrievalCourierAge = Float.parseFloat(primaryData[8]);
-            String DeliveryFinishTime = primaryData[9];
-            String DeliveryCity = primaryData[10];
-            String DeliveryCourier = primaryData[11];
-            String DeliveryCourierGender = primaryData[12];
-            String DeliveryCourierPhoneNumber = primaryData[13];
-            float DeliveryCourierAge = Float.parseFloat(primaryData[14].isEmpty() ? "0" : primaryData[14]);
-            String ItemExportCity = primaryData[15];
-            double ItemExportTax = Double.parseDouble(primaryData[16]);
-            String ItemExportTime = primaryData[17];
-            String ItemImportCity = primaryData[18];
-            double ItemImportTax = Double.parseDouble(primaryData[19]);
-            String ItemImportTime = primaryData[20];
-            String ContainerCode = primaryData[21];
-            String ContainerType = primaryData[22];
-            String ShipName = primaryData[23];
-            String CompanyName = primaryData[24];
-            String LogTime = primaryData[25];
-
-
-            /*
-             * Import Start
-             */
-            importCompanyIfNotExist(CompanyName);
-            importCityIfNotExist(DeliveryCity);
-            importCityIfNotExist(RetrievalCity);
-            importPortCityIfNotExist(ItemImportCity);
-            importPortCityIfNotExist(ItemExportCity);
-            importCourierIfNotExist(RetrievalCourier, RetrievalCourierGender, CompanyName, RetrievalCity, RetrievalCourierPhoneNumber, RetrievalCourierAge, RetrievalStartTime);
-            importRetrieval(ItemName, RetrievalCourier, RetrievalStartTime);
-
-            importShipmentIfNotExist(ItemName, ItemPrice, ItemType, RetrievalCity, DeliveryCity, LogTime);
-
-            if (!DeliveryCourier.isEmpty()) {
-                importCourierIfNotExist(DeliveryCourier, DeliveryCourierGender, CompanyName, DeliveryCity, DeliveryCourierPhoneNumber, DeliveryCourierAge, DeliveryFinishTime);
-                importDelivery(ItemName, DeliveryCourier, DeliveryFinishTime);
-            }
-
-            if (!ItemExportTime.isEmpty()) {
-                importContainerIfNotExist(ContainerCode, ContainerType);
-                importShipIfNotExist(ShipName, CompanyName);
-
-                importExport(ItemName, ItemImportCity, ItemExportTax, ItemExportTime);
-                importShipping(ItemName, ShipName, ContainerCode);
-            }
-
-            if (!ItemImportTime.isEmpty()) {
-                importImport(ItemName, ItemImportCity, ItemImportTax, ItemImportTime);
-            }
+            String[] piece = line.split(",", -1);
+            insertPiece(piece);
 
             /*
              * Import End
              */
 
-            // To mimic real database, save each time inserted new records
-            fileDBManager.save();
-
-            // Timer
-            long endTime=System.currentTimeMillis();
-            System.out.printf("Inserted %dth record, cost: %d ms\n",counter + 1, (endTime-startTime));
-
+/*            // Timer
+            long endTime = System.currentTimeMillis();
+            System.out.printf("Inserted %dth record, cost: %d ms\n", counter + 1, (endTime - startTime));*/
 
             // prepare for next loop
             line = reader.readLine();
@@ -127,6 +67,66 @@ public class DataImporter {
 
 
         return counter;
+    }
+
+    public void insertPiece(String[] piece) {
+        String ItemName = piece[0];
+        String ItemType = piece[1];
+        double ItemPrice = Double.parseDouble(piece[2]);
+        String RetrievalCity = piece[3];
+        String RetrievalStartTime = piece[4];
+        String RetrievalCourier = piece[5];
+        String RetrievalCourierGender = piece[6];
+        String RetrievalCourierPhoneNumber = piece[7];
+        float RetrievalCourierAge = Float.parseFloat(piece[8]);
+        String DeliveryFinishTime = piece[9];
+        String DeliveryCity = piece[10];
+        String DeliveryCourier = piece[11];
+        String DeliveryCourierGender = piece[12];
+        String DeliveryCourierPhoneNumber = piece[13];
+        float DeliveryCourierAge = Float.parseFloat(piece[14].isEmpty() ? "0" : piece[14]);
+        String ItemExportCity = piece[15];
+        double ItemExportTax = Double.parseDouble(piece[16]);
+        String ItemExportTime = piece[17];
+        String ItemImportCity = piece[18];
+        double ItemImportTax = Double.parseDouble(piece[19]);
+        String ItemImportTime = piece[20];
+        String ContainerCode = piece[21];
+        String ContainerType = piece[22];
+        String ShipName = piece[23];
+        String CompanyName = piece[24];
+        String LogTime = piece[25];
+
+
+        /*
+         * Import Start
+         */
+        importCompanyIfNotExist(CompanyName);
+        importCityIfNotExist(DeliveryCity);
+        importCityIfNotExist(RetrievalCity);
+        importPortCityIfNotExist(ItemImportCity);
+        importPortCityIfNotExist(ItemExportCity);
+        importCourierIfNotExist(RetrievalCourier, RetrievalCourierGender, CompanyName, RetrievalCity, RetrievalCourierPhoneNumber, RetrievalCourierAge, RetrievalStartTime);
+        importRetrieval(ItemName, RetrievalCourier, RetrievalStartTime);
+
+        importShipmentIfNotExist(ItemName, ItemPrice, ItemType, RetrievalCity, DeliveryCity, LogTime, CompanyName);
+
+        if (!DeliveryCourier.isEmpty()) {
+            importCourierIfNotExist(DeliveryCourier, DeliveryCourierGender, CompanyName, DeliveryCity, DeliveryCourierPhoneNumber, DeliveryCourierAge, DeliveryFinishTime);
+            importDelivery(ItemName, DeliveryCourier, DeliveryFinishTime);
+        }
+
+        if (!ItemExportTime.isEmpty()) {
+            importContainerIfNotExist(ContainerCode, ContainerType);
+            importShipIfNotExist(ShipName, CompanyName);
+
+            importExport(ItemName, ItemImportCity, ItemExportTax, ItemExportTime);
+            importShipping(ItemName, ShipName, ContainerCode);
+        }
+
+        if (!ItemImportTime.isEmpty()) {
+            importImport(ItemName, ItemImportCity, ItemImportTax, ItemImportTime);
+        }
     }
 
     public void importCompanyIfNotExist(String companyName) {
@@ -154,9 +154,9 @@ public class DataImporter {
         FileDBManager.getCouriers().insert(name, gender, birthday, phoneNumber, city);
     }
 
-    public void importShipmentIfNotExist(String itemName, double itemPrice, String itemType, String fromCity, String toCity, String logTimeString) {
+    public void importShipmentIfNotExist(String itemName, double itemPrice, String itemType, String fromCity, String toCity, String logTimeString, String company) {
         Date logTime = getDatetime(logTimeString);
-        FileDBManager.getShipments().insert(itemName, itemPrice, itemType, fromCity, toCity, logTime);
+        FileDBManager.getShipments().insert(itemName, itemPrice, itemType, fromCity, toCity, logTime, company);
     }
 
     public void importImport(String itemName, String portCity, double tax, String dateString) {
