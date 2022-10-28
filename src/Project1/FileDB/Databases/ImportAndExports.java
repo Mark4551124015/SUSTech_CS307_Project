@@ -28,6 +28,7 @@ public class ImportAndExports extends BaseModel<ImportAndExport> {
         }
 
         ImportAndExport newRecord = new ImportAndExport(selfIncreasingNumber, itemName, type, portCityName, tax, date);
+        this.data.add(newRecord);
         selfIncreasingNumber++;
         return newRecord;
 

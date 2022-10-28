@@ -47,7 +47,8 @@ public class FileDBManager {
                         "男",
                         date,
                         "13888827812",
-                        city.name
+                        city.name,
+                        null
                 );
             }
         }

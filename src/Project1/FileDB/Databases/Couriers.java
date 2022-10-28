@@ -3,12 +3,11 @@ package Project1.FileDB.Databases;
 import Project1.FileDB.Databases.Models.City;
 import Project1.FileDB.Databases.Models.Constraint;
 import Project1.FileDB.Databases.Models.Courier;
+import Project1.FileDB.Databases.Models.PortCity;
 import Project1.FileDB.FileDBManager;
 
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.Iterator;
-import java.util.Objects;
 
 public class Couriers extends BaseModel<Courier> {
 
@@ -31,9 +30,9 @@ public class Couriers extends BaseModel<Courier> {
         return result.toArray(Courier[]::new);
     }*/
 
-    public Courier insert(String name, String gender, Date birthday, String phoneNumber, String city) {
+    public Courier insert(String name, String gender, Date birthday, String phoneNumber, String portCity, String company) {
         // Check Foreign Key
-        if (cityForeignKeyNotExist(city)) {
+        if (cityForeignKeyNotExist(portCity)) {
             return null;
         }
 
@@ -41,7 +40,7 @@ public class Couriers extends BaseModel<Courier> {
             return null;
         }
 
-        Courier newCourier = new Courier(name, gender, birthday, phoneNumber, city);
+        Courier newCourier = new Courier(name, gender, birthday, phoneNumber, portCity, company);
         data.add(newCourier);
         return newCourier;
     }
@@ -75,6 +74,8 @@ public class Couriers extends BaseModel<Courier> {
                 courier.birthday = newModel.birthday != null ? newModel.birthday : courier.birthday;
                 courier.gender = newModel.gender != null ? newModel.gender : courier.gender;
                 courier.name = newModel.name != null ? newModel.name : courier.name;
+                courier.city = newModel.city != null ? newModel.city : courier.city;
+                courier.company = newModel.company != null ? newModel.company : courier.company;
 
 
                 affectedDataCount++;
@@ -85,7 +86,7 @@ public class Couriers extends BaseModel<Courier> {
     }
 
     protected boolean cityForeignKeyNotExist(String cityName) {
-        ArrayList<City> cities = FileDBManager.getCities().select((city) -> city.name.equals(cityName));
+        ArrayList<PortCity> cities = FileDBManager.getPortCities().select((city) -> city.name.equals(cityName));
         return cities.size() < 1;
 
     }

@@ -1,6 +1,5 @@
 package Project1.FileDB;
 
-import Project1.FileDB.Databases.DeliveryAndRetrievals;
 import Project1.FileDB.Databases.Models.Courier;
 
 import java.io.*;
@@ -76,7 +75,7 @@ public class SpeedTest {
         int counter = 0;
         String nextLine = reader.readLine(); // remove table head
 
-        Courier templateCourier = new Courier(null, null, null, "1008611", null);
+        Courier templateCourier = new Courier(null, null, null, "1008611", null, null);
 
         while (nextLine != null && counter < updateNumber) {
             // Timer

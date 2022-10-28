@@ -15,7 +15,7 @@ public class DataImporter {
 
         DataImporter dataImporter = new DataImporter();
         try {
-            dataImporter.importCSV(sourcePath, 2000);
+            dataImporter.importCSV(sourcePath, 50000);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -106,14 +106,14 @@ public class DataImporter {
         importCityIfNotExist(RetrievalCity);
         importPortCityIfNotExist(ItemImportCity);
         importPortCityIfNotExist(ItemExportCity);
-        importCourierIfNotExist(RetrievalCourier, RetrievalCourierGender, CompanyName, RetrievalCity, RetrievalCourierPhoneNumber, RetrievalCourierAge, RetrievalStartTime);
-        importRetrieval(ItemName, RetrievalCourier, RetrievalStartTime);
+        importCourierIfNotExist(RetrievalCourier, RetrievalCourierGender, CompanyName, ItemExportCity, RetrievalCourierPhoneNumber, RetrievalCourierAge, RetrievalStartTime);
+        importRetrieval(ItemName, RetrievalCourier, RetrievalStartTime, RetrievalCity);
 
         importShipmentIfNotExist(ItemName, ItemPrice, ItemType, RetrievalCity, DeliveryCity, LogTime, CompanyName);
 
         if (!DeliveryCourier.isEmpty()) {
-            importCourierIfNotExist(DeliveryCourier, DeliveryCourierGender, CompanyName, DeliveryCity, DeliveryCourierPhoneNumber, DeliveryCourierAge, DeliveryFinishTime);
-            importDelivery(ItemName, DeliveryCourier, DeliveryFinishTime);
+            importCourierIfNotExist(DeliveryCourier, DeliveryCourierGender, CompanyName, ItemImportCity, DeliveryCourierPhoneNumber, DeliveryCourierAge, DeliveryFinishTime);
+            importDelivery(ItemName, DeliveryCourier, DeliveryFinishTime, DeliveryCity);
         }
 
         if (!ItemExportTime.isEmpty()) {
@@ -151,7 +151,7 @@ public class DataImporter {
 
     public void importCourierIfNotExist(String name, String gender, String company, String city, String phoneNumber, float age, String currentDate) {
         Date birthday = getBirthDay(currentDate, age);
-        FileDBManager.getCouriers().insert(name, gender, birthday, phoneNumber, city);
+        FileDBManager.getCouriers().insert(name, gender, birthday, phoneNumber, city, company);
     }
 
     public void importShipmentIfNotExist(String itemName, double itemPrice, String itemType, String fromCity, String toCity, String logTimeString, String company) {
@@ -169,14 +169,14 @@ public class DataImporter {
         FileDBManager.getImportAndExports().insert(itemName, "export", portCity, tax, date);
     }
 
-    public void importDelivery(String itemName, String courier, String dateString) {
+    public void importDelivery(String itemName, String courier, String dateString, String city) {
         Date date = getDate(dateString);
-        FileDBManager.getDeliveryAndRetrievals().insert(itemName, courier, "delivery", date);
+        FileDBManager.getDeliveryAndRetrievals().insert(itemName, courier, "delivery", date, city);
     }
 
-    public void importRetrieval(String itemName, String courier, String dateString) {
+    public void importRetrieval(String itemName, String courier, String dateString, String city) {
         Date date = getDate(dateString);
-        FileDBManager.getDeliveryAndRetrievals().insert(itemName, courier, "retrieval", date);
+        FileDBManager.getDeliveryAndRetrievals().insert(itemName, courier, "retrieval", date, city);
     }
 
     public void importShipping(String itemName, String ship, String containerCode) {
@@ -198,7 +198,7 @@ public class DataImporter {
 
     public static Date getDate(String str) {
         try {
-            return new SimpleDateFormat("yyyy-mm-dd").parse(str);
+            return new SimpleDateFormat("yyyy-MM-dd").parse(str);
         } catch (ParseException e) {
             e.printStackTrace();
         }
@@ -207,7 +207,7 @@ public class DataImporter {
 
     public static Date getDatetime(String str) {
         try {
-            return new SimpleDateFormat("yyyy-mm-dd HH:mm:ss").parse(str);
+            return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").parse(str);
         } catch (ParseException e) {
             e.printStackTrace();
         }

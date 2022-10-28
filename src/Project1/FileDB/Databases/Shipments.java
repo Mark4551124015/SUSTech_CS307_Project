@@ -23,7 +23,7 @@ public class Shipments extends BaseModel<Shipment> {
             return null;
         }
 
-        if (select(shipment -> shipment.itemName.equals(itemName)).size() < 1) {
+        if (select(shipment -> shipment.itemName.equals(itemName)).size() > 0) {
             return null;
         }
 
