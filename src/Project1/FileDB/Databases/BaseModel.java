@@ -20,22 +20,27 @@ public abstract class BaseModel<T> {
 
     public abstract String getDBPath();
 
-    public ArrayList<T> select(Constraint<T> constraint){
+    public ArrayList<T> select(Constraint<T> constraint) {
         ArrayList<T> result = new ArrayList<>();
-        for (T item : data){
-            if (constraint.check(item)){
+        for (T item : data) {
+            if (constraint.check(item)) {
                 result.add(item);
             }
         }
         return result;
     }
 
-    public void save() throws IOException {
+    public void save() {
         Gson gson = FileDBManager.getGson();
-        BufferedWriter writer = new BufferedWriter(
-                new OutputStreamWriter(
-                        new FileOutputStream(getDBPath()), StandardCharsets.UTF_8));
-        writer.write(gson.toJson(this));
-        writer.close();
+
+        try {
+            BufferedWriter writer = new BufferedWriter(
+                    new OutputStreamWriter(
+                            new FileOutputStream(getDBPath()), StandardCharsets.UTF_8));
+            writer.write(gson.toJson(this));
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }
