@@ -27,7 +27,6 @@ public abstract class BaseModel<T> {
                 result.add(item);
             }
         }
-
         return result;
     }
 

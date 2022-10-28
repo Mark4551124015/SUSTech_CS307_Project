@@ -45,6 +45,9 @@ public class DatabaseManipulation{
     }
     //Add Records
     public long addOneRecord(Records type, String str) throws SQLException {
+        if (con.isClosed()) {
+            getConnection();
+        }
         long start = System.currentTimeMillis();
         String sql;
         String[] Info = str.split(",",-1);
@@ -129,20 +132,10 @@ public class DatabaseManipulation{
         return System.currentTimeMillis() - start;
     }
     public long addFullRecords(String str) throws SQLException {
-        long startTime=System.currentTimeMillis();
+        if (con.isClosed()) {
+            getConnection();
+        }        long startTime=System.currentTimeMillis();
         String[] Info = str.split(",");
-            Statement operation = con.createStatement();
-//            operation.executeUpdate("alter table ship disable trigger all;");
-//            operation.executeUpdate("alter table city disable trigger all;");
-//            operation.executeUpdate("alter table company disable trigger all;");
-//            operation.executeUpdate("alter table container disable trigger all;");
-//            operation.executeUpdate("alter table courier disable trigger all;");
-//            operation.executeUpdate("alter table delivery_retrieval disable trigger all;");
-//            operation.executeUpdate("alter table import_export_detail disable trigger all;");
-//            operation.executeUpdate("alter table portcity disable trigger all;");
-//            operation.executeUpdate("alter table shipment disable trigger all;");
-//            operation.executeUpdate("alter table shipping disable trigger all;");
-
             PreparedStatement company = con.prepareStatement("insert into company (name) values (?)  on conflict do nothing;");
             PreparedStatement exportCity = con.prepareStatement("insert into portcity (name) values (?)  on conflict do nothing;");
             PreparedStatement importCity = con.prepareStatement("insert into portcity (name) values (?)  on conflict do nothing;");
@@ -298,22 +291,14 @@ public class DatabaseManipulation{
             delivery.executeBatch();
             shipping.executeBatch();
 
-
-//            operation.executeUpdate("alter table ship enable trigger all");
-//            operation.executeUpdate("alter table city enable trigger all");
-//            operation.executeUpdate("alter table company enable trigger all");
-//            operation.executeUpdate("alter table container enable trigger all");
-//            operation.executeUpdate("alter table courier enable trigger all");
-//            operation.executeUpdate("alter table delivery_retrieval enable trigger all");
-//            operation.executeUpdate("alter table import_export_detail enable trigger all");
-//            operation.executeUpdate("alter table portcity enable trigger all");
-//            operation.executeUpdate("alter table shipment enable trigger all");
-//            operation.executeUpdate("alter table shipping enable trigger all");
             return System.currentTimeMillis() - startTime;
     }
 
     //Delete Records
     public long deleteByItemName(String name) throws SQLException {
+        if (con.isClosed()) {
+            getConnection();
+        }
         long startTime = System.currentTimeMillis();
         PreparedStatement shipment = con.prepareStatement("delete from shipment where item_name = ?");
         PreparedStatement shipping = con.prepareStatement("delete from shipping where item_name = ?");
@@ -331,6 +316,9 @@ public class DatabaseManipulation{
         return endTime - startTime;
     }
     public void deleteByItemName(String[] name) throws SQLException {
+        if (con.isClosed()) {
+            getConnection();
+        }
         long startTime = System.currentTimeMillis();
         String tmp;
         PreparedStatement shipment = con.prepareStatement("delete from shipment where item_name = ?");
@@ -357,23 +345,30 @@ public class DatabaseManipulation{
     }
 
     //Select Records
-    public String selectTypes(String name) {
-        getConnection();
-        StringBuilder sb = new StringBuilder();
-        String sql = "select continent from countries group by continent";
+    public long selectExportDetailByPortCity(String str)  {
+        long start = System.currentTimeMillis();
         try {
-            Statement statement = con.createStatement();
-            resultSet = statement.executeQuery(sql);
-            while (resultSet.next()) {
-                sb.append(resultSet.getString("continent") + "\n");
+            if (con.isClosed()) {
+                getConnection();
             }
-            sb.append(resultSet.first() + "\n");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        } finally {
-            closeConnection();
+            StringBuilder sb = new StringBuilder();
+            String sql = "select * from import_export_detail where port_city = ?";
+            
+            PreparedStatement preparedStatement = con.prepareStatement(sql);
+            preparedStatement.setString(1,str);
+            resultSet = preparedStatement.executeQuery();
+            System.out.println("-----------------------------------------------------------------------------");
+            System.out.printf("%10s %20s %5s %5s", "STUDENT ID", "NAME", "AGE", "GRADE\n");
+            System.out.println("-----------------------------------------------------------------------------");
+            while (resultSet.next()) {
+                sb.append(resultSet.getString("").append("\n");
+            }
+            System.out.println(sb);
+        } catch (Exception e) {
+            System.err.println(e);
         }
-        return sb.toString();
+        return System.currentTimeMillis()-start;
+
     }
     public String selectByItemName(String name) {
         getConnection();

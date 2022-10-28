@@ -14,8 +14,6 @@ public class Loader  {
     private final String user = "postgres";
     private final String pwd = "314159";
     private final String port = "5432";
-
-    private ResultSet resultSet;
     private Connection con = null;
     public void getConnection() {
         try {
@@ -46,9 +44,6 @@ public class Loader  {
             }
         }
     }
-    public static int dr_index = 1;
-    public static int ie_index = 1;
-    public static int shipping_index = 1;
     public void insert (String filePath, int max) {
         getConnection();
         int cnt;
@@ -267,7 +262,6 @@ public class Loader  {
             closeConnection();
         }
     }
-
     public static Date CalBirth (String str, float age) {
         Date date = Date.valueOf(str);
         Calendar birth = Calendar.getInstance();
@@ -278,9 +272,6 @@ public class Loader  {
         Date out = new Date(temp);
         return out;
     }
-
-
-
 
 }
 
