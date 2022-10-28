@@ -32,7 +32,7 @@ public class DeliveryAndRetrievals extends BaseModel<DeliveryAndRetrieval> {
         return result.toArray(DeliveryAndRetrieval[]::new);
     }*/
 
-    public DeliveryAndRetrieval insert(String itemName, String courierName, String type, Date date) {
+    public DeliveryAndRetrieval insert(String itemName, String courierName, String type, Date date, String cityName) {
         if (FileDBManager.getCouriers().select(courier -> courier.name.equals(courierName)).size() < 1) {
             return null;
         }
@@ -40,7 +40,12 @@ public class DeliveryAndRetrievals extends BaseModel<DeliveryAndRetrieval> {
         if (select(deliveryAndRetrieval -> deliveryAndRetrieval.itemName.equals(itemName) && deliveryAndRetrieval.type.equals(type)).size() > 0) {
             return null;
         }
-        DeliveryAndRetrieval newRecord = new DeliveryAndRetrieval(selfIncreasingNumber, itemName, courierName, type, date);
+
+        if (FileDBManager.getCities().select(city -> city.name.equals(cityName)).size() < 1) {
+            return null;
+        }
+
+        DeliveryAndRetrieval newRecord = new DeliveryAndRetrieval(selfIncreasingNumber, itemName, courierName, type, date, cityName);
         data.add(newRecord);
         selfIncreasingNumber++;
 
