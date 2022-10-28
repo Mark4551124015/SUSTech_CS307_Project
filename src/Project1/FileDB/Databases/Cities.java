@@ -39,7 +39,7 @@ public class Cities extends BaseModel<City> {
         return newCity;
     }
 
-    public int delete(Constraint<City> constraint) {
+/*    public int delete(Constraint<City> constraint) {
         int affectedLines = 0;
 
         Iterator<City> iterator = data.iterator();
@@ -52,7 +52,7 @@ public class Cities extends BaseModel<City> {
         }
 
         return affectedLines;
-    }
+    }*/
 
     public int update(Constraint<City> constraint, City newModel) {
         int affectedLines = 0;

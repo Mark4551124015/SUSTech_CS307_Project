@@ -8,6 +8,8 @@ import com.google.gson.annotations.Expose;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 
 public abstract class BaseModel<T> {
     public ArrayList<T> data;
@@ -42,5 +44,24 @@ public abstract class BaseModel<T> {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public int delete(Constraint<T> constraint) {
+        int affectedLines = 0;
+
+        Iterator<T> iterator = data.iterator();
+        while (iterator.hasNext()) {
+            T item = iterator.next();
+            if (constraint.check(item)) {
+                iterator.remove();
+                affectedLines++;
+            }
+        }
+
+        return affectedLines;
+    }
+
+    public void shuffle() {
+        Collections.shuffle(this.data);
     }
 }

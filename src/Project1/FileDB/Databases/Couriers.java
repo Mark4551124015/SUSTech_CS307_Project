@@ -46,7 +46,7 @@ public class Couriers extends BaseModel<Courier> {
         return newCourier;
     }
 
-    public boolean delete(Constraint<Courier> constraint) {
+/*    public boolean delete(Constraint<Courier> constraint) {
         Iterator<Courier> iterator = data.iterator();
         while (iterator.hasNext()) {
             Courier courier = iterator.next();
@@ -57,7 +57,7 @@ public class Couriers extends BaseModel<Courier> {
         }
 
         return false;
-    }
+    }*/
 
 
     public int update(Constraint<Courier> constraint, Courier newModel) {
