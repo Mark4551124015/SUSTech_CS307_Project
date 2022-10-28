@@ -45,12 +45,8 @@ public class RoughSpeedTest {
         long startTime = System.currentTimeMillis();
         while (nextLine != null && counter < insertNumber) {
             // Timer
-
             String[] piece = nextLine.split(",", -1);
             dataImporter.insertPiece(piece);
-
-
-
             counter++;
             nextLine = reader.readLine();
         }
@@ -58,7 +54,7 @@ public class RoughSpeedTest {
 
         // Timer
         long endTime = System.currentTimeMillis();
-        System.out.printf("Inserted %d records, speed: %.2f records/s", counter, (float)insertNumber/(endTime - startTime));
+        System.out.printf("Inserted %d records, speed: %.2f records/s", counter, (float)insertNumber*1000/(endTime - startTime));
     }
 
     public void updateTest() throws IOException {

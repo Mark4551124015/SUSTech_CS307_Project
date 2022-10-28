@@ -42,7 +42,7 @@ public class DatabaseManipulation {
 
     //Add Records
     public long addOneRecord(Records type, String str) throws SQLException {
-        if (con.isClosed()) {
+        if (con==null) {
             getConnection();
         }
         long start = System.currentTimeMillis();
@@ -131,7 +131,7 @@ public class DatabaseManipulation {
         return System.currentTimeMillis() - start;
     }
     public long addFullRecords(String str) throws SQLException {
-        if (con.isClosed()) {
+        if (con==null) {
             getConnection();
         }
         long startTime = System.currentTimeMillis();
@@ -300,7 +300,7 @@ public class DatabaseManipulation {
     }
     //Delete Records
     public long deleteByItemName(String name) throws SQLException {
-        if (con.isClosed()) {
+        if (con==null) {
             getConnection();
         }
         long startTime = System.currentTimeMillis();
@@ -320,7 +320,7 @@ public class DatabaseManipulation {
         return endTime - startTime;
     }
     public void deleteByItemName(String[] name) throws SQLException {
-        if (con.isClosed()) {
+        if (con==null) {
             getConnection();
         }
         long startTime = System.currentTimeMillis();
@@ -340,16 +340,17 @@ public class DatabaseManipulation {
             rd_detail.addBatch();
             ie_detail.addBatch();
         }
-        shipment.executeBatch();
+
         shipping.executeBatch();
         rd_detail.executeBatch();
         ie_detail.executeBatch();
+        shipment.executeBatch();
         long endTime = System.currentTimeMillis();
         System.out.printf("Deleted: %d records, speed: %.2f records/s\n", name.length, (float) (name.length * 1e3 / (endTime - startTime)));
     }
     public long deleteCity(String name) throws SQLException {
         long startTime = System.currentTimeMillis();
-        if (con.isClosed()) {
+        if (con==null) {
             getConnection();
         }
         PreparedStatement city = con.prepareStatement("delete from city where name = ?");
@@ -361,7 +362,7 @@ public class DatabaseManipulation {
     }
     public void deleteCity(String[] name) throws SQLException {
         long startTime = System.currentTimeMillis();
-        if (con.isClosed()) {
+        if (con==null) {
             getConnection();
         }
         String tmp;
@@ -376,7 +377,7 @@ public class DatabaseManipulation {
         System.out.printf("Deleted City: %d records, speed: %.2f records/s\n", name.length, (float) (name.length * 1e3 / (endTime - startTime)));
     }
     public long deleteCourier(String name) throws SQLException {
-        if (con.isClosed()) {
+        if (con==null) {
             getConnection();
         }
         long startTime = System.currentTimeMillis();
@@ -389,7 +390,7 @@ public class DatabaseManipulation {
     public void deleteCourier(String[] name) throws SQLException {
 
         long startTime = System.currentTimeMillis();
-        if (con.isClosed()) {
+        if (con==null) {
             getConnection();
         }
         String tmp;
@@ -406,7 +407,7 @@ public class DatabaseManipulation {
     //Select Records
     public long selectShipmentByName(String Item) throws SQLException {
         long start = System.currentTimeMillis();
-        if (con.isClosed()) {
+        if (con==null) {
             getConnection();
         }
         String sql = "select * from shipment where item_name = ?";
@@ -434,7 +435,7 @@ public class DatabaseManipulation {
     }
     public long selectShipmentByID(int id) throws SQLException {
         long start = System.currentTimeMillis();
-        if (con.isClosed()) {
+        if (con==null) {
             getConnection();
         }
         String sql = "select * from shipment where shipment_id = ?";
@@ -462,7 +463,7 @@ public class DatabaseManipulation {
     }
     public long selectExportDetailByPortCity(String str) throws SQLException {
         long start = System.currentTimeMillis();
-        if (con.isClosed()) {
+        if (con==null) {
             getConnection();
         }
         String sql = "select * from import_export_detail where port_city = ? and type = 'export'";
@@ -486,7 +487,7 @@ public class DatabaseManipulation {
     }
     public long selectImportDetailByPortCity(String str) throws SQLException {
         long start = System.currentTimeMillis();
-        if (con.isClosed()) {
+        if (con==null) {
             getConnection();
         }
         String sql = "select * from import_export_detail where port_city = ? and type = 'import'";
@@ -510,7 +511,7 @@ public class DatabaseManipulation {
     }
     public long selectShippingInfoByItemName(String str) throws SQLException {
         long start = System.currentTimeMillis();
-        if (con.isClosed()) {
+        if (con==null) {
             getConnection();
         }
         String sql = "select * from shipping where item_name = ?";
@@ -533,7 +534,7 @@ public class DatabaseManipulation {
     }
     public long selectPortDetailByItem(String Item) throws SQLException {
         long start = System.currentTimeMillis();
-        if (con.isClosed()) {
+        if (con==null) {
             getConnection();
         }
         String sql = "select * from import_export_detail where item_name = ?";
@@ -558,7 +559,7 @@ public class DatabaseManipulation {
     }
     public long selectDRDetailByItem(String Item) throws SQLException {
         long start = System.currentTimeMillis();
-        if (con.isClosed()) {
+        if (con==null) {
             getConnection();
         }
         String sql = "select * from delivery_retrieval where item_name = ?";
@@ -591,7 +592,7 @@ public class DatabaseManipulation {
             return -1;
         }
         long startTime = System.currentTimeMillis();
-        if (con.isClosed()) {
+        if (con==null) {
             getConnection();
         }
         PreparedStatement cityD = con.prepareStatement("insert into city (name) values (?)  on conflict do nothing;");
@@ -707,7 +708,7 @@ public class DatabaseManipulation {
             return -1;
         }
         long start = System.currentTimeMillis();
-        if (con.isClosed()) {
+        if (con==null) {
             getConnection();
         }
         String sql = "update courier set gender = ?, birthday=?, phone_number=?, company=?, port_city=? where name = ?";
@@ -723,6 +724,17 @@ public class DatabaseManipulation {
         preparedStatement.setString(6, Info[0]);
         preparedStatement.executeUpdate();
         return System.currentTimeMillis() - start;
+    }
+    public void emptyTables() throws Exception{
+
+        getConnection();
+
+        String sql ="";
+        Statement Statement = con.createStatement();
+        sql = "truncate shipment,import_export_detail,delivery_retrieval,city,company,courier,portcity,ship,shipping";
+        Statement.executeUpdate(sql);
+
+        System.out.println("All cleaned");
     }
     int getObjID (Records type, String arg) throws SQLException {
     String[] Info = arg.split(",", -1);

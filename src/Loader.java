@@ -34,7 +34,7 @@ public class Loader  {
             Statement operation = con.createStatement();
             con.setAutoCommit(false);
             long startTime=System.currentTimeMillis();
-            
+
 
             operation.executeUpdate("alter table ship disable trigger all;");
             operation.executeUpdate("alter table city disable trigger all;");
@@ -271,10 +271,8 @@ public class Loader  {
 
             con.commit();
             con.setAutoCommit(true);
-
-            con.setAutoCommit(true);
             long endTime=System.currentTimeMillis();
-            System.out.printf("Inserted: %d records, speed: %.2f records/s\n",MAXRECORD, (float)(MAXRECORD*1e3/(endTime-startTime)));
+            System.out.printf("Loaded: %d records, speed: %.2f records/s\n",MAXRECORD, (float)(MAXRECORD*1e3/(endTime-startTime)));
 
         } catch (Exception e) {
             System.err.println(e);
