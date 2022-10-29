@@ -15,7 +15,9 @@ public class Main {
 
 
         //second atgs of JavaTests is the constant which timed the parameters up there
-        jt.TestAll(filePath,1);
+//        jt.TestAllLoader(filePath,1);
+        jt.ld.loadFromFile(filePath,100000);
+//        jt.dm.emptyTables();
 
 
 

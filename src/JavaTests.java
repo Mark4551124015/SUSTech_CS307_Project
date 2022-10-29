@@ -9,8 +9,7 @@ public class JavaTests {
     DatabaseManipulation dm = new DatabaseManipulation();
     public JavaTests(){
     }
-
-    public void TestAll(String filePath, int timeK) throws Exception {
+    public void TestAllOperation(String filePath, int timeK) throws Exception {
         File file = new File("log.txt");
         PrintStream ps = new PrintStream(file);
         PrintStream out = new PrintStream(System.out);
@@ -21,6 +20,18 @@ public class JavaTests {
         TestUpdate(filePath, Main.UpdateSize*timeK);
         TestSelect(filePath, Main.SelectSize*timeK,ps);
     }
+    public void TestAllLoader(String filePath, int timeK) throws Exception {
+        File file = new File("log.txt");
+        PrintStream ps = new PrintStream(file);
+        PrintStream out = new PrintStream(System.out);
+        System.out.println("Java testing：");
+        TestLoader_V1(filePath, 100*timeK);
+        TestLoader_V2(filePath, 10000*timeK);
+        TestLoader_V3(filePath, 10000*timeK);
+        TestLoader_V4(filePath, 100000*timeK);
+        TestLoader_V5(filePath, 100000*timeK);
+    }
+
     public void TestInsertion(String filePath, int max) throws Exception{
         dm.emptyTables();
         File csv = new File(filePath);
@@ -44,7 +55,29 @@ public class JavaTests {
 
     }
     public void TestLoader(String filePath, int max) throws Exception {
+        dm.emptyTables();
         ld.loadFromFile(filePath,max);
+    }
+
+    public void TestLoader_V1(String filePath, int max) throws Exception {
+        dm.emptyTables();
+        ld.loadFromFile_V1(filePath,max);
+    }
+    public void TestLoader_V2(String filePath, int max) throws Exception {
+        dm.emptyTables();
+        ld.loadFromFile_V2(filePath,max);
+    }
+    public void TestLoader_V3(String filePath, int max) throws Exception {
+        dm.emptyTables();
+        ld.loadFromFile_V3(filePath,max);
+    }
+    public void TestLoader_V4(String filePath, int max) throws Exception {
+        dm.emptyTables();
+        ld.loadFromFile_V4(filePath,max);
+    }
+    public void TestLoader_V5(String filePath, int max) throws Exception {
+        dm.emptyTables();
+        ld.loadFromFile_V5(filePath,max);
     }
     public void TestDelete(String filePath, int max) throws Exception {
         File csv = new File(filePath);

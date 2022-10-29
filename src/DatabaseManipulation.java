@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.sql.*;
 import java.util.Calendar;
+import java.util.Scanner;
+
 public class DatabaseManipulation {
     private Connection con = null;
     private ResultSet resultSet;
@@ -725,6 +727,50 @@ public class DatabaseManipulation {
         preparedStatement.executeUpdate();
         return System.currentTimeMillis() - start;
     }
+
+
+
+    //Query
+    public void QueryServedContainer() throws Exception{
+        if (con==null) {
+            getConnection();
+        }
+        Scanner sc = new Scanner(System.in);
+        String Info;
+        String sql = "select distinct type from container";
+        PreparedStatement pS = con.prepareStatement(sql);
+        resultSet = pS.executeQuery();
+        System.out.println("CONTAINER TYPES: ");
+        System.out.println("----------------------------------------------------------------------------------------------------");
+        while (resultSet.next()) {
+            Info= resultSet.getString("type");
+            System.out.printf(Info+"   ");
+        }
+        System.out.println();
+        System.out.println("----------------------------------------------------------------------------------------------------");
+        System.out.println("Please Enter the Type of Container, and expired date (Example: Dry Container 45):");
+        String type = sc.next();
+        int expired = sc.nextInt();
+
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public void emptyTables() throws Exception{
 
         getConnection();
