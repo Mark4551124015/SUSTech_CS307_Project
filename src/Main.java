@@ -22,9 +22,7 @@ public class Main {
         //        jt.ld.loadFromFile(filePath,1000);
         //        jt.TestAllLoader(filePath);
 
-        dm.QueryBestCourier("北京","拼多多",10);
-
-        dm.QueryBestPort("pear","export");
+        jt.TestAllLoader(filePath);
 
 
 //        jt.ld.loadFromFile(filePath,1000);
