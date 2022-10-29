@@ -14,22 +14,23 @@ public class JavaTests {
         PrintStream ps = new PrintStream(file);
         PrintStream out = new PrintStream(System.out);
         System.out.println("Java testing：");
-        TestLoader(filePath, Main.LoadSize*timeK);
-        TestDelete(filePath, Main.DeleteSize*timeK);
         TestInsertion(filePath, Main.InsertSize*timeK);
+        dm.emptyTables();
+        TestLoader(filePath, Main.LoadSize*timeK);
         TestUpdate(filePath, Main.UpdateSize*timeK);
         TestSelect(filePath, Main.SelectSize*timeK,ps);
+        TestDelete(filePath, Main.DeleteSize*timeK);
     }
     public void TestAllLoader(String filePath, int timeK) throws Exception {
         File file = new File("log.txt");
         PrintStream ps = new PrintStream(file);
         PrintStream out = new PrintStream(System.out);
         System.out.println("Java testing：");
-        TestLoader_V1(filePath, 100*timeK);
-        TestLoader_V2(filePath, 10000*timeK);
-        TestLoader_V3(filePath, 10000*timeK);
+//        TestLoader_V1(filePath, 100*timeK);
+//        TestLoader_V2(filePath, 10000*timeK);
+//        TestLoader_V3(filePath, 10000*timeK);
         TestLoader_V4(filePath, 100000*timeK);
-        TestLoader_V5(filePath, 100000*timeK);
+//        TestLoader_V5(filePath, 100000*timeK);
     }
 
     public void TestInsertion(String filePath, int max) throws Exception{
@@ -56,7 +57,7 @@ public class JavaTests {
     }
     public void TestLoader(String filePath, int max) throws Exception {
         dm.emptyTables();
-        ld.loadFromFile(filePath,max);
+        ld.loadFromFile_V4(filePath,max);
     }
 
     public void TestLoader_V1(String filePath, int max) throws Exception {

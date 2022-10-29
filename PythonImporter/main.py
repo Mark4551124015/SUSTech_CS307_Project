@@ -12,7 +12,7 @@ def getPostgreSQLConnection():
 def importData(sourcePath,maxRecord):
     csvReader = pandas.read_csv(sourcePath)
     conn = getPostgreSQLConnection()
-    counter = 0;
+    counter = 0
     for index,row in csvReader.iterrows():
         if counter >= maxRecord:
             break
@@ -25,9 +25,9 @@ def importData(sourcePath,maxRecord):
 
 
 def insertPiece(piece, conn):
-    itemName = piece['Item Name'];
-    itemType = piece['Item Type'];
-    itemPrice = piece['Item Price'];
+    itemName = piece['Item Name']
+    itemType = piece['Item Type']
+    itemPrice = piece['Item Price']
     retrievalCity = piece['Retrieval City']
     retrievalTime = piece['Retrieval Start Time']
     retrievalCourier = piece['Retrieval Courier']
@@ -36,7 +36,7 @@ def insertPiece(piece, conn):
     retrievalCourierAge = piece['Retrieval Courier Age']
     deliveryTime = piece['Delivery Finished Time']
     deliveryCity = piece['Delivery City']
-    deliveryCourier = piece['Delivery Courier'];
+    deliveryCourier = piece['Delivery Courier']
     deliveryCourierGender = piece['Delivery Courier Gender']
     deliveryCourierPhone = piece['Delivery Courier Phone Number']
     deliveryCourierAge = piece['Delivery Courier Age']
@@ -101,4 +101,4 @@ def getDatetime(dateString):
     return datetime.strptime(dateString, '%Y-%m-%d  %H:%M:%S')
 
 if __name__ == "__main__":
-    importData("../data/shipment_records.csv", 50000)
+    importData("../data/shipment_records.csv", 500000)

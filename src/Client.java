@@ -9,6 +9,5 @@ public class Client {
 
         DatabaseManipulation dm = new DatabaseManipulation();
         dm.getConnection();
-        dm.QueryServedContainer();
     }
 }

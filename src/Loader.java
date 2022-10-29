@@ -14,7 +14,7 @@ import java.util.concurrent.Executors;
 public class Loader  {
 
     public void loadFromFile (String filePath, int max) {
-        System.out.println("Start loading...");
+//        System.out.println("Start loading...");
         int cnt;
         int MAXRECORD = max;
         try {
@@ -48,25 +48,25 @@ public class Loader  {
             operation.executeUpdate("alter table shipping disable trigger all;");
             con.commit();
 
-            PreparedStatement company = con.prepareStatement("insert into company (name) values (?)  on conflict do nothing;");
-            PreparedStatement exportCity = con.prepareStatement("insert into portcity (name) values (?)  on conflict do nothing;");
-            PreparedStatement importCity = con.prepareStatement("insert into portcity (name) values (?)  on conflict do nothing;");
+            PreparedStatement company = con.prepareStatement("insert IGNORE into company (name) values (?) ");
+            PreparedStatement exportCity = con.prepareStatement("insert IGNORE into portcity (name) values (?) ");
+            PreparedStatement importCity = con.prepareStatement("insert IGNORE into portcity (name) values (?) ");
 
-            PreparedStatement container = con.prepareStatement("insert into container (code, type) values (?,?)  on conflict do nothing;");
-            PreparedStatement ship = con.prepareStatement("insert into ship (name, company) values (?,?)  on conflict do nothing;");
-            PreparedStatement cityR = con.prepareStatement("insert into city (name) values (?)  on conflict do nothing;");
-            PreparedStatement cityD = con.prepareStatement("insert into city (name) values (?)  on conflict do nothing;");
+            PreparedStatement container = con.prepareStatement("insert IGNORE into container (code, type) values (?,?) ");
+            PreparedStatement ship = con.prepareStatement("insert IGNORE into ship (name, company) values (?,?) ");
+            PreparedStatement cityR = con.prepareStatement("insert IGNORE into city (name) values (?) ");
+            PreparedStatement cityD = con.prepareStatement("insert IGNORE into city (name) values (?) ");
 
-            PreparedStatement courierR = con.prepareStatement("insert into courier (name, gender, birthday, phone_number, company, port_city) values (?,?,?,?,?,?)  on conflict do nothing;");
-            PreparedStatement courierD = con.prepareStatement("insert into courier (name, gender, birthday, phone_number, company, port_city) values (?,?,?,?,?,?)  on conflict do nothing;");
+            PreparedStatement courierR = con.prepareStatement("insert IGNORE into courier (name, gender, birthday, phone_number, company, port_city) values (?,?,?,?,?,?) ");
+            PreparedStatement courierD = con.prepareStatement("insert IGNORE into courier (name, gender, birthday, phone_number, company, port_city) values (?,?,?,?,?,?) ");
 
-            PreparedStatement import_detail = con.prepareStatement("insert into import_export_detail (item_name,type, item_type, port_city, tax, date) values (?,?,?,?,?,?)  on conflict do nothing;");
-            PreparedStatement export_detail = con.prepareStatement("insert into import_export_detail (item_name,type, item_type, port_city, tax, date) values (?,?,?,?,?,?)  on conflict do nothing;");
-            PreparedStatement retrieval = con.prepareStatement("insert into delivery_retrieval (item_name,type,courier,city,date) values (?,?,?,?,?)  on conflict do nothing;");
-            PreparedStatement delivery = con.prepareStatement("insert into delivery_retrieval (item_name,type,courier,city,date) values (?,?,?,?,?)  on conflict do nothing;");
+            PreparedStatement import_detail = con.prepareStatement("insert IGNORE into import_export_detail (item_name,type, item_type, port_city, tax, date) values (?,?,?,?,?,?) ");
+            PreparedStatement export_detail = con.prepareStatement("insert IGNORE into import_export_detail (item_name,type, item_type, port_city, tax, date) values (?,?,?,?,?,?) ");
+            PreparedStatement retrieval = con.prepareStatement("insert IGNORE into delivery_retrieval (item_name,type,courier,city,date) values (?,?,?,?,?) ");
+            PreparedStatement delivery = con.prepareStatement("insert IGNORE into delivery_retrieval (item_name,type,courier,city,date) values (?,?,?,?,?) ");
 
-            PreparedStatement shipping = con.prepareStatement("insert into shipping (item_name, ship, container) values (?,?,?)  on conflict do nothing;");
-            PreparedStatement shipment = con.prepareStatement("insert into shipment (item_name, item_price, item_type, from_city, to_city, export_city, import_city, company, log_time) values (?,?,?,?,?,?,?,?,?)  on conflict do nothing;");
+            PreparedStatement shipping = con.prepareStatement("insert IGNORE into shipping (item_name, ship, container) values (?,?,?) ");
+            PreparedStatement shipment = con.prepareStatement("insert IGNORE into shipment (item_name, item_price, item_type, from_city, to_city, export_city, import_city, company, log_time) values (?,?,?,?,?,?,?,?,?) ");
 
             //tax cal after insertion
             String[] Info = new String[50];
@@ -312,25 +312,25 @@ public class Loader  {
             operation.executeUpdate("alter table shipping disable trigger all;");
             con.commit();
 
-            PreparedStatement company = con.prepareStatement("insert into company (name) values (?)  on conflict do nothing;");
-            PreparedStatement exportCity = con.prepareStatement("insert into portcity (name) values (?)  on conflict do nothing;");
-            PreparedStatement importCity = con.prepareStatement("insert into portcity (name) values (?)  on conflict do nothing;");
+            PreparedStatement company = con.prepareStatement("insert IGNORE into company (name) values (?) ");
+            PreparedStatement exportCity = con.prepareStatement("insert IGNORE into portcity (name) values (?) ");
+            PreparedStatement importCity = con.prepareStatement("insert IGNORE into portcity (name) values (?) ");
 
-            PreparedStatement container = con.prepareStatement("insert into container (code, type) values (?,?)  on conflict do nothing;");
-            PreparedStatement ship = con.prepareStatement("insert into ship (name, company) values (?,?)  on conflict do nothing;");
-            PreparedStatement cityR = con.prepareStatement("insert into city (name) values (?)  on conflict do nothing;");
-            PreparedStatement cityD = con.prepareStatement("insert into city (name) values (?)  on conflict do nothing;");
+            PreparedStatement container = con.prepareStatement("insert IGNORE into container (code, type) values (?,?) ");
+            PreparedStatement ship = con.prepareStatement("insert IGNORE into ship (name, company) values (?,?) ");
+            PreparedStatement cityR = con.prepareStatement("insert IGNORE into city (name) values (?) ");
+            PreparedStatement cityD = con.prepareStatement("insert IGNORE into city (name) values (?) ");
 
-            PreparedStatement courierR = con.prepareStatement("insert into courier (name, gender, birthday, phone_number, company, port_city) values (?,?,?,?,?,?)  on conflict do nothing;");
-            PreparedStatement courierD = con.prepareStatement("insert into courier (name, gender, birthday, phone_number, company, port_city) values (?,?,?,?,?,?)  on conflict do nothing;");
+            PreparedStatement courierR = con.prepareStatement("insert IGNORE into courier (name, gender, birthday, phone_number, company, port_city) values (?,?,?,?,?,?) ");
+            PreparedStatement courierD = con.prepareStatement("insert IGNORE into courier (name, gender, birthday, phone_number, company, port_city) values (?,?,?,?,?,?) ");
 
-            PreparedStatement import_detail = con.prepareStatement("insert into import_export_detail (item_name,type, item_type, port_city, tax, date) values (?,?,?,?,?,?)  on conflict do nothing;");
-            PreparedStatement export_detail = con.prepareStatement("insert into import_export_detail (item_name,type, item_type, port_city, tax, date) values (?,?,?,?,?,?)  on conflict do nothing;");
-            PreparedStatement retrieval = con.prepareStatement("insert into delivery_retrieval (item_name,type,courier,city,date) values (?,?,?,?,?)  on conflict do nothing;");
-            PreparedStatement delivery = con.prepareStatement("insert into delivery_retrieval (item_name,type,courier,city,date) values (?,?,?,?,?)  on conflict do nothing;");
+            PreparedStatement import_detail = con.prepareStatement("insert IGNORE into import_export_detail (item_name,type, item_type, port_city, tax, date) values (?,?,?,?,?,?) ");
+            PreparedStatement export_detail = con.prepareStatement("insert IGNORE into import_export_detail (item_name,type, item_type, port_city, tax, date) values (?,?,?,?,?,?) ");
+            PreparedStatement retrieval = con.prepareStatement("insert IGNORE into delivery_retrieval (item_name,type,courier,city,date) values (?,?,?,?,?) ");
+            PreparedStatement delivery = con.prepareStatement("insert IGNORE into delivery_retrieval (item_name,type,courier,city,date) values (?,?,?,?,?) ");
 
-            PreparedStatement shipping = con.prepareStatement("insert into shipping (item_name, ship, container) values (?,?,?)  on conflict do nothing;");
-            PreparedStatement shipment = con.prepareStatement("insert into shipment (item_name, item_price, item_type, from_city, to_city, export_city, import_city, company, log_time) values (?,?,?,?,?,?,?,?,?)  on conflict do nothing;");
+            PreparedStatement shipping = con.prepareStatement("insert IGNORE into shipping (item_name, ship, container) values (?,?,?) ");
+            PreparedStatement shipment = con.prepareStatement("insert IGNORE into shipment (item_name, item_price, item_type, from_city, to_city, export_city, import_city, company, log_time) values (?,?,?,?,?,?,?,?,?) ");
 
             //tax cal after insertion
             String[] Info = new String[50];
@@ -565,25 +565,25 @@ public class Loader  {
             long startTime=System.currentTimeMillis();
             con.commit();
 
-            PreparedStatement company = con.prepareStatement("insert into company (name) values (?)  on conflict do nothing;");
-            PreparedStatement exportCity = con.prepareStatement("insert into portcity (name) values (?)  on conflict do nothing;");
-            PreparedStatement importCity = con.prepareStatement("insert into portcity (name) values (?)  on conflict do nothing;");
+            PreparedStatement company = con.prepareStatement("insert IGNORE into company (name) values (?) ");
+            PreparedStatement exportCity = con.prepareStatement("insert IGNORE into portcity (name) values (?) ");
+            PreparedStatement importCity = con.prepareStatement("insert IGNORE into portcity (name) values (?) ");
 
-            PreparedStatement container = con.prepareStatement("insert into container (code, type) values (?,?)  on conflict do nothing;");
-            PreparedStatement ship = con.prepareStatement("insert into ship (name, company) values (?,?)  on conflict do nothing;");
-            PreparedStatement cityR = con.prepareStatement("insert into city (name) values (?)  on conflict do nothing;");
-            PreparedStatement cityD = con.prepareStatement("insert into city (name) values (?)  on conflict do nothing;");
+            PreparedStatement container = con.prepareStatement("insert IGNORE into container (code, type) values (?,?) ");
+            PreparedStatement ship = con.prepareStatement("insert IGNORE into ship (name, company) values (?,?) ");
+            PreparedStatement cityR = con.prepareStatement("insert IGNORE into city (name) values (?) ");
+            PreparedStatement cityD = con.prepareStatement("insert IGNORE into city (name) values (?) ");
 
-            PreparedStatement courierR = con.prepareStatement("insert into courier (name, gender, birthday, phone_number, company, port_city) values (?,?,?,?,?,?)  on conflict do nothing;");
-            PreparedStatement courierD = con.prepareStatement("insert into courier (name, gender, birthday, phone_number, company, port_city) values (?,?,?,?,?,?)  on conflict do nothing;");
+            PreparedStatement courierR = con.prepareStatement("insert IGNORE into courier (name, gender, birthday, phone_number, company, port_city) values (?,?,?,?,?,?) ");
+            PreparedStatement courierD = con.prepareStatement("insert IGNORE into courier (name, gender, birthday, phone_number, company, port_city) values (?,?,?,?,?,?) ");
 
-            PreparedStatement import_detail = con.prepareStatement("insert into import_export_detail (item_name,type, item_type, port_city, tax, date) values (?,?,?,?,?,?)  on conflict do nothing;");
-            PreparedStatement export_detail = con.prepareStatement("insert into import_export_detail (item_name,type, item_type, port_city, tax, date) values (?,?,?,?,?,?)  on conflict do nothing;");
-            PreparedStatement retrieval = con.prepareStatement("insert into delivery_retrieval (item_name,type,courier,city,date) values (?,?,?,?,?)  on conflict do nothing;");
-            PreparedStatement delivery = con.prepareStatement("insert into delivery_retrieval (item_name,type,courier,city,date) values (?,?,?,?,?)  on conflict do nothing;");
+            PreparedStatement import_detail = con.prepareStatement("insert IGNORE into import_export_detail (item_name,type, item_type, port_city, tax, date) values (?,?,?,?,?,?) ");
+            PreparedStatement export_detail = con.prepareStatement("insert IGNORE into import_export_detail (item_name,type, item_type, port_city, tax, date) values (?,?,?,?,?,?) ");
+            PreparedStatement retrieval = con.prepareStatement("insert IGNORE into delivery_retrieval (item_name,type,courier,city,date) values (?,?,?,?,?) ");
+            PreparedStatement delivery = con.prepareStatement("insert IGNORE into delivery_retrieval (item_name,type,courier,city,date) values (?,?,?,?,?) ");
 
-            PreparedStatement shipping = con.prepareStatement("insert into shipping (item_name, ship, container) values (?,?,?)  on conflict do nothing;");
-            PreparedStatement shipment = con.prepareStatement("insert into shipment (item_name, item_price, item_type, from_city, to_city, export_city, import_city, company, log_time) values (?,?,?,?,?,?,?,?,?)  on conflict do nothing;");
+            PreparedStatement shipping = con.prepareStatement("insert IGNORE into shipping (item_name, ship, container) values (?,?,?) ");
+            PreparedStatement shipment = con.prepareStatement("insert IGNORE into shipment (item_name, item_price, item_type, from_city, to_city, export_city, import_city, company, log_time) values (?,?,?,?,?,?,?,?,?) ");
 
             //tax cal after insertion
             String[] Info = new String[50];
@@ -806,25 +806,25 @@ public class Loader  {
             long startTime=System.currentTimeMillis();
 
 
-            PreparedStatement company = con.prepareStatement("insert into company (name) values (?)  on conflict do nothing;");
-            PreparedStatement exportCity = con.prepareStatement("insert into portcity (name) values (?)  on conflict do nothing;");
-            PreparedStatement importCity = con.prepareStatement("insert into portcity (name) values (?)  on conflict do nothing;");
+            PreparedStatement company = con.prepareStatement("insert IGNORE into company (name) values (?) ");
+            PreparedStatement exportCity = con.prepareStatement("insert IGNORE into portcity (name) values (?) ");
+            PreparedStatement importCity = con.prepareStatement("insert IGNORE into portcity (name) values (?) ");
 
-            PreparedStatement container = con.prepareStatement("insert into container (code, type) values (?,?)  on conflict do nothing;");
-            PreparedStatement ship = con.prepareStatement("insert into ship (name, company) values (?,?)  on conflict do nothing;");
-            PreparedStatement cityR = con.prepareStatement("insert into city (name) values (?)  on conflict do nothing;");
-            PreparedStatement cityD = con.prepareStatement("insert into city (name) values (?)  on conflict do nothing;");
+            PreparedStatement container = con.prepareStatement("insert IGNORE into container (code, type) values (?,?) ");
+            PreparedStatement ship = con.prepareStatement("insert IGNORE into ship (name, company) values (?,?) ");
+            PreparedStatement cityR = con.prepareStatement("insert IGNORE into city (name) values (?) ");
+            PreparedStatement cityD = con.prepareStatement("insert IGNORE into city (name) values (?) ");
 
-            PreparedStatement courierR = con.prepareStatement("insert into courier (name, gender, birthday, phone_number, company, port_city) values (?,?,?,?,?,?)  on conflict do nothing;");
-            PreparedStatement courierD = con.prepareStatement("insert into courier (name, gender, birthday, phone_number, company, port_city) values (?,?,?,?,?,?)  on conflict do nothing;");
+            PreparedStatement courierR = con.prepareStatement("insert IGNORE into courier (name, gender, birthday, phone_number, company, port_city) values (?,?,?,?,?,?) ");
+            PreparedStatement courierD = con.prepareStatement("insert IGNORE into courier (name, gender, birthday, phone_number, company, port_city) values (?,?,?,?,?,?) ");
 
-            PreparedStatement import_detail = con.prepareStatement("insert into import_export_detail (item_name,type, item_type, port_city, tax, date) values (?,?,?,?,?,?)  on conflict do nothing;");
-            PreparedStatement export_detail = con.prepareStatement("insert into import_export_detail (item_name,type, item_type, port_city, tax, date) values (?,?,?,?,?,?)  on conflict do nothing;");
-            PreparedStatement retrieval = con.prepareStatement("insert into delivery_retrieval (item_name,type,courier,city,date) values (?,?,?,?,?)  on conflict do nothing;");
-            PreparedStatement delivery = con.prepareStatement("insert into delivery_retrieval (item_name,type,courier,city,date) values (?,?,?,?,?)  on conflict do nothing;");
+            PreparedStatement import_detail = con.prepareStatement("insert IGNORE into import_export_detail (item_name,type, item_type, port_city, tax, date) values (?,?,?,?,?,?) ");
+            PreparedStatement export_detail = con.prepareStatement("insert IGNORE into import_export_detail (item_name,type, item_type, port_city, tax, date) values (?,?,?,?,?,?) ");
+            PreparedStatement retrieval = con.prepareStatement("insert IGNORE into delivery_retrieval (item_name,type,courier,city,date) values (?,?,?,?,?) ");
+            PreparedStatement delivery = con.prepareStatement("insert IGNORE into delivery_retrieval (item_name,type,courier,city,date) values (?,?,?,?,?) ");
 
-            PreparedStatement shipping = con.prepareStatement("insert into shipping (item_name, ship, container) values (?,?,?)  on conflict do nothing;");
-            PreparedStatement shipment = con.prepareStatement("insert into shipment (item_name, item_price, item_type, from_city, to_city, export_city, import_city, company, log_time) values (?,?,?,?,?,?,?,?,?)  on conflict do nothing;");
+            PreparedStatement shipping = con.prepareStatement("insert IGNORE into shipping (item_name, ship, container) values (?,?,?) ");
+            PreparedStatement shipment = con.prepareStatement("insert IGNORE into shipment (item_name, item_price, item_type, from_city, to_city, export_city, import_city, company, log_time) values (?,?,?,?,?,?,?,?,?) ");
 
             //tax cal after insertion
             String[] Info = new String[50];

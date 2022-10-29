@@ -99,4 +99,4 @@ def getDatetime(dateString):
     return datetime.strptime(dateString, '%Y-%m-%d  %H:%M:%S')
 
 if __name__ == "__main__":
-    importData("../data/shipment_records.csv", 10000)
+    importData("../data/shipment_records.csv", 500000)
