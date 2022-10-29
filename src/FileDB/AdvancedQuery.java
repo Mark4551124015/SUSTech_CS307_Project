@@ -12,8 +12,7 @@ public class AdvancedQuery {
 
     public static void main(String[] args) {
         AdvancedQuery advancedQuery = new AdvancedQuery();
-        advancedQuery.queryContainersWithWorkingTime("e3eb2791");
-        advancedQuery.queryContainersWithWorkingTime("6705ccea");
+        advancedQuery.queryContainersWithWorkingTime(150, "Dry Container");
         advancedQuery.queryBestCourier("聚划算", "北京");
         advancedQuery.queryBestCourier("聚划算", "成都");
         advancedQuery.queryBestExportCity("apple");
@@ -25,27 +24,30 @@ public class AdvancedQuery {
     }
 
 
-    public void queryContainersWithWorkingTime(String containerCode) {
+    public void queryContainersWithWorkingTime(int minDays, String type) {
         long startTime = System.currentTimeMillis();
-        Container container = FileDBManager.getContainers().select(item -> item.code.equals(containerCode)).get(0);
-        ArrayList<Shipping> shippings = FileDBManager.getShippings().select(shipping -> shipping.containerCode.equals(containerCode));
-        HashSet<String> itemNames = new HashSet<>();
-        long serviceDays = 0;
+        ArrayList<Container> containers = FileDBManager.getContainers().select(container -> container.type.equals(type));
+        for (Container container : containers) {
+            ArrayList<Shipping> shippings = FileDBManager.getShippings().select(shipping -> shipping.containerCode.equals(container.code));
+            HashSet<String> itemNames = new HashSet<>();
+            long serviceDays = 0;
 
-        for (Shipping shipping : shippings) {
-            itemNames.add(shipping.itemName);
+            for (Shipping shipping : shippings) {
+                itemNames.add(shipping.itemName);
+            }
+            ArrayList<Shipment> shipments = FileDBManager.getShipments().select(shipment ->
+                    itemNames.contains(shipment.itemName) && shipment.getExportDetail() != null && shipment.getImportDetail() != null
+            );
+
+            for (Shipment shipment : shipments) {
+                Date importDate = shipment.getImportDetail().date;
+                Date exportDate = shipment.getExportDetail().date;
+                serviceDays += dateDiff(exportDate, importDate);
+            }
+            if (serviceDays >= minDays){
+                System.out.printf("Container %s (type: %s) has worked for %d days \n", container.code, container.type, serviceDays);
+            }
         }
-        ArrayList<Shipment> shipments = FileDBManager.getShipments().select(shipment ->
-                itemNames.contains(shipment.itemName) && shipment.getExportDetail() != null && shipment.getImportDetail() != null
-        );
-
-        for (Shipment shipment : shipments) {
-            Date importDate = shipment.getImportDetail().date;
-            Date exportDate = shipment.getExportDetail().date;
-            serviceDays += dateDiff(exportDate, importDate);
-        }
-
-        System.out.printf("Container %s (type: %s) has worked for %d days \n", containerCode, container.type, serviceDays);
         long endTime = System.currentTimeMillis();
         System.out.printf("All queries are finished, total cost: %d ms \n", endTime - startTime);
     }
