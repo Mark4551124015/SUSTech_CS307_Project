@@ -13,7 +13,6 @@ public class SpeedTest {
     static int queryNumber = 10000;
     static FileDBManager fileDBManager;
     static String sourcePath = "./data/shipment_records.csv";
-
     public static void main(String[] args) {
         SpeedTest speedTest = new SpeedTest();
         try {

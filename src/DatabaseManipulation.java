@@ -727,11 +727,9 @@ public class DatabaseManipulation {
         preparedStatement.executeUpdate();
         return System.currentTimeMillis() - start;
     }
-
-
-
     //Query
-    public void QueryServedContainer() throws Exception{
+    public void QueryServedContainer(String type, int expired) throws Exception{
+        long startTime= System.currentTimeMillis();
         if (con==null) {
             getConnection();
         }
@@ -748,38 +746,122 @@ public class DatabaseManipulation {
         }
         System.out.println();
         System.out.println("----------------------------------------------------------------------------------------------------");
-        System.out.println("Please Enter the Type of Container, and expired date (Example: Dry Container 45):");
-        String type = sc.next();
-        int expired = sc.nextInt();
-
+        sql = "with tmp1 as" +
+                "    (select c.code, date as importDate, ied.item_name" +
+                "    from shipping" +
+                "        join import_export_detail ied on shipping.item_name = ied.item_name" +
+                "        join container c on shipping.container = c.code" +
+                "    where c.type = ? and ied.type = 'import')," +
+                "    tmp2 as" +
+                "    (select c.code, date as exportDate, ied.item_name" +
+                "    from shipping" +
+                "        join import_export_detail ied on shipping.item_name = ied.item_name" +
+                "        join container c on shipping.container = c.code" +
+                "         where c.type = ? and ied.type = 'export')" +
+                " select DISTINCT  tmp1.code, sum(importDate - exportDate) as served" +
+                " from tmp2  join tmp1 on tmp1.item_name = tmp2.item_name" +
+                " group by tmp1.code" +
+                " having sum(importDate - exportDate) >= ?" +
+                " order by served desc";
+        pS = con.prepareStatement(sql);
+        pS.setString((int)1,type);
+        pS.setString((int)2,type);
+        pS.setInt((int)3,expired);
+        resultSet = pS.executeQuery();
+        long endTime = System.currentTimeMillis();
+        System.out.println("CONTAINER INFO: ");
+        System.out.println("-----------------------------------------------------------------------------");
+        System.out.printf("%20s %10s\n", "Code", "Served");
+        System.out.println("-----------------------------------------------------------------------------");
+        int len = 0;
+        while (resultSet.next()) {
+            len++;
+            String code = resultSet.getString("code");
+            int served = resultSet.getInt("served");
+            System.out.format("%20s %10d\n", code, served);
+        }
+        System.out.println("-----------------------------------------------------------------------------");
+        System.out.println("Queried "+ len+" containers, taking "+ (endTime- startTime)+"ms");
     }
+    public void QueryBestCourier(String city, String inputCompany, int range) throws Exception{
+        long startTime= System.currentTimeMillis();
 
+        if (con==null) {
+            getConnection();
+        }
+        String sql = "select courier, count(*), company" +
+                "    from delivery_retrieval join courier c on c.name = delivery_retrieval.courier\n" +
+                "    where city = ? and company = ?" +
+                "    group by courier,company" +
+                "    order by count(*) desc";
+        PreparedStatement pS = con.prepareStatement(sql);
+        pS.setString((int)1,city);
+        pS.setString((int)2,inputCompany);
 
+        resultSet = pS.executeQuery();
+        long endTime = System.currentTimeMillis();
 
+        System.out.println("CONTAINER INFO: ");
+        System.out.println("------------------------------------------------");
+        System.out.printf("%10s %10s %15s\n", "Courier", "Count", "Company");
+        System.out.println("------------------------------------------------");
+        int len = 0;
+        while (resultSet.next() && len <= range) {
+            len++;
+            String courier = resultSet.getString("courier");
+            String company = resultSet.getString("company");
+            int count = resultSet.getInt("count");
+            System.out.format("%10s %10d %15s\n", courier, count, company);
+        }
+        System.out.println("---------------------------------------------");
+        System.out.println("Queried "+ len+" results, taking "+(endTime-startTime)+"ms");
+    }
+    public void QueryBestPort(String Item_type, String Type) throws Exception{
+        long startTime= System.currentTimeMillis();
+        if (con==null) {
+            getConnection();
+        }
 
+        String sql = "with newest as (" +
+                "    select max(date) as newdate, port_city, item_type" +
+                "    from import_export_detail as ied" +
+                "    group by port_city, item_type" +
+                "    having item_type = ?" +
+                "    )," +
+                "    temp as (select d.port_city, tax/item_price as taxRate, d.item_type, d.date from newest," +
+                "                       shipment join import_export_detail d on shipment.item_name = d.item_name" +
+                "                        where shipment.item_type = newest.item_type" +
+                "                        and date = newdate" +
+                "                        and type = ?" +
+                "                        and newest.port_city = import_city" +
+                "                        order by taxRate)" +
+                "select * from temp where taxRate = (select  min(taxRate) from temp);";
 
+        PreparedStatement pS = con.prepareStatement(sql);
+        pS.setString((int)1,Item_type);
+        pS.setString((int)2,Type);
+        resultSet = pS.executeQuery();
+        long endTime = System.currentTimeMillis();
+        resultSet.next();
+        System.out.println("-----------------------------------------------------------------------");
+            String Port = resultSet.getString("port_city");
+            float taxrate = resultSet.getFloat("taxrate");
 
-
-
-
-
-
-
-
-
-
-
-
-
+            System.out.printf("The best port for (%s) to (%s) is (%s), tax rate is (%f)\n", Item_type, Type, Port, taxrate);
+        System.out.println("-----------------------------------------------------------------------");
+        System.out.println("Queried "+ 1+" results, taking "+(endTime-startTime)+"ms");
+    }
     public void emptyTables() throws Exception{
 
         getConnection();
 
         String sql ="";
         Statement Statement = con.createStatement();
-        sql = "truncate shipment,import_export_detail,delivery_retrieval,city,company,courier,portcity,ship,shipping";
+        con.setAutoCommit(false);
+        sql = "truncate shipment,import_export_detail,delivery_retrieval,city,company,courier,portcity,ship,shipping,container";
         Statement.executeUpdate(sql);
-
+        con.commit();
+        con.setAutoCommit(true);
         System.out.println("All cleaned");
     }
     int getObjID (Records type, String arg) throws SQLException {

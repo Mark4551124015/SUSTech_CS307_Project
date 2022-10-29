@@ -7,6 +7,7 @@ import java.util.Calendar;
 public class JavaTests {
     Loader ld = new Loader();
     DatabaseManipulation dm = new DatabaseManipulation();
+    MultiThreadLoader mld = new MultiThreadLoader();
     public JavaTests(){
     }
     public void TestAllOperation(String filePath, int timeK) throws Exception {
@@ -20,18 +21,18 @@ public class JavaTests {
         TestUpdate(filePath, Main.UpdateSize*timeK);
         TestSelect(filePath, Main.SelectSize*timeK,ps);
     }
-    public void TestAllLoader(String filePath, int timeK) throws Exception {
+    public void TestAllLoader(String filePath) throws Exception {
         File file = new File("log.txt");
         PrintStream ps = new PrintStream(file);
         PrintStream out = new PrintStream(System.out);
         System.out.println("Java testing：");
-        TestLoader_V1(filePath, 100*timeK);
-        TestLoader_V2(filePath, 10000*timeK);
-        TestLoader_V3(filePath, 10000*timeK);
-        TestLoader_V4(filePath, 100000*timeK);
-        TestLoader_V5(filePath, 100000*timeK);
+        TestLoader_V1(filePath, 100);
+        TestLoader_V2(filePath, 10000);
+        TestLoader_V3(filePath, 10000);
+        TestLoader_V4(filePath, 100000);
+        TestLoader_V5(filePath, 100000);
+        TestLoader_V6(filePath, 500000);
     }
-
     public void TestInsertion(String filePath, int max) throws Exception{
         dm.emptyTables();
         File csv = new File(filePath);
@@ -58,7 +59,6 @@ public class JavaTests {
         dm.emptyTables();
         ld.loadFromFile(filePath,max);
     }
-
     public void TestLoader_V1(String filePath, int max) throws Exception {
         dm.emptyTables();
         ld.loadFromFile_V1(filePath,max);
@@ -78,6 +78,10 @@ public class JavaTests {
     public void TestLoader_V5(String filePath, int max) throws Exception {
         dm.emptyTables();
         ld.loadFromFile_V5(filePath,max);
+    }
+    public void TestLoader_V6(String filePath, int max) throws Exception {
+        dm.emptyTables();
+        mld.loadFromFile(filePath,max);
     }
     public void TestDelete(String filePath, int max) throws Exception {
         File csv = new File(filePath);

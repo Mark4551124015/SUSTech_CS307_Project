@@ -800,11 +800,8 @@ public class Loader  {
             String line = "";
             cnt = 0;
             line = br.readLine();
-
             Statement operation = con.createStatement();
-
             long startTime=System.currentTimeMillis();
-
 
             PreparedStatement company = con.prepareStatement("insert into company (name) values (?)  on conflict do nothing;");
             PreparedStatement exportCity = con.prepareStatement("insert into portcity (name) values (?)  on conflict do nothing;");

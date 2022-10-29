@@ -11,52 +11,12 @@ import java.util.concurrent.Executors;
 
 public class MultiThreadLoader {
     private static int threads;
-    private static ExecutorService threadPool = Executors.newFixedThreadPool(50);
-    private Connection con = null;
-    private ResultSet resultSet;
-    private final String host = "localhost";
-    private final String dbname = "sustc";
-    private final String user = "postgres";
-    private final String pwd = "314159";
-    private final String port = "5432";
-
-    public void getConnection() {
-        try {
-            Class.forName("org.postgresql.Driver");
-
-        } catch (Exception e) {
-            System.err.println("Cannot find the PostgreSQL driver. Check CLASSPATH.");
-            System.exit(1);
-        }
-
-        try {
-            String url = "jdbc:postgresql://" + host + ":" + port + "/" + dbname+"?reWriteBatchedInserts=true";
-            con = DriverManager.getConnection(url, user, pwd);
-
-        } catch (SQLException e) {
-            System.err.println("Database connection failed");
-            System.err.println(e.getMessage());
-            System.exit(1);
-        }
-    }
-    public void closeConnection() {
-        if (con != null) {
-            try {
-                con.close();
-                con = null;
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    public void loadFromFile(String filePath, int max) throws InterruptedException, SQLException {
+    private static ExecutorService threadPool = Executors.newFixedThreadPool(10);
+    public void loadFromFile(String filePath, int max) throws Exception {
         long startTime = System.currentTimeMillis();
-        getConnection();
-        Statement operation = con.createStatement();
-        con.setAutoCommit(false);
-
-
+        Connection op = new JDBC().getNewCon();
+        Statement operation = op.createStatement();
+        op.setAutoCommit(false);
         operation.executeUpdate("alter table ship disable trigger all;");
         operation.executeUpdate("alter table city disable trigger all;");
         operation.executeUpdate("alter table company disable trigger all;");
@@ -67,11 +27,11 @@ public class MultiThreadLoader {
         operation.executeUpdate("alter table portcity disable trigger all;");
         operation.executeUpdate("alter table shipment disable trigger all;");
         operation.executeUpdate("alter table shipping disable trigger all;");
-
+        op.commit();
         CountDownLatch latch = new CountDownLatch(10);
         threadPool.execute(() ->{
             try {
-                icompany(filePath,max);
+                icompany(filePath,max,new JDBC().getNewCon());
             } catch (Exception e) {
                 System.err.println(e);
             } finally {
@@ -80,7 +40,7 @@ public class MultiThreadLoader {
         });
         threadPool.execute(() ->{
             try {
-                icity(filePath,max);
+                icity(filePath,max,new JDBC().getNewCon());
             } catch (Exception e) {
                 System.err.println(e);
             } finally {
@@ -89,7 +49,7 @@ public class MultiThreadLoader {
         });
         threadPool.execute(() ->{
             try {
-                icontainer(filePath,max);
+                icontainer(filePath,max,new JDBC().getNewCon());
             } catch (Exception e) {
                 System.err.println(e);
             } finally {
@@ -98,7 +58,7 @@ public class MultiThreadLoader {
         });
         threadPool.execute(() ->{
             try {
-                iportcity(filePath,max);
+                iportcity(filePath,max,new JDBC().getNewCon());
             } catch (Exception e) {
                 System.err.println(e);
             } finally {
@@ -107,7 +67,7 @@ public class MultiThreadLoader {
         });
         threadPool.execute(() ->{
             try {
-                icourier(filePath,max);
+                icourier(filePath,max, new JDBC().getNewCon());
             } catch (Exception e) {
                 System.err.println(e);
             } finally {
@@ -117,7 +77,7 @@ public class MultiThreadLoader {
 
         threadPool.execute(() ->{
             try {
-                iie(filePath,max);
+                iie(filePath,max, new JDBC().getNewCon());
             } catch (Exception e) {
                 System.err.println(e);
             } finally {
@@ -126,7 +86,7 @@ public class MultiThreadLoader {
         });
         threadPool.execute(() ->{
             try {
-                ishipping(filePath,max);
+                ishipping(filePath,max, new JDBC().getNewCon());
             } catch (Exception e) {
                 System.err.println(e);
             } finally {
@@ -135,7 +95,7 @@ public class MultiThreadLoader {
         });
         threadPool.execute(() ->{
             try {
-                iship(filePath,max);
+                iship(filePath,max, new JDBC().getNewCon());
             } catch (Exception e) {
                 System.err.println(e);
             } finally {
@@ -144,7 +104,7 @@ public class MultiThreadLoader {
         });
         threadPool.execute(() ->{
             try {
-                ishipment(filePath,max);
+                ishipment(filePath,max, new JDBC().getNewCon());
             } catch (Exception e) {
                 System.err.println(e);
             } finally {
@@ -153,17 +113,13 @@ public class MultiThreadLoader {
         });
         threadPool.execute(() ->{
             try {
-                idr(filePath,max);
+                idr(filePath,max, new JDBC().getNewCon());
             } catch (Exception e) {
                 System.err.println(e);
             } finally {
                 latch.countDown();
             }
         });
-
-
-
-
 
         latch.await();
         operation.executeUpdate("alter table ship enable trigger all");
@@ -176,14 +132,13 @@ public class MultiThreadLoader {
         operation.executeUpdate("alter table portcity enable trigger all");
         operation.executeUpdate("alter table shipment enable trigger all");
         operation.executeUpdate("alter table shipping enable trigger all");
-
-        con.commit();
-        con.setAutoCommit(true);
+        op.commit();
+        op.setAutoCommit(true);
         long endTime = System.currentTimeMillis();
         threadPool.shutdown();
-        System.out.printf("Inserted: %d records, speed: %.2f records/s\n",max, (float)(max*1e3/(endTime-startTime)));
+        System.out.printf("Load using MultiThread Loader: %d records, speed: %.2f records/s\n",max, (float)(max*1e3/(endTime-startTime)));
     }
-    public void icompany (String filePath, int max) throws Exception {
+    public void icompany (String filePath, int max,Connection con) throws Exception {
         int cnt;
         int MAXRECORD = max;
         File csv = new File(filePath);
@@ -197,7 +152,6 @@ public class MultiThreadLoader {
         cnt = 0;
         line = br.readLine();
         long startTime = System.currentTimeMillis();
-        getConnection();
         con.setAutoCommit(false);
         PreparedStatement company = con.prepareStatement("insert into company (name) values (?)  on conflict do nothing;");
         //tax cal after insertion
@@ -237,11 +191,13 @@ public class MultiThreadLoader {
         }
         company.executeBatch();
         company.clearBatch();
+        con.commit();
+
         long endTime=System.currentTimeMillis();
-        System.out.printf("Inserted: %d records, speed: %.2f records/s\n",max, (float)(max*1e3/(endTime-startTime)));
+//        System.out.printf("Inserted: %d records, speed: %.2f records/s\n",max, (float)(max*1e3/(endTime-startTime)));
 
     }
-    public void icity (String filePath,int max) throws Exception {
+    public void icity (String filePath,int max, Connection con) throws Exception {
         int cnt;
         int MAXRECORD = max;
         File csv = new File(filePath);
@@ -256,7 +212,6 @@ public class MultiThreadLoader {
         int index = 1;
         line = br.readLine();
         long startTime = System.currentTimeMillis();
-        getConnection();
         con.setAutoCommit(false);
         PreparedStatement cityR = con.prepareStatement("insert into city (name) values (?)  on conflict do nothing;");
         PreparedStatement cityD = con.prepareStatement("insert into city (name) values (?)  on conflict do nothing;");
@@ -305,10 +260,11 @@ public class MultiThreadLoader {
 
         cityR.clearBatch();
         cityD.clearBatch();
+        con.commit();
 
-        System.out.printf("Inserted: %d records, speed: %.2f records/s\n",max, (float)(max*1e3/(System.currentTimeMillis()-startTime)));
+//        System.out.printf("Inserted: %d records, speed: %.2f records/s\n",max, (float)(max*1e3/(System.currentTimeMillis()-startTime)));
     }
-    public void icontainer (String filePath, int max) throws Exception {
+    public void icontainer (String filePath,int max, Connection con) throws Exception {
         int cnt;
         int MAXRECORD = max;
         CountDownLatch latch = new CountDownLatch(threads);
@@ -324,7 +280,6 @@ public class MultiThreadLoader {
         int index = 1;
         line = br.readLine();
         long startTime = System.currentTimeMillis();
-        getConnection();
         con.setAutoCommit(false);
         PreparedStatement container = con.prepareStatement("insert into container (code, type) values (?,?)  on conflict do nothing;");
         //tax cal after insertion
@@ -368,24 +323,20 @@ public class MultiThreadLoader {
                 container.setString(2,ContainerType);
                 container.addBatch();
             }
-
-
-
-
         }
 
         container.executeBatch();
-
         container.clearBatch();
+        con.commit();
 
         long endTime=System.currentTimeMillis();
 
 
 
-        System.out.printf("Inserted: %d records, speed: %.2f records/s\n",max, (float)(max*1e3/(endTime-startTime)));
+//        System.out.printf("Inserted: %d records, speed: %.2f records/s\n",max, (float)(max*1e3/(endTime-startTime)));
 
     }
-    public void iportcity(String filePath, int max) throws Exception {
+    public void iportcity(String filePath,int max, Connection con) throws Exception {
         int cnt;
         int MAXRECORD = max;
         CountDownLatch latch = new CountDownLatch(threads);
@@ -401,7 +352,6 @@ public class MultiThreadLoader {
         int index = 1;
         line = br.readLine();
         long startTime = System.currentTimeMillis();
-        getConnection();
 
         con.setAutoCommit(false);
 
@@ -460,15 +410,15 @@ public class MultiThreadLoader {
         exportCity.clearBatch();
         importCity.clearBatch();
 
-
+        con.commit();
 
         long endTime=System.currentTimeMillis();
         threadPool.shutdown();
 
-        System.out.printf("Inserted: %d records, speed: %.2f records/s\n",max, (float)(max*1e3/(endTime-startTime)));
+//        System.out.printf("Inserted: %d records, speed: %.2f records/s\n",max, (float)(max*1e3/(endTime-startTime)));
 
     }
-    public void icourier (String filePath, int max) throws Exception {
+    public void icourier (String filePath,int max, Connection con) throws Exception {
         int cnt;
         int MAXRECORD = max;
         CountDownLatch latch = new CountDownLatch(threads);
@@ -484,7 +434,6 @@ public class MultiThreadLoader {
         int index = 1;
         line = br.readLine();
         long startTime = System.currentTimeMillis();
-        getConnection();
 
         con.setAutoCommit(false);
 
@@ -553,12 +502,12 @@ public class MultiThreadLoader {
 
         courierR.clearBatch();
         courierD.clearBatch();
-
+        con.commit();
         long endTime=System.currentTimeMillis();
-        System.out.printf("Inserted: %d records, speed: %.2f records/s\n",max, (float)(max*1e3/(endTime-startTime)));
+//        System.out.printf("Inserted: %d records, speed: %.2f records/s\n",max, (float)(max*1e3/(endTime-startTime)));
 
     }
-    public void iie (String filePath, int max) throws Exception {
+    public void iie (String filePath, int max, Connection con) throws Exception {
         int cnt;
         int MAXRECORD = max;
         CountDownLatch latch = new CountDownLatch(threads);
@@ -574,7 +523,6 @@ public class MultiThreadLoader {
         int index = 1;
         line = br.readLine();
         long startTime = System.currentTimeMillis();
-        getConnection();
 
         con.setAutoCommit(false);
 
@@ -645,14 +593,14 @@ public class MultiThreadLoader {
         export_detail.executeBatch();
         import_detail.clearBatch();
         export_detail.clearBatch();
-
+        con.commit();
         long endTime=System.currentTimeMillis();
 
 
-        System.out.printf("Inserted: %d records, speed: %.2f records/s\n",max, (float)(max*1e3/(endTime-startTime)));
+//        System.out.printf("Inserted: %d records, speed: %.2f records/s\n",max, (float)(max*1e3/(endTime-startTime)));
 
     }
-    public void ishipping (String filePath, int max) throws Exception {
+    public void ishipping (String filePath, int max, Connection con) throws Exception {
         int cnt;
         int MAXRECORD = max;
         CountDownLatch latch = new CountDownLatch(threads);
@@ -668,7 +616,7 @@ public class MultiThreadLoader {
         int index = 1;
         line = br.readLine();
         long startTime = System.currentTimeMillis();
-        getConnection();
+
 
         con.setAutoCommit(false);
 
@@ -728,12 +676,12 @@ public class MultiThreadLoader {
         shipping.executeBatch();
 
         shipping.clearBatch();
-
+        con.commit();
         long endTime=System.currentTimeMillis();
-        System.out.printf("Inserted: %d records, speed: %.2f records/s\n",max, (float)(max*1e3/(endTime-startTime)));
+//        System.out.printf("Inserted: %d records, speed: %.2f records/s\n",max, (float)(max*1e3/(endTime-startTime)));
 
     }
-    public void iship (String filePath, int max) throws Exception {
+    public void iship (String filePath, int max, Connection con) throws Exception {
         int cnt;
         int MAXRECORD = max;
         CountDownLatch latch = new CountDownLatch(threads);
@@ -749,7 +697,6 @@ public class MultiThreadLoader {
         int index = 1;
         line = br.readLine();
         long startTime = System.currentTimeMillis();
-        getConnection();
 
         con.setAutoCommit(false);
 
@@ -804,13 +751,13 @@ public class MultiThreadLoader {
 
         ship.executeBatch();
         ship.clearBatch();
-
+        con.commit();
         long endTime=System.currentTimeMillis();
 
-        System.out.printf("Inserted: %d records, speed: %.2f records/s\n",max, (float)(max*1e3/(endTime-startTime)));
+//        System.out.printf("Inserted: %d records, speed: %.2f records/s\n",max, (float)(max*1e3/(endTime-startTime)));
 
     }
-    public void ishipment (String filePath, int max) throws Exception {
+    public void ishipment (String filePath, int max, Connection con) throws Exception {
         int cnt;
         int MAXRECORD = max;
         CountDownLatch latch = new CountDownLatch(threads);
@@ -826,7 +773,6 @@ public class MultiThreadLoader {
         int index = 1;
         line = br.readLine();
         long startTime = System.currentTimeMillis();
-        getConnection();
         con.setAutoCommit(false);
         PreparedStatement shipment = con.prepareStatement("insert into shipment (item_name, item_price, item_type, from_city, to_city, export_city, import_city, company, log_time) values (?,?,?,?,?,?,?,?,?)  on conflict do nothing;");
         //tax cal after insertion
@@ -879,11 +825,12 @@ public class MultiThreadLoader {
         }
         shipment.executeBatch();
         shipment.clearBatch();
+        con.commit();
         long endTime=System.currentTimeMillis();
-        System.out.printf("Inserted: %d records, speed: %.2f records/s\n",max, (float)(max*1e3/(endTime-startTime)));
+//        System.out.printf("Inserted: %d records, speed: %.2f records/s\n",max, (float)(max*1e3/(endTime-startTime)));
 
     }
-    public void idr (String filePath, int max) throws Exception {
+    public void idr (String filePath, int max, Connection con) throws Exception {
         int cnt;
         int MAXRECORD = max;
             File csv = new File(filePath);
@@ -944,7 +891,7 @@ public class MultiThreadLoader {
                 retrieval.setString(4,RetrievalCity);
                 retrieval.setDate(5,Date.valueOf(RetrievalStartTime));
                 retrieval.addBatch();
-                
+
                 if (!(DeliveryFinishTime.isEmpty())) {
 
                     delivery.setString(1,ItemName);
@@ -959,10 +906,9 @@ public class MultiThreadLoader {
             delivery.executeBatch();
             retrieval.clearBatch();
             delivery.clearBatch();
-
             con.commit();
             long endTime=System.currentTimeMillis();
-            System.out.printf("Inserted: %d records, speed: %.2f records/s\n",MAXRECORD, (float)(MAXRECORD*1e3/(endTime-startTime)));
+//            System.out.printf("Inserted: %d records, speed: %.2f records/s\n",MAXRECORD, (float)(MAXRECORD*1e3/(endTime-startTime)));
     }
     public static Date CalBirth (String str, float age) {
         Date date = Date.valueOf(str);
