@@ -13,10 +13,12 @@ public class AdvancedQuery {
     public static void main(String[] args) {
         AdvancedQuery advancedQuery = new AdvancedQuery();
         advancedQuery.queryContainersWithWorkingTime(150, "Dry Container");
-        advancedQuery.queryBestCourier("聚划算", "北京");
-        advancedQuery.queryBestCourier("聚划算", "成都");
-        advancedQuery.queryBestExportCity("apple");
-        advancedQuery.queryBestExportCity("mango");
+
+
+//        advancedQuery.queryBestCourier("聚划算", "北京");
+//        advancedQuery.queryBestCourier("聚划算", "成都");
+//        advancedQuery.queryBestExportCity("apple");
+//        advancedQuery.queryBestExportCity("mango");
     }
 
     public AdvancedQuery() {

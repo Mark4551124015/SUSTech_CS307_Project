@@ -10,8 +10,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class MultiThreadLoader {
-    private static int threads;
-    private static ExecutorService threadPool = Executors.newFixedThreadPool(10);
+    private static int threads = 10;
+    private static ExecutorService threadPool = Executors.newFixedThreadPool(threads);
     public void loadFromFile(String filePath, int max) throws Exception {
         long startTime = System.currentTimeMillis();
         Connection op = new JDBC().getNewCon();
@@ -28,7 +28,7 @@ public class MultiThreadLoader {
         operation.executeUpdate("alter table shipment disable trigger all;");
         operation.executeUpdate("alter table shipping disable trigger all;");
         op.commit();
-        CountDownLatch latch = new CountDownLatch(10);
+        CountDownLatch latch = new CountDownLatch(threads);
         threadPool.execute(() ->{
             try {
                 icompany(filePath,max,new JDBC().getNewCon());
@@ -120,7 +120,6 @@ public class MultiThreadLoader {
                 latch.countDown();
             }
         });
-
         latch.await();
         operation.executeUpdate("alter table ship enable trigger all");
         operation.executeUpdate("alter table city enable trigger all");
@@ -267,7 +266,6 @@ public class MultiThreadLoader {
     public void icontainer (String filePath,int max, Connection con) throws Exception {
         int cnt;
         int MAXRECORD = max;
-        CountDownLatch latch = new CountDownLatch(threads);
         File csv = new File(filePath);
         csv.setReadable(true);
         csv.setWritable(true);
@@ -339,7 +337,6 @@ public class MultiThreadLoader {
     public void iportcity(String filePath,int max, Connection con) throws Exception {
         int cnt;
         int MAXRECORD = max;
-        CountDownLatch latch = new CountDownLatch(threads);
         File csv = new File(filePath);
         csv.setReadable(true);
         csv.setWritable(true);
@@ -421,7 +418,6 @@ public class MultiThreadLoader {
     public void icourier (String filePath,int max, Connection con) throws Exception {
         int cnt;
         int MAXRECORD = max;
-        CountDownLatch latch = new CountDownLatch(threads);
         File csv = new File(filePath);
         csv.setReadable(true);
         csv.setWritable(true);
@@ -510,7 +506,6 @@ public class MultiThreadLoader {
     public void iie (String filePath, int max, Connection con) throws Exception {
         int cnt;
         int MAXRECORD = max;
-        CountDownLatch latch = new CountDownLatch(threads);
         File csv = new File(filePath);
         csv.setReadable(true);
         csv.setWritable(true);
@@ -603,7 +598,6 @@ public class MultiThreadLoader {
     public void ishipping (String filePath, int max, Connection con) throws Exception {
         int cnt;
         int MAXRECORD = max;
-        CountDownLatch latch = new CountDownLatch(threads);
         File csv = new File(filePath);
         csv.setReadable(true);
         csv.setWritable(true);
@@ -684,7 +678,6 @@ public class MultiThreadLoader {
     public void iship (String filePath, int max, Connection con) throws Exception {
         int cnt;
         int MAXRECORD = max;
-        CountDownLatch latch = new CountDownLatch(threads);
         File csv = new File(filePath);
         csv.setReadable(true);
         csv.setWritable(true);
@@ -760,7 +753,6 @@ public class MultiThreadLoader {
     public void ishipment (String filePath, int max, Connection con) throws Exception {
         int cnt;
         int MAXRECORD = max;
-        CountDownLatch latch = new CountDownLatch(threads);
         File csv = new File(filePath);
         csv.setReadable(true);
         csv.setWritable(true);

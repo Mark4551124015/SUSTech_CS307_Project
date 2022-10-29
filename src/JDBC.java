@@ -1,14 +1,12 @@
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class JDBC {
-    private ResultSet resultSet;
     private final String host = "localhost";
-    private final String dbname = "postgres";
-    private final String user = "postgres";
-    private final String pwd = "123456";
+    private final String dbname = "sustc";
+    private final String user = "mark455";
+    private final String pwd = "314159";
     private final String port = "5432";
 
     public Connection getNewCon() {
