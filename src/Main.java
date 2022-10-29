@@ -12,17 +12,19 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         JavaTests jt = new JavaTests();
-        MultiThreadLoader multiThreadLoader = new MultiThreadLoader();
+
+
+
         DatabaseManipulation dm = new DatabaseManipulation();
+        dm.QueryServedContainer(540);
+        dm.QueryServedContainer(511);
 
 
-        //second args of JavaTests is the constant which timed the parameters up there
-        //        jt.TestAllLoader(filePath,1);
-        //        jt.dm.emptyTables();
-        //        jt.ld.loadFromFile(filePath,1000);
-        //        jt.TestAllLoader(filePath);
 
-        jt.TestAllLoader(filePath);
+//        dm.QueryBestPort("pear","export");
+//        dm.QueryBestPort("apple","import");
+//        dm.QueryBestCourier("北京","拼多多",5);
+//        dm.QueryBestCourier("重庆","唯品会",5);
 
 
 //        jt.ld.loadFromFile(filePath,1000);

@@ -8,8 +8,7 @@ public class JavaTests {
     Loader ld = new Loader();
     DatabaseManipulation dm = new DatabaseManipulation();
     MultiThreadLoader mld = new MultiThreadLoader();
-    public JavaTests(){
-    }
+
     public void TestAllOperation(String filePath, int timeK) throws Exception {
         File file = new File("log.txt");
         PrintStream ps = new PrintStream(file);

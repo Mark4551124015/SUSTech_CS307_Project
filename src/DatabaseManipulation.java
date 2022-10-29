@@ -728,8 +728,7 @@ public class DatabaseManipulation {
         return System.currentTimeMillis() - start;
     }
     //Query
-    public void QueryServedContainer(String type, int expired) throws Exception{
-        long startTime= System.currentTimeMillis();
+    public void QueryServedContainer(int expired) throws Exception{
         if (con==null) {
             getConnection();
         }
@@ -746,6 +745,9 @@ public class DatabaseManipulation {
         }
         System.out.println();
         System.out.println("----------------------------------------------------------------------------------------------------");
+        System.out.println("Please enter the type of container:");
+        String type = sc.nextLine();
+        long startTime= System.currentTimeMillis();
         sql = "with tmp1 as" +
                 "    (select c.code, date as importDate, ied.item_name" +
                 "    from shipping" +
@@ -785,7 +787,6 @@ public class DatabaseManipulation {
     }
     public void QueryBestCourier(String city, String inputCompany, int range) throws Exception{
         long startTime= System.currentTimeMillis();
-
         if (con==null) {
             getConnection();
         }
@@ -797,23 +798,21 @@ public class DatabaseManipulation {
         PreparedStatement pS = con.prepareStatement(sql);
         pS.setString((int)1,city);
         pS.setString((int)2,inputCompany);
-
         resultSet = pS.executeQuery();
         long endTime = System.currentTimeMillis();
-
-        System.out.println("CONTAINER INFO: ");
-        System.out.println("------------------------------------------------");
-        System.out.printf("%10s %10s %15s\n", "Courier", "Count", "Company");
-        System.out.println("------------------------------------------------");
+        System.out.println("COURIER INFO: ");
+        System.out.println("------------------------------------------------------------");
+        System.out.printf("%10s %10s %15s %15s\n", "Courier", "Count", "Company", "City");
+        System.out.println("------------------------------------------------------------");
         int len = 0;
         while (resultSet.next() && len <= range) {
             len++;
             String courier = resultSet.getString("courier");
             String company = resultSet.getString("company");
             int count = resultSet.getInt("count");
-            System.out.format("%10s %10d %15s\n", courier, count, company);
+            System.out.format("%10s %10d %15s %15s\n", courier, count, company, city);
         }
-        System.out.println("---------------------------------------------");
+        System.out.println("------------------------------------------------------------");
         System.out.println("Queried "+ len+" results, taking "+(endTime-startTime)+"ms");
     }
     public void QueryBestPort(String Item_type, String Type) throws Exception{
