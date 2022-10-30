@@ -29,7 +29,6 @@ public class DatabaseManipulation {
             System.exit(1);
         }
     }
-
     public void closeConnection() {
         if (con != null) {
             try {
@@ -40,7 +39,6 @@ public class DatabaseManipulation {
             }
         }
     }
-
     //Add Records
     public long addOneRecord(Records type, String str) throws SQLException {
         if (con==null) {
