@@ -1,7 +1,7 @@
-package FileDB.Databases;
+package FileDB.Tables;
 
-import FileDB.Databases.Models.City;
-import FileDB.Databases.Models.Constraint;
+import FileDB.Tables.Models.City;
+import FileDB.Tables.Models.Constraint;
 
 import java.util.ArrayList;
 

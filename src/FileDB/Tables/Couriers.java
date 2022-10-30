@@ -1,8 +1,8 @@
-package FileDB.Databases;
+package FileDB.Tables;
 
-import FileDB.Databases.Models.Constraint;
-import FileDB.Databases.Models.Courier;
-import FileDB.Databases.Models.PortCity;
+import FileDB.Tables.Models.Constraint;
+import FileDB.Tables.Models.Courier;
+import FileDB.Tables.Models.PortCity;
 import FileDB.FileDBManager;
 
 import java.util.ArrayList;

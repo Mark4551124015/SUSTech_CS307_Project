@@ -1,4 +1,4 @@
-package FileDB.Databases.Models;
+package FileDB.Tables.Models;
 
 import java.util.Date;
 

@@ -1,6 +1,6 @@
-package FileDB.Databases;
+package FileDB.Tables;
 
-import FileDB.Databases.Models.ImportAndExport;
+import FileDB.Tables.Models.ImportAndExport;
 import FileDB.FileDBManager;
 
 import java.util.ArrayList;

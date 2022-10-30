@@ -1,6 +1,6 @@
 package FileDB;
 
-import FileDB.Databases.Models.Courier;
+import FileDB.Tables.Models.Courier;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;

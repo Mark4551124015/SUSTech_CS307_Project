@@ -1,4 +1,4 @@
-package FileDB.Databases.Models;
+package FileDB.Tables.Models;
 
 public class Shipping {
     public String itemName;

@@ -1,6 +1,6 @@
-package FileDB.Databases;
+package FileDB.Tables;
 
-import FileDB.Databases.Models.Constraint;
+import FileDB.Tables.Models.Constraint;
 import FileDB.FileDBManager;
 import com.google.gson.Gson;
 

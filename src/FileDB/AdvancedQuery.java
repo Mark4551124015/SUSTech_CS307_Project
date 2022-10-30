@@ -1,6 +1,6 @@
 package FileDB;
 
-import FileDB.Databases.Models.*;
+import FileDB.Tables.Models.*;
 
 import java.util.ArrayList;
 import java.util.Date;

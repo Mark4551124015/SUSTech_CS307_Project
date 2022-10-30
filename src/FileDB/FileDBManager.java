@@ -1,7 +1,7 @@
 package FileDB;
 
-import FileDB.Databases.*;
-import FileDB.Databases.Models.City;
+import FileDB.Tables.*;
+import FileDB.Tables.Models.City;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -14,7 +14,7 @@ public class FileDBManager {
     static Companies companies;
     static FileDBManager instance;
 
-    static BaseModel[] Models = new BaseModel[]{
+    static BaseModel[] Tables = new BaseModel[]{
             new Cities(),
             new Companies(),
             new Containers(),
@@ -62,45 +62,45 @@ public class FileDBManager {
 
 
     public static Cities getCities() {
-        return (Cities) Models[0];
+        return (Cities) Tables[0];
     }
 
     public static Companies getCompanies() {
-        return (Companies) Models[1];
+        return (Companies) Tables[1];
     }
 
     public static Containers getContainers() {
-        return (Containers) Models[2];
+        return (Containers) Tables[2];
     }
 
     public static Couriers getCouriers() {
-        return (Couriers) Models[3];
+        return (Couriers) Tables[3];
     }
 
 
     public static Ships getShips() {
-        return (Ships) Models[4];
+        return (Ships) Tables[4];
     }
 
 
     public static PortCities getPortCities() {
-        return (PortCities) Models[5];
+        return (PortCities) Tables[5];
     }
 
     public static Shippings getShippings() {
-        return (Shippings) Models[6];
+        return (Shippings) Tables[6];
     }
 
     public static Shipments getShipments() {
-        return (Shipments) Models[7];
+        return (Shipments) Tables[7];
     }
 
     public static ImportAndExports getImportAndExports() {
-        return (ImportAndExports) Models[8];
+        return (ImportAndExports) Tables[8];
     }
 
     public static DeliveryAndRetrievals getDeliveryAndRetrievals() {
-        return (DeliveryAndRetrievals) Models[9];
+        return (DeliveryAndRetrievals) Tables[9];
     }
 
     public static Gson getGson() {
@@ -114,7 +114,7 @@ public class FileDBManager {
     }
 
     public static void save() throws IOException {
-        for (BaseModel model : Models) {
+        for (BaseModel model : Tables) {
             model.save();
         }
     }
@@ -131,22 +131,22 @@ public class FileDBManager {
     }
 
     public static void reload() throws IOException {
-        for (int i = 0; i < Models.length; i++) {
-            BaseModel model = Models[i];
+        for (int i = 0; i < Tables.length; i++) {
+            BaseModel model = Tables[i];
             if (!model.getDBFile().exists()) {
                 model.initialize();
                 model.save();
             }
 
             FileReader reader = new FileReader(model.getDBFile());
-            Models[i] = getGson().fromJson(reader, model.getClass());
+            Tables[i] = getGson().fromJson(reader, model.getClass());
             reader.close();
         }
 
     }
 
     public static void initializeAll() {
-        for (BaseModel model : Models) {
+        for (BaseModel model : Tables) {
             model.initialize();
         }
         try {
@@ -158,7 +158,7 @@ public class FileDBManager {
     }
 
     public static void shuffleAll() {
-        for (BaseModel model : Models) {
+        for (BaseModel model : Tables) {
             model.shuffle();
         }
     }

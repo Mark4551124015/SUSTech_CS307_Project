@@ -1,6 +1,6 @@
-package FileDB.Databases;
+package FileDB.Tables;
 
-import FileDB.Databases.Models.PortCity;
+import FileDB.Tables.Models.PortCity;
 
 import java.util.ArrayList;
 
