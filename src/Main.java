@@ -16,13 +16,13 @@ public class Main {
 
 
         DatabaseManipulation dm = new DatabaseManipulation();
-        dm.QueryServedContainer(540);
-        dm.QueryServedContainer(511);
+        dm.QueryBestPort("pear","export");
+        dm.QueryBestPort("apple","import");
+
+//        dm.QueryServedContainer(540);
+//        dm.QueryServedContainer(511);
 
 
-
-//        dm.QueryBestPort("pear","export");
-//        dm.QueryBestPort("apple","import");
 //        dm.QueryBestCourier("北京","拼多多",5);
 //        dm.QueryBestCourier("重庆","唯品会",5);
 

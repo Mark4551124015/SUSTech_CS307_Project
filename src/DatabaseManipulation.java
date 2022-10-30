@@ -11,7 +11,6 @@ import java.util.Scanner;
 public class DatabaseManipulation {
     private Connection con = null;
     private ResultSet resultSet;
-
     public void getConnection() {
         try {
             Class.forName("org.postgresql.Driver");
