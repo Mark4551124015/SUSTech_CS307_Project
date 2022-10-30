@@ -8,7 +8,7 @@ import FileDB.FileDBManager;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Couriers extends BaseModel<Courier> {
+public class Couriers extends BaseTable<Courier> {
 
     public void initialize() {
         this.data = new ArrayList<Courier>();

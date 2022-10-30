@@ -6,7 +6,7 @@ import FileDB.FileDBManager;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class ImportAndExports extends BaseModel<ImportAndExport> {
+public class ImportAndExports extends BaseTable<ImportAndExport> {
     protected int selfIncreasingNumber;
 
     @Override

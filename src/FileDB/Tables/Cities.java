@@ -5,7 +5,7 @@ import FileDB.Tables.Models.Constraint;
 
 import java.util.ArrayList;
 
-public class Cities extends BaseModel<City> {
+public class Cities extends BaseTable<City> {
 
 
     public void initialize() {

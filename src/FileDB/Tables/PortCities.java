@@ -4,7 +4,7 @@ import FileDB.Tables.Models.PortCity;
 
 import java.util.ArrayList;
 
-public class PortCities extends BaseModel<PortCity> {
+public class PortCities extends BaseTable<PortCity> {
 
     @Override
     public void initialize() {

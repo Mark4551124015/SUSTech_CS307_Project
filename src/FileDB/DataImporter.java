@@ -7,15 +7,26 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * Data Importer of File DB
+ *
+ * Run it directly to import data into File DB
+ * Foreign key check is automatically enabled
+ */
 public class DataImporter {
     FileDBManager fileDBManager;
-
     public static void main(String[] args) {
+        /**
+         * Change the path here to specific source data file
+         * Change MaxRecord to set limit for this import
+         */
         String sourcePath = "./data/shipment_records.csv";
+        int MaxRecord = 50000;
 
         DataImporter dataImporter = new DataImporter();
         try {
-            dataImporter.importCSV(sourcePath, 50000);
+
+            dataImporter.importCSV(sourcePath, MaxRecord);
         } catch (IOException e) {
             e.printStackTrace();
         }

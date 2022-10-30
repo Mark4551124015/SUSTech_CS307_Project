@@ -8,13 +8,19 @@ import com.google.gson.GsonBuilder;
 import java.io.*;
 import java.util.Date;
 
+/**
+ * File DB Manager
+ * The ONLY entrance of File DB
+ * If you want to change the place where stores the data
+ * Please edit the path in each model at Tables directory
+ *
+ * !!IMPORTANT!!
+ * Please DO NOT instantiate this class directly, but use FileDBManager.getInstance()
+ */
 public class FileDBManager {
-    static Couriers couriers;
-    static Cities cities;
-    static Companies companies;
     static FileDBManager instance;
 
-    static BaseModel[] Tables = new BaseModel[]{
+    static BaseTable[] Tables = new BaseTable[]{
             new Cities(),
             new Companies(),
             new Containers(),
@@ -60,6 +66,9 @@ public class FileDBManager {
         reload();
     }
 
+    /**
+     * Use following methods to get corresponding table
+     */
 
     public static Cities getCities() {
         return (Cities) Tables[0];
@@ -114,7 +123,7 @@ public class FileDBManager {
     }
 
     public static void save() throws IOException {
-        for (BaseModel model : Tables) {
+        for (BaseTable model : Tables) {
             model.save();
         }
     }
@@ -132,7 +141,7 @@ public class FileDBManager {
 
     public static void reload() throws IOException {
         for (int i = 0; i < Tables.length; i++) {
-            BaseModel model = Tables[i];
+            BaseTable model = Tables[i];
             if (!model.getDBFile().exists()) {
                 model.initialize();
                 model.save();
@@ -146,7 +155,7 @@ public class FileDBManager {
     }
 
     public static void initializeAll() {
-        for (BaseModel model : Tables) {
+        for (BaseTable model : Tables) {
             model.initialize();
         }
         try {
@@ -158,7 +167,7 @@ public class FileDBManager {
     }
 
     public static void shuffleAll() {
-        for (BaseModel model : Tables) {
+        for (BaseTable model : Tables) {
             model.shuffle();
         }
     }

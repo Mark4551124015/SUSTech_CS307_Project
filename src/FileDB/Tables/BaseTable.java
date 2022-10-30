@@ -10,7 +10,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
-public abstract class BaseModel<T> {
+/**
+ * BaseModel
+ * Every table should extend this class
+ *
+ * @param <T>
+ */
+public abstract class BaseTable<T> {
     public ArrayList<T> data;
 
     public abstract void initialize();

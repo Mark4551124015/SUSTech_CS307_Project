@@ -7,6 +7,9 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Advanced Queries For The First Three Advance Requirements
+ */
 public class AdvancedQuery {
     FileDBManager fileDBManager;
 
@@ -25,7 +28,11 @@ public class AdvancedQuery {
         fileDBManager = FileDBManager.getInstance();
     }
 
-
+    /**
+     * Query the containers of specific type which work more than the specific days
+     * @param minDays
+     * @param type
+     */
     public void queryContainersWithWorkingTime(int minDays, String type) {
         long startTime = System.currentTimeMillis();
         ArrayList<Container> containers = FileDBManager.getContainers().select(container -> container.type.equals(type));
@@ -54,6 +61,9 @@ public class AdvancedQuery {
         System.out.printf("All queries are finished, total cost: %d ms \n", endTime - startTime);
     }
 
+    /**
+     * Query all the containers with their types and working time.
+     */
     public void queryContainersWithWorkingTime() {
         long startTime = System.currentTimeMillis();
         ArrayList<Container> containers = FileDBManager.getContainers().select(container -> true);
@@ -82,6 +92,10 @@ public class AdvancedQuery {
         System.out.printf("All queries are finished, total cost: %d seconds \n", cost);
     }
 
+    /**
+     * Query the couriers who delivery and retrieve most for the
+     * specific company in the specific city
+     */
     public void queryBestCourier(String company, String city) {
         long startTime = System.currentTimeMillis();
         ArrayList<Courier> couriers = FileDBManager.getCouriers().select(courier -> true);
@@ -121,6 +135,10 @@ public class AdvancedQuery {
         System.out.printf("All queries are finished, total cost: %d ms \n", endTime - startTime);
     }
 
+    /**
+     * Query the city which has the lowest export tax rate with respect to the specific itemType
+     * @param itemType
+     */
 
     public void queryBestExportCity(String itemType) {
         long startTime = System.currentTimeMillis();

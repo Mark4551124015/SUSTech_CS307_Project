@@ -6,7 +6,7 @@ import FileDB.FileDBManager;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class Shipments extends BaseModel<Shipment> {
+public class Shipments extends BaseTable<Shipment> {
     @Override
     public void initialize() {
         this.data = new ArrayList<>();

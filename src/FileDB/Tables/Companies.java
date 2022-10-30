@@ -4,7 +4,7 @@ import FileDB.Tables.Models.Company;
 
 import java.util.ArrayList;
 
-public class Companies extends BaseModel<Company> {
+public class Companies extends BaseTable<Company> {
 
     public void initialize(){
         this.data = new ArrayList<>();

@@ -4,7 +4,7 @@ import FileDB.Tables.Models.Container;
 
 import java.util.ArrayList;
 
-public class Containers extends BaseModel<Container> {
+public class Containers extends BaseTable<Container> {
 
     public void initialize() {
         this.data = new ArrayList<Container>();

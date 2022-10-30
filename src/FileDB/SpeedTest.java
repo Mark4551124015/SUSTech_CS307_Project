@@ -5,7 +5,15 @@ import FileDB.Tables.Models.Courier;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * Speed Test Script OF File DB
+ * Output cost time of EACH query
+ * Adjust the params below before running
+ */
 public class SpeedTest {
+    /**
+     * importDataNumber: The number of data used to test update, delete and query
+     */
     static int importDataNumber = 20000;
     static int insertNumber = 10000;
     static int updateNumber = 10000;

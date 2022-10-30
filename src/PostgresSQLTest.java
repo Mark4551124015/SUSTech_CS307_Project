@@ -1,14 +1,22 @@
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.sql.Date;
-import java.sql.Statement;
 import java.util.Calendar;
 
-public class JavaTests {
+/**
+ * All in one test script for PostgreSQL
+ */
+public class PostgresSQLTest {
     Loader ld = new Loader();
     DatabaseManipulation dm = new DatabaseManipulation();
     MultiThreadLoader mld = new MultiThreadLoader();
 
+    /**
+     * Test insert,update,delete,select operations together
+     * @param filePath source data file
+     * @param timeK factor of operation numbers
+     * @throws Exception
+     */
     public void TestAllOperation(String filePath, int timeK) throws Exception {
         File file = new File("log.txt");
         PrintStream ps = new PrintStream(file);
@@ -20,6 +28,12 @@ public class JavaTests {
         TestUpdate(filePath, Main.UpdateSize*timeK);
         TestSelect(filePath, Main.SelectSize*timeK,ps);
     }
+
+    /**
+     * Test our 6 versions of importing data together
+     * @param filePath source data file
+     * @throws Exception
+     */
     public void TestAllLoader(String filePath) throws Exception {
         File file = new File("log.txt");
         PrintStream ps = new PrintStream(file);
@@ -32,6 +46,13 @@ public class JavaTests {
         TestLoader_V5(filePath, 100000);
         TestLoader_V6(filePath, 500000);
     }
+
+    /**
+     * Test insert operation
+     * @param filePath source file path
+     * @param max max number of importing data
+     * @throws Exception
+     */
     public void TestInsertion(String filePath, int max) throws Exception{
         dm.emptyTables();
         File csv = new File(filePath);
@@ -54,34 +75,84 @@ public class JavaTests {
 
 
     }
+
+    /**
+     * Test our final version of importing data
+     * @param filePath
+     * @param max
+     * @throws Exception
+     */
     public void TestLoader(String filePath, int max) throws Exception {
         dm.emptyTables();
         ld.loadFromFile(filePath,max);
     }
+    /**
+     * Test our first version of importing data
+     * @param filePath
+     * @param max
+     * @throws Exception
+     */
     public void TestLoader_V1(String filePath, int max) throws Exception {
         dm.emptyTables();
         ld.loadFromFile_V1(filePath,max);
     }
+    /**
+     * Test our second version of importing data
+     * @param filePath
+     * @param max
+     * @throws Exception
+     */
     public void TestLoader_V2(String filePath, int max) throws Exception {
         dm.emptyTables();
         ld.loadFromFile_V2(filePath,max);
     }
+    /**
+     * Test our third version of importing data
+     * @param filePath
+     * @param max
+     * @throws Exception
+     */
     public void TestLoader_V3(String filePath, int max) throws Exception {
         dm.emptyTables();
         ld.loadFromFile_V3(filePath,max);
     }
+    /**
+     * Test our forth version of importing data
+     * @param filePath
+     * @param max
+     * @throws Exception
+     */
     public void TestLoader_V4(String filePath, int max) throws Exception {
         dm.emptyTables();
         ld.loadFromFile_V4(filePath,max);
     }
+    /**
+     * Test our fifth version of importing data
+     * @param filePath
+     * @param max
+     * @throws Exception
+     */
     public void TestLoader_V5(String filePath, int max) throws Exception {
         dm.emptyTables();
         ld.loadFromFile_V5(filePath,max);
     }
+    /**
+     * Test our sixth version of importing data
+     * @param filePath
+     * @param max
+     * @throws Exception
+     */
     public void TestLoader_V6(String filePath, int max) throws Exception {
         dm.emptyTables();
         mld.loadFromFile(filePath,max);
     }
+
+    /**
+     * Test delete operation
+     * @param filePath
+     * @param max
+     * @throws Exception
+     */
     public void TestDelete(String filePath, int max) throws Exception {
         File csv = new File(filePath);
         csv.setReadable(true);
@@ -105,6 +176,13 @@ public class JavaTests {
         dm.closeConnection();
         long endTime = System.currentTimeMillis();
     }
+
+    /**
+     * Test output operation
+     * @param filePath
+     * @param max
+     * @throws Exception
+     */
     public void TestUpdate(String filePath, int max) throws Exception {
         File csv = new File(filePath);
         csv.setReadable(true);
@@ -131,6 +209,14 @@ public class JavaTests {
         System.out.printf("Update: %d records, speed: %.2f records/s\n",max, (float)(max*1e3/(total)));
 
     }
+
+    /**
+     * Test select operation
+     * @param filePath
+     * @param max
+     * @param ps
+     * @throws Exception
+     */
     public void TestSelect(String filePath, int max, PrintStream ps) throws Exception {
         File file = new File("log.txt");
         PrintStream out = new PrintStream(System.out);
@@ -161,7 +247,15 @@ public class JavaTests {
         System.out.printf("Select: %d records, speed: %.2f records/s\n",max, (float)(max*1e3/(total)));
 
     }
-    public static Date CalBirth (String str, float age) {
+
+    /**
+     * Helper function
+     * Calculate the birthday of courier
+     * @param str
+     * @param age
+     * @return
+     */
+    protected static Date CalBirth (String str, float age) {
         Date date = Date.valueOf(str);
         Calendar birth = Calendar.getInstance();
         birth.setTime(date);
