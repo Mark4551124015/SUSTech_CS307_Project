@@ -8,16 +8,16 @@ public class Main {
     public static void main(String[] args) throws Exception {
         PostgresSQLTest jt = new PostgresSQLTest();
         DatabaseManipulation dm = new DatabaseManipulation();
-        dm.QueryBestPort("pear","export");
-        dm.QueryBestPort("apple","import");
+//        dm.QueryBestPort("pear","export");
+//        dm.QueryBestPort("apple","import");
 //        dm.QueryServedContainer(540);
 //        dm.QueryServedContainer(511);
 
 //        dm.QueryBestCourier("北京","拼多多",5);
 //        dm.QueryBestCourier("重庆","唯品会",5);
+        jt.dm.emptyTables();
 
-//        jt.ld.loadFromFile(filePath,1000);
-//        jt.dm.emptyTables();
+        jt.ld.loadFromFile(filePath,1000);
 
 
 

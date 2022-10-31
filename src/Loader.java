@@ -141,7 +141,7 @@ public class Loader  {
 
 
                 shipment.setString(1, ItemName);
-                shipment.setFloat(2, Float.parseFloat(ItemPrice));
+                shipment.setDouble(2, Double.parseDouble(ItemPrice));
                 shipment.setString(3, ItemType);
                 shipment.setString(4, RetrievalCity);
                 shipment.setString(5, DeliveryCity);
@@ -157,7 +157,7 @@ public class Loader  {
 
                 courierR.setString(1,RetrievalCourier);
                 courierR.setString(2,RetrievalCourierGender);
-                courierR.setDate(3, CalBirth(RetrievalStartTime, Float.parseFloat(RetrievalCourierAge)));
+                courierR.setDate(3, CalBirth(RetrievalStartTime, Double.parseDouble(RetrievalCourierAge)));
                 courierR.setString(4, RetrievalCourierPhoneNumber);
                 courierR.setString(5, CompanyName);
                 courierR.setString(6, ItemExportCity);
@@ -175,7 +175,7 @@ public class Loader  {
                     export_detail.setString(2, "export");
                     export_detail.setString(3, ItemType);
                     export_detail.setString(4, ItemExportCity);
-                    export_detail.setFloat(5, Float.parseFloat(ItemExportTax));
+                    export_detail.setDouble(5, Double.parseDouble(ItemExportTax));
                     export_detail.setDate(6, Date.valueOf(ItemExportTime));
                     export_detail.addBatch();
                 }
@@ -204,14 +204,14 @@ public class Loader  {
                     import_detail.setString(2, "import");
                     import_detail.setString(3, ItemType);
                     import_detail.setString(4, ItemImportCity);
-                    import_detail.setFloat(5, Float.parseFloat(ItemImportTax));
+                    import_detail.setDouble(5, Double.parseDouble(ItemImportTax));
                     import_detail.setDate(6, Date.valueOf(ItemImportTime));
                     import_detail.addBatch();
                 }
                 if (!(DeliveryFinishTime.isEmpty())) {
                     courierD.setString(1,DeliveryCourier);
                     courierD.setString(2,DeliveryCourierGender);
-                    courierD.setDate(3, CalBirth(DeliveryFinishTime, Float.parseFloat(DeliveryCourierAge)));
+                    courierD.setDate(3, CalBirth(DeliveryFinishTime, Double.parseDouble(DeliveryCourierAge)));
                     courierD.setString(4, DeliveryCourierPhoneNumber);
                     courierD.setString(5, CompanyName);
                     courierD.setString(6, ItemImportCity);
@@ -272,7 +272,7 @@ public class Loader  {
             con.commit();
             con.setAutoCommit(true);
             long endTime=System.currentTimeMillis();
-            System.out.printf("Loaded: %d records, speed: %.2f records/s\n",MAXRECORD, (float)(MAXRECORD*1e3/(endTime-startTime)));
+            System.out.printf("Loaded: %d records, speed: %.2f records/s\n",MAXRECORD, (Double)(MAXRECORD*1e3/(endTime-startTime)));
 
         } catch (Exception e) {
             System.err.println(e);
@@ -405,7 +405,7 @@ public class Loader  {
 
 
                 shipment.setString(1, ItemName);
-                shipment.setFloat(2, Float.parseFloat(ItemPrice));
+                shipment.setDouble(2, Double.parseDouble(ItemPrice));
                 shipment.setString(3, ItemType);
                 shipment.setString(4, RetrievalCity);
                 shipment.setString(5, DeliveryCity);
@@ -421,7 +421,7 @@ public class Loader  {
 
                 courierR.setString(1,RetrievalCourier);
                 courierR.setString(2,RetrievalCourierGender);
-                courierR.setDate(3, CalBirth(RetrievalStartTime, Float.parseFloat(RetrievalCourierAge)));
+                courierR.setDate(3, CalBirth(RetrievalStartTime, Double.parseDouble(RetrievalCourierAge)));
                 courierR.setString(4, RetrievalCourierPhoneNumber);
                 courierR.setString(5, CompanyName);
                 courierR.setString(6, ItemExportCity);
@@ -439,7 +439,7 @@ public class Loader  {
                     export_detail.setString(2, "export");
                     export_detail.setString(3, ItemType);
                     export_detail.setString(4, ItemExportCity);
-                    export_detail.setFloat(5, Float.parseFloat(ItemExportTax));
+                    export_detail.setDouble(5, Double.parseDouble(ItemExportTax));
                     export_detail.setDate(6, Date.valueOf(ItemExportTime));
                     export_detail.addBatch();
                 }
@@ -468,14 +468,14 @@ public class Loader  {
                     import_detail.setString(2, "import");
                     import_detail.setString(3, ItemType);
                     import_detail.setString(4, ItemImportCity);
-                    import_detail.setFloat(5, Float.parseFloat(ItemImportTax));
+                    import_detail.setDouble(5, Double.parseDouble(ItemImportTax));
                     import_detail.setDate(6, Date.valueOf(ItemImportTime));
                     import_detail.addBatch();
                 }
                 if (!(DeliveryFinishTime.isEmpty())) {
                     courierD.setString(1,DeliveryCourier);
                     courierD.setString(2,DeliveryCourierGender);
-                    courierD.setDate(3, CalBirth(DeliveryFinishTime, Float.parseFloat(DeliveryCourierAge)));
+                    courierD.setDate(3, CalBirth(DeliveryFinishTime, Double.parseDouble(DeliveryCourierAge)));
                     courierD.setString(4, DeliveryCourierPhoneNumber);
                     courierD.setString(5, CompanyName);
                     courierD.setString(6, ItemImportCity);
@@ -536,7 +536,7 @@ public class Loader  {
             con.commit();
             con.setAutoCommit(true);
             long endTime=System.currentTimeMillis();
-            System.out.printf("Load using Loader_V5: %d records, speed: %.2f records/s\n",MAXRECORD, (float)(MAXRECORD*1e3/(endTime-startTime)));
+            System.out.printf("Load using Loader_V5: %d records, speed: %.2f records/s\n",MAXRECORD, (Double)(MAXRECORD*1e3/(endTime-startTime)));
 
         } catch (Exception e) {
             System.err.println(e);
@@ -658,7 +658,7 @@ public class Loader  {
 
 
                 shipment.setString(1, ItemName);
-                shipment.setFloat(2, Float.parseFloat(ItemPrice));
+                shipment.setDouble(2, Double.parseDouble(ItemPrice));
                 shipment.setString(3, ItemType);
                 shipment.setString(4, RetrievalCity);
                 shipment.setString(5, DeliveryCity);
@@ -674,7 +674,7 @@ public class Loader  {
 
                 courierR.setString(1,RetrievalCourier);
                 courierR.setString(2,RetrievalCourierGender);
-                courierR.setDate(3, CalBirth(RetrievalStartTime, Float.parseFloat(RetrievalCourierAge)));
+                courierR.setDate(3, CalBirth(RetrievalStartTime, Double.parseDouble(RetrievalCourierAge)));
                 courierR.setString(4, RetrievalCourierPhoneNumber);
                 courierR.setString(5, CompanyName);
                 courierR.setString(6, ItemExportCity);
@@ -692,7 +692,7 @@ public class Loader  {
                     export_detail.setString(2, "export");
                     export_detail.setString(3, ItemType);
                     export_detail.setString(4, ItemExportCity);
-                    export_detail.setFloat(5, Float.parseFloat(ItemExportTax));
+                    export_detail.setDouble(5, Double.parseDouble(ItemExportTax));
                     export_detail.setDate(6, Date.valueOf(ItemExportTime));
                     export_detail.addBatch();
                 }
@@ -721,14 +721,14 @@ public class Loader  {
                     import_detail.setString(2, "import");
                     import_detail.setString(3, ItemType);
                     import_detail.setString(4, ItemImportCity);
-                    import_detail.setFloat(5, Float.parseFloat(ItemImportTax));
+                    import_detail.setDouble(5, Double.parseDouble(ItemImportTax));
                     import_detail.setDate(6, Date.valueOf(ItemImportTime));
                     import_detail.addBatch();
                 }
                 if (!(DeliveryFinishTime.isEmpty())) {
                     courierD.setString(1,DeliveryCourier);
                     courierD.setString(2,DeliveryCourierGender);
-                    courierD.setDate(3, CalBirth(DeliveryFinishTime, Float.parseFloat(DeliveryCourierAge)));
+                    courierD.setDate(3, CalBirth(DeliveryFinishTime, Double.parseDouble(DeliveryCourierAge)));
                     courierD.setString(4, DeliveryCourierPhoneNumber);
                     courierD.setString(5, CompanyName);
                     courierD.setString(6, ItemImportCity);
@@ -777,7 +777,7 @@ public class Loader  {
             con.commit();
             con.setAutoCommit(true);
             long endTime=System.currentTimeMillis();
-            System.out.printf("Load using Loader_V4: %d records, speed: %.2f records/s\n",MAXRECORD, (float)(MAXRECORD*1e3/(endTime-startTime)));
+            System.out.printf("Load using Loader_V4: %d records, speed: %.2f records/s\n",MAXRECORD, (Double)(MAXRECORD*1e3/(endTime-startTime)));
 
         } catch (Exception e) {
             System.err.println(e);
@@ -893,7 +893,7 @@ public class Loader  {
 
 
                 shipment.setString(1, ItemName);
-                shipment.setFloat(2, Float.parseFloat(ItemPrice));
+                shipment.setDouble(2, Double.parseDouble(ItemPrice));
                 shipment.setString(3, ItemType);
                 shipment.setString(4, RetrievalCity);
                 shipment.setString(5, DeliveryCity);
@@ -906,7 +906,7 @@ public class Loader  {
 
                 courierR.setString(1,RetrievalCourier);
                 courierR.setString(2,RetrievalCourierGender);
-                courierR.setDate(3, CalBirth(RetrievalStartTime, Float.parseFloat(RetrievalCourierAge)));
+                courierR.setDate(3, CalBirth(RetrievalStartTime, Double.parseDouble(RetrievalCourierAge)));
                 courierR.setString(4, RetrievalCourierPhoneNumber);
                 courierR.setString(5, CompanyName);
                 courierR.setString(6, ItemExportCity);
@@ -922,7 +922,7 @@ public class Loader  {
                     export_detail.setString(2, "export");
                     export_detail.setString(3, ItemType);
                     export_detail.setString(4, ItemExportCity);
-                    export_detail.setFloat(5, Float.parseFloat(ItemExportTax));
+                    export_detail.setDouble(5, Double.parseDouble(ItemExportTax));
                     export_detail.setDate(6, Date.valueOf(ItemExportTime));
                 }
 
@@ -947,13 +947,13 @@ public class Loader  {
                     import_detail.setString(2, "import");
                     import_detail.setString(3, ItemType);
                     import_detail.setString(4, ItemImportCity);
-                    import_detail.setFloat(5, Float.parseFloat(ItemImportTax));
+                    import_detail.setDouble(5, Double.parseDouble(ItemImportTax));
                     import_detail.setDate(6, Date.valueOf(ItemImportTime));
                 }
                 if (!(DeliveryFinishTime.isEmpty())) {
                     courierD.setString(1,DeliveryCourier);
                     courierD.setString(2,DeliveryCourierGender);
-                    courierD.setDate(3, CalBirth(DeliveryFinishTime, Float.parseFloat(DeliveryCourierAge)));
+                    courierD.setDate(3, CalBirth(DeliveryFinishTime, Double.parseDouble(DeliveryCourierAge)));
                     courierD.setString(4, DeliveryCourierPhoneNumber);
                     courierD.setString(5, CompanyName);
                     courierD.setString(6, ItemImportCity);
@@ -984,7 +984,7 @@ public class Loader  {
 
 
             long endTime=System.currentTimeMillis();
-            System.out.printf("Load using Loader_V3: %d records, speed: %.2f records/s\n",MAXRECORD, (float)(MAXRECORD*1e3/(endTime-startTime)));
+            System.out.printf("Load using Loader_V3: %d records, speed: %.2f records/s\n",MAXRECORD, (Double)(MAXRECORD*1e3/(endTime-startTime)));
 
         } catch (Exception e) {
             System.err.println(e);
@@ -1013,7 +1013,7 @@ public class Loader  {
             }
             dm.closeConnection();
             long endTime = System.currentTimeMillis();
-            System.out.printf("Load using Loader_V2: %d records, speed: %.2f records/s\n",MAXRECORD, (float)(MAXRECORD*1e3/(endTime-startTime)));
+            System.out.printf("Load using Loader_V2: %d records, speed: %.2f records/s\n",MAXRECORD, (Double)(MAXRECORD*1e3/(endTime-startTime)));
         } catch (Exception e) {
             System.err.println(e);
         }
@@ -1041,22 +1041,20 @@ public class Loader  {
             }
             long endTime = System.currentTimeMillis();
             dm.closeConnection();
-            System.out.printf("Load using Loader_V1: %d records, speed: %.2f records/s\n",MAXRECORD, (float)(MAXRECORD*1e3/(endTime-startTime)));
+            System.out.printf("Load using Loader_V1: %d records, speed: %.2f records/s\n",MAXRECORD, (Double)(MAXRECORD*1e3/(endTime-startTime)));
         } catch (Exception e) {
             System.err.println(e);
         }
     }
-    public static Date CalBirth (String str, float age) {
+    public static Date CalBirth (String str, Double age) {
         Date date = Date.valueOf(str);
         Calendar birth = Calendar.getInstance();
         birth.setTime(date);
-        birth.add(Calendar.YEAR, -1*(int)age);
+        birth.add(Calendar.YEAR, (int) (-1*age));
         java.util.Date ret = birth.getTime();
         long temp = ret.getTime();
         Date out = new Date(temp);
         return out;
     }
-
-
 }
 
